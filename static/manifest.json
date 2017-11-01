@@ -1,6 +1,6 @@
 {
-  "name": "timetable-selector-web",
-  "short_name": "tts-web",
+  "name": "TimeTableSelector by NIAEFEUP",
+  "short_name": "TimeTableSelector",
   "icons": [
     {
       "src": "/static/img/icons/android-chrome-192x192.png",

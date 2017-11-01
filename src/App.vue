@@ -4,7 +4,6 @@
       <span>Vue.js PWA</span>
     </header>
     <main>
-      <img src="./assets/logo.png" alt="Vue.js PWA">
       <router-view></router-view>
     </main>
   </div>
@@ -12,8 +11,8 @@
 
 <script>
 export default {
-  name: 'app'
-}
+  name: 'app',
+};
 </script>
 
 <style>
@@ -22,7 +21,7 @@ body {
 }
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
