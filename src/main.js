@@ -1,3 +1,5 @@
+import 'core-js/fn/promise';
+import 'core-js/fn/array/fill';
 import Vue from 'vue';
 import Axios from 'axios';
 import VueAxios from 'vue-axios';
