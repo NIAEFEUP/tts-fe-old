@@ -1,10 +1,18 @@
 <template>
-  <div class="class" :style="{height: this.height, top: this.top}">
-    <div class="time" v-text="time"/>
-    <div class="name">ESOF</div>
-    <div class="class-class">3MIEIC01</div>
-    <div class="room">B001</div>
-    <div class="teacher">RPR</div>
+  <div class="class" :style="{height: this.height, top: this.top}" :class="`class-${type}`">
+    <div class="class-info">
+      <div class="line1">
+        <div class="time" v-text="time"></div>
+      </div>
+      <div class="line2">
+        <div class="name" v-text="name"></div>
+        <div class="class-class" v-text="className"></div>
+      </div>
+      <div class="line3">
+        <div class="room" v-text="room"></div>
+        <div class="teacher" v-text="teacher"></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -12,6 +20,26 @@
   export default {
     name: 'Column',
     props: {
+      name: {
+        type: String,
+        required: true,
+      },
+      className: {
+        type: String,
+        required: true,
+      },
+      room: {
+        type: String,
+        required: true,
+      },
+      teacher: {
+        type: String,
+        required: true,
+      },
+      type: {
+        type: String,
+        required: true,
+      },
       height: {
         type: String,
         required: true,
@@ -31,27 +59,46 @@
 <style scoped>
   .class {
     position: absolute;
-    width: calc(100% + 2px);
+    width: 100%;
     background: #a8a199;
-    left: -1px;
+    left: 0;
     z-index: 1;
     color: #fafafa;
-    padding: 5px;
+    padding: 2px 10px;
     box-sizing: border-box;
+    border-bottom: 1px solid #f6f6f6;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
-  .name, .class-class, .room, .teacher {
-    font-size: 0.8em;
-    box-sizing: border-box;
-    display: inline-block;
-    width: 45%;
-    height: 33%;
-    vertical-align: center;
+  .class-TP {
+    background-color: #69656a;
   }
-  .time {
-    font-size: 0.9em;
-    height: 33%;
+  .class-PL {
+    background-color: #4f2e2e;
+  }
+  .class-info {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex-basis: 100px;
+  }
+  .class-info > * {
+    flex: 1;
+  }
+  .line1, .line2, .line3 {
+    display: flex;
+    align-items: center;
+  }
+  .line1 > *, .line2 > *, .line3 > * {
+    flex: 1;
+    align-items: center;
+  }
+  .time, .class-class, .room, .teacher {
+    font-size: 13px;
   }
   .name {
-    font-size: 1.1em;
+    line-height: 18px;
+    font-size: 20px;
   }
 </style>

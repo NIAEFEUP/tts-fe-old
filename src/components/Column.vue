@@ -1,10 +1,12 @@
 <template>
   <div class="column">
     <div class="box name" v-text="name"/>
-    <div>
-      <div v-for="_ in slots" class="box" :class="{'box-light': _ % 2 === 0}"></div>
+    <div class="classes">
+      <div>
+        <div v-for="_ in slots" class="box" :class="{'box-light': _ % 2 === 0}"></div>
+      </div>
+      <slot></slot>
     </div>
-    <slot></slot>
   </div>
 </template>
 
@@ -41,9 +43,12 @@
   .column:last-of-type {
     border-right: 1px solid #eaeaea;
   }
+  .classes {
+    position: relative;
+  }
   .box {
     width: 100%;
-    height: 20px;
+    height: 30px;
     text-align: center;
     border: solid #eaeaea;
     border-width: 1px 0;
