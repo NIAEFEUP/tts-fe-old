@@ -85,7 +85,6 @@
     .classes {
       display: flex;
       flex-direction: row;
-      overflow-x: scroll;
       overflow-y: hidden;
       flex-wrap: nowrap;
       -webkit-overflow-scrolling: touch;

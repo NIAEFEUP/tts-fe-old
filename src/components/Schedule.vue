@@ -63,7 +63,7 @@
         loading: 'loading',
       }),
       small() {
-        return this.$mq.resize && this.$mq.below(768);
+        return this.$mq.resize && !this.$mq.above(768);
       },
       slotsPerColumn() {
         return 2 * (this.end - this.start);
@@ -73,11 +73,27 @@
           .map((_, i) => this.start + i)
           .map(x => (x < 10 ? `0${x}:00` : `${x}:00`));
       },
+      classesByDay() {
+        const classesByDay = this.groupBy(this.selectedClasses, 'day');
+        Object.keys(classesByDay).forEach((key) => {
+          classesByDay[key].sort((a, b) => a.hour > b.hour);
+        });
+        return day => classesByDay[day + 1] || [];
+      },
     },
     methods: {
-      classesByDay(day) {
-        if (!this.selectedClasses) return null;
-        return this.selectedClasses.filter(c => c.day === day + 1);
+      groupBy(array, field) {
+        const obj = {};
+        if (!(array instanceof Array)) {
+          return obj;
+        }
+        array.forEach((elem) => {
+          if (obj[elem[field]] === undefined) {
+            obj[elem[field]] = [];
+          }
+          obj[elem[field]].push(elem);
+        });
+        return obj;
       },
     },
   };
@@ -106,6 +122,9 @@
     margin: 10px auto;
     max-width: 900px;
     padding: 0 20px;
+    @media screen and (max-width: 800px) {
+      padding: 0 calc(50% - 372px);
+    }
   }
   .schedule-days {
     display: inline-block;
