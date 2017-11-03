@@ -1,5 +1,5 @@
 <template>
-  <div class="class" :style="{height: this.height, top: this.top}" :class="`class-${type}`">
+  <div class="class" :style="classStyle" :class="{ [`class-${type}`]: true, 'class-horizontal': horizontal }">
     <div class="class-info">
       <div class="line1">
         <div class="time" v-text="time"></div>
@@ -42,21 +42,34 @@
       },
       height: {
         type: String,
-        required: true,
       },
       top: {
         type: String,
-        required: true,
       },
       time: {
         type: String,
         required: true,
       },
+      horizontal: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    computed: {
+      classStyle() {
+        if (!this.horizontal) {
+          return {
+            height: this.height,
+            top: this.top,
+          };
+        }
+        return {};
+      },
     },
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .class {
     position: absolute;
     width: 100%;
@@ -69,6 +82,15 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    &.class-horizontal {
+      width: 150px;
+      height: 150px;
+      position: relative;
+      flex-shrink: 0;
+      box-sizing: border-box;
+      margin-left: 10px;
+    }
   }
   .class-TP {
     background-color: #69656a;
@@ -83,14 +105,15 @@
     flex-basis: 100px;
     padding: 2px calc(30% - 30px);
   }
-  .class-info > * {
+  .class-info > div {
     flex: 1;
     display: flex;
     align-items: center;
-  }
-  .line1 > *, .line2 > *, .line3 > * {
-    flex: 1;
-    align-items: center;
+
+    > * {
+      flex: 1;
+      align-items: center;
+    }
   }
   .time, .class-class, .room, .teacher {
     font-size: 13px;
