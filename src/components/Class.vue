@@ -64,7 +64,6 @@
     left: 0;
     z-index: 1;
     color: #fafafa;
-    padding: 2px 10px;
     box-sizing: border-box;
     border-bottom: 1px solid #f6f6f6;
     display: flex;
@@ -82,11 +81,10 @@
     flex-direction: column;
     height: 100%;
     flex-basis: 100px;
+    padding: 2px calc(30% - 30px);
   }
   .class-info > * {
     flex: 1;
-  }
-  .line1, .line2, .line3 {
     display: flex;
     align-items: center;
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="schedule">
+  <div v-if="!small" class="schedule-md">
     <div class="times">
       <div v-for="time in times" v-text="time"></div>
     </div><!--
@@ -17,6 +17,9 @@
                :time="c.time"></Class>
       </Column>
     </div>
+  </div>
+  <div v-else class="schedule-sm">
+    Small layout
   </div>
 </template>
 
@@ -46,6 +49,9 @@
         selectedClasses: 'selectedClasses',
         loading: 'loading',
       }),
+      small() {
+        return this.$mq.resize && this.$mq.below(768);
+      },
       slotsPerColumn() {
         return 2 * (this.end - this.start);
       },
@@ -78,7 +84,7 @@
     margin-right: 10px;
     position: relative;
   }
-  .schedule {
+  .schedule-md {
     text-align: left;
     margin: 10px auto;
     max-width: 900px;
