@@ -1,5 +1,5 @@
 <template>
-  <div class="schedule-md" v-if="!small">
+  <div class="schedule schedule-md" v-if="!small">
     <div class="times">
       <div v-for="time in times" v-text="time"></div>
     </div><!--
@@ -18,7 +18,7 @@
       </Column>
     </div>
   </div>
-  <div class="schedule-sm" v-else>
+  <div class="schedule schedule-sm" v-else>
     <Column class="schedule-column" horizontal :slots="slotsPerColumn" :name="day" v-for="(day, i) in days" :key="i">
       <Class v-for="c in classesByDay(i)"
              horizontal
@@ -99,8 +99,10 @@
     margin-right: 10px;
     position: relative;
   }
-  .schedule-md {
+  .schedule {
     text-align: left;
+  }
+  .schedule-md {
     margin: 10px auto;
     max-width: 900px;
     padding: 0 20px;

@@ -80,6 +80,7 @@
     width: 100%;
     .name {
       font-weight: bold;
+      padding: 15px 10px 5px;
     }
     .classes {
       display: flex;

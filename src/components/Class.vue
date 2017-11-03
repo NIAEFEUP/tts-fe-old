@@ -85,7 +85,7 @@
 
     &.class-horizontal {
       width: 150px;
-      height: 150px;
+      height: 120px;
       position: relative;
       flex-shrink: 0;
       box-sizing: border-box;
@@ -118,8 +118,10 @@
   .time, .class-class, .room, .teacher {
     font-size: 13px;
   }
+  .line2 > * {
+    line-height: 20px;
+  }
   .name {
-    line-height: 18px;
     font-size: 20px;
   }
 </style>
