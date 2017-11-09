@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Schedule from '../components/Schedule';
+import SchedulePage from '../components/SchedulePage';
 
 Vue.use(Router);
 
@@ -9,8 +9,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Schedule,
+      name: 'SchedulePage',
+      component: SchedulePage,
     },
   ],
 });

@@ -107,9 +107,10 @@
     width: 50px;
     display: inline-block;
     text-align: right;
-    margin-top: 30px;
+    margin-top: 33px;
   }
   .times > div {
+    font-size: 15px;
     font-weight: bold;
     height: 2 * $schedule-box-height + 2;
     margin-right: 10px;
@@ -119,12 +120,9 @@
     text-align: left;
   }
   .schedule-md {
-    margin: 10px auto;
+    margin: auto;
     max-width: 900px;
     padding: 0 20px;
-    @media screen and (max-width: 800px) {
-      padding: 0 calc(50% - 372px);
-    }
   }
   .schedule-days {
     display: inline-block;

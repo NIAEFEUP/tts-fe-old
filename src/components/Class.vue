@@ -116,12 +116,13 @@
     }
   }
   .time, .class-class, .room, .teacher {
-    font-size: 13px;
+    font-size: 10px;
   }
   .line2 > * {
     line-height: 20px;
   }
   .name {
-    font-size: 20px;
+    font-size: 15px;
+    font-weight: 500;
   }
 </style>

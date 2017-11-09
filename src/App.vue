@@ -21,7 +21,7 @@ body {
 }
 
 #app {
-  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -41,7 +41,7 @@ header {
 }
 
 header span {
-  display: block;
+  display: inline-block;
   position: relative;
   font-size: 20px;
   line-height: 1;
