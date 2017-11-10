@@ -20,14 +20,28 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .schedule-page {
     width: 100%;
-    max-width: 1400px;
+    max-width: 1200px;
     margin: auto;
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    > * {
+      display: flex;
+      max-width: 900px;
+    }
+  }
+  .sidebar {
+    padding: 0 10px;
+    order: 0;
+    flex: 1;
+    flex-basis: 280px;
+    margin: 0 auto 20px;
   }
   .content {
-    max-width: 900px;
+    margin: auto;
     width: 100%;
     display: inline-block;
     vertical-align: top;

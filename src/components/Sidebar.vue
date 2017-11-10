@@ -18,10 +18,8 @@
 
 <style lang="scss" scoped>
   .sidebar {
-    max-width: 280px;
     width: 100%;
     float: right;
-    margin-right: 22px;
     display: inline-block;
     box-sizing: border-box;
     text-align: left;
@@ -62,6 +60,14 @@
 
     &:not(:last-child) {
       border-bottom: 1px solid #bdbdbd;
+    }
+
+    .el-checkbox + .el-checkbox {
+      margin-left: 0;
+    }
+
+    .el-checkbox:not(:last-child) {
+      margin-right: 30px;
     }
   }
 
