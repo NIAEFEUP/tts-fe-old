@@ -42,7 +42,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../variables';
+  @import '../styles/variables';
 
   .classes {
     position: relative;

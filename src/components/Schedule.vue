@@ -36,7 +36,7 @@
 <script>
   import { mapGetters } from 'vuex';
   // eslint-disable-next-line import/no-webpack-loader-syntax
-  import styles from '!!sass-variable-loader!../variables.scss';
+  import styles from '!!sass-variable-loader!../styles/variables.scss';
   import Column from './Column';
   import Class from './Class';
 
@@ -100,7 +100,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../variables';
+  @import '../styles/variables';
 
   .times {
     vertical-align: top;

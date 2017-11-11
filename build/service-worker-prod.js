@@ -35,6 +35,11 @@
                     // fresh content will have been added to the cache.
                     // It's the perfect time to display a "New content is
                     // available; please refresh." message in the page's interface.
+                    $notify.info({
+                      title: 'Website updated',
+                      message: 'This website has been updated. Please refresh for the newest content.',
+                      duration: 0,
+                    });
                     break;
 
                   case 'redundant':

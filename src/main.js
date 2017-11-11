@@ -5,7 +5,9 @@ import Axios from 'axios';
 import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 import vMediaQuery from 'v-media-query';
-import { Button, Dialog, Checkbox } from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import { Button, Dialog, Checkbox, Notification } from 'element-ui';
+import './styles/global.scss';
 import App from './App';
 import store from './store/index';
 import router from './router';
@@ -19,6 +21,8 @@ Vue.use(vMediaQuery);
 Vue.use(Dialog);
 Vue.use(Button);
 Vue.use(Checkbox);
+Vue.prototype.$notify = Notification;
+global.$notify = Notification;
 
 /* eslint-disable no-new */
 new Vue({
