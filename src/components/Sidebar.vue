@@ -1,18 +1,47 @@
 <template>
   <div class="sidebar">
-    <template v-for="_ in 5">
+    <template v-for="course in selectedCourses">
       <div class="class">
-        <div class="class-name">Engenharia de Software</div>
-        <el-checkbox :checked="true">Teóricas</el-checkbox>
-        <el-checkbox :checked="true">Práticas</el-checkbox>
+        <div class="class-name">{{ course.name }}</div>
+        <select :value="course.selectedPractical && course.selectedPractical.class" @change="updateSelectedPractical(course, $event)">
+          <option></option>
+          <option v-for="practical in course.practical" :value="practical.class" v-text="practical.class"></option>
+        </select>
+        <el-checkbox :value="course.lectureEnabled" @input="updateLecture(course, $event)">Teóricas</el-checkbox><!--
+     --><el-checkbox :value="course.practicalEnabled" @input="updatePractical(course, $event)">Práticas</el-checkbox>
       </div>
     </template>
   </div>
 </template>
 
 <script>
+  import { mapGetters, mapMutations } from 'vuex';
+  import * as mutationTypes from '../store/mutation-types';
+
   export default {
     name: 'sidebar',
+    computed: {
+      ...mapGetters({
+        selectedCourses: 'selectedCourses',
+      }),
+    },
+    methods: {
+      ...mapMutations({
+        changeLectureStatus: mutationTypes.CHANGE_LECTURE_STATUS,
+        changePracticalStatus: mutationTypes.CHANGE_PRACTICAL_STATUS,
+        changeSelectedPractical: mutationTypes.CHANGE_SELECTED_PRACTICAL,
+      }),
+      updateLecture(course, enabled) {
+        this.changeLectureStatus({ path: course.path, enabled });
+      },
+      updatePractical(course, enabled) {
+        this.changePracticalStatus({ path: course.path, enabled });
+      },
+      updateSelectedPractical(course, event) {
+        const selected = event.target.value;
+        this.changeSelectedPractical({ path: course.path, selectedClass: selected || null });
+      },
+    },
   };
 </script>
 
@@ -68,6 +97,13 @@
 
     .el-checkbox:not(:last-child) {
       margin-right: 30px;
+    }
+
+    select {
+      display: block;
+      margin-bottom: 10px;
+      width: 100%;
+      max-width: 200px;
     }
   }
 

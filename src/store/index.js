@@ -12,6 +12,20 @@ export default new Vuex.Store({
   state: {
     loading: true,
     data: null,
+    enabledClasses: {
+      MIEIC: {
+        '4º Ano': {
+          GEMP: true,
+          AIAD: true,
+          SINF: true,
+          MFES: true,
+          LDSO: true,
+        },
+      },
+    },
+    disabledLectures: {},
+    disabledPracticals: {},
+    selectedPracticals: {},
   },
   mutations,
   actions,

@@ -8,7 +8,7 @@
         <Class v-for="c in classesByDay(i)"
                :key="`${c.name}-${c.class}-${c.type}`"
                :name="c.name"
-               :className="c.class"
+               :className="c.cclass"
                :room="c.room"
                :teacher="c.teacher"
                :type="c.type"
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapGetters, mapActions } from 'vuex';
   // eslint-disable-next-line import/no-webpack-loader-syntax
   import styles from '!!sass-variable-loader!../styles/variables.scss';
   import Column from './Column';
@@ -55,13 +55,26 @@
       };
     },
     mounted() {
-      this.$store.dispatch('getScheduleData');
+      this.getScheduleData();
     },
     computed: {
       ...mapGetters({
-        selectedClasses: 'selectedClasses',
         loading: 'loading',
+        selectedCourses: 'selectedCourses',
       }),
+      enabledClasses() {
+        if (this.selectedCourses === null) return null;
+        const classes = [];
+        this.selectedCourses.forEach((course) => {
+          if (course.lectures && course.lectureEnabled) {
+            classes.push(...course.lectures);
+          }
+          if (course.selectedPractical && course.practicalEnabled) {
+            classes.push(course.selectedPractical);
+          }
+        });
+        return classes;
+      },
       small() {
         return this.$mq.resize && !this.$mq.above(768);
       },
@@ -74,7 +87,7 @@
           .map(x => (x < 10 ? `0${x}:00` : `${x}:00`));
       },
       classesByDay() {
-        const classesByDay = this.groupBy(this.selectedClasses, 'day');
+        const classesByDay = this.groupBy(this.enabledClasses, 'day');
         Object.keys(classesByDay).forEach((key) => {
           classesByDay[key].sort((a, b) => a.hour > b.hour);
         });
@@ -82,6 +95,9 @@
       },
     },
     methods: {
+      ...mapActions({
+        getScheduleData: 'getScheduleData',
+      }),
       groupBy(array, field) {
         const obj = {};
         if (!(array instanceof Array)) {
