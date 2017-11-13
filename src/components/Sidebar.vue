@@ -3,10 +3,12 @@
     <template v-for="course in selectedCourses">
       <div class="class">
         <div class="class-name">{{ course.name }}</div>
-        <select :value="course.selectedPractical && course.selectedPractical.class" @change="updateSelectedPractical(course, $event)">
-          <option></option>
-          <option v-for="practical in course.practical" :value="practical.class" v-text="practical.class"></option>
-        </select>
+        <div class="select">
+          <select :value="course.selectedPractical && course.selectedPractical.class" @change="updateSelectedPractical(course, $event)">
+            <option></option>
+            <option v-for="practical in course.practical" :value="practical.class" v-text="practical.class"></option>
+          </select>
+        </div>
         <el-checkbox :value="course.lectureEnabled" @input="updateLecture(course, $event)">Teóricas</el-checkbox><!--
      --><el-checkbox :value="course.practicalEnabled" @input="updatePractical(course, $event)">Práticas</el-checkbox>
       </div>
@@ -98,12 +100,33 @@
     .el-checkbox:not(:last-child) {
       margin-right: 30px;
     }
+  }
 
-    select {
-      display: block;
-      margin-bottom: 10px;
+  .select {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 200px;
+    border: 1px solid #ccc;
+    height: 20px;
+    border-radius: 3.5px;
+    overflow: hidden;
+    background: #8c2d19 url("../../static/img/select-arrows.svg") no-repeat 98% 4px;
+
+    > select {
+      color: #fff;
+      padding: 0 6px;
       width: 100%;
-      max-width: 200px;
+      border: none;
+      box-shadow: none;
+      background: transparent none;
+      -webkit-appearance: none;
+      &:focus {
+        outline: none;
+      }
+      option {
+        color: #000;
+      }
     }
   }
 
