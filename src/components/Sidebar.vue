@@ -120,9 +120,16 @@
       border: none;
       box-shadow: none;
       background: transparent none;
-      -webkit-appearance: none;
+      appearance: none;
+      outline: none;
       &:focus {
         outline: none;
+        &::-ms-value {
+          background: none;
+        }
+      }
+      &::-ms-expand {
+        display: none;
       }
       option {
         color: #000;
