@@ -49,7 +49,7 @@
   }
 
   .column {
-    border-left: 1px solid #eaeaea;
+    border-left: 0.95px solid #eaeaea;
     &:last-of-type {
       border-right: 1px solid #eaeaea;
     }

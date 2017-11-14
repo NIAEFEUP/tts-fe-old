@@ -122,7 +122,7 @@
 
   .times {
     vertical-align: top;
-    width: 50px;
+    width: 55px;
     display: inline-block;
     text-align: right;
     margin-top: 33px;
@@ -139,12 +139,13 @@
   }
   .schedule-md {
     margin: auto;
-    max-width: 900px;
     padding: 0 20px;
+    display: flex;
+    align-items: flex-start;
   }
   .schedule-days {
-    display: inline-flex;
-    width: calc(100% - 50px);
+    display: flex;
+    flex: 1;
   }
   .schedule-column {
     display: inline-block;
