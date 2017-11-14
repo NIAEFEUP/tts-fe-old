@@ -67,6 +67,7 @@
     .box {
       width: 100%;
       height: $schedule-box-height;
+      box-sizing: border-box;
       &:not(:last-of-type) {
         border-bottom: none;
       }

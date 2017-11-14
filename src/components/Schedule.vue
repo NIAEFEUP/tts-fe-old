@@ -5,16 +5,18 @@
     </div><!--
  --><div class="schedule-days">
       <Column class="schedule-column" :slots="slotsPerColumn" :name="day" v-for="(day, i) in days" :key="i">
-        <Class v-for="c in classesByDay(i)"
-               :key="`${c.name}-${c.class}-${c.type}`"
-               :name="c.name"
-               :className="c.cclass"
-               :room="c.room"
-               :teacher="c.teacher"
-               :type="c.type"
-               :height="`${c.duration * (boxHeight + 1)}px`"
-               :top="`${(c.hour - start) * 2 * (boxHeight + 1)}px`"
-               :time="c.time"></Class>
+        <transition-group name="fade">
+          <Class v-for="c in classesByDay(i)"
+                 :key="`${c.name}-${c.class}-${c.type}`"
+                 :name="c.name"
+                 :className="c.cclass"
+                 :room="c.room"
+                 :teacher="c.teacher"
+                 :type="c.type"
+                 :height="`${c.duration * boxHeight}px`"
+                 :top="`${(c.hour - start) * 2 * boxHeight + 0.5}px`"
+                 :time="c.time"></Class>
+        </transition-group>
       </Column>
     </div>
   </div>
@@ -128,7 +130,7 @@
   .times > div {
     font-size: 15px;
     font-weight: bold;
-    height: 2 * $schedule-box-height + 2;
+    height: 2 * $schedule-box-height;
     margin-right: 10px;
     position: relative;
   }
@@ -141,13 +143,19 @@
     padding: 0 20px;
   }
   .schedule-days {
-    display: inline-block;
+    display: inline-flex;
     width: calc(100% - 50px);
   }
   .schedule-column {
     display: inline-block;
     position: relative;
-    width: 16.6%;
+    flex: 1;
     box-sizing: border-box;
+  }
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .1s
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0
   }
 </style>
