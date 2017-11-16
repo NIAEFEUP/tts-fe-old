@@ -50,7 +50,6 @@
 <style lang="scss" scoped>
   .sidebar {
     width: 100%;
-    float: right;
     display: inline-block;
     box-sizing: border-box;
     text-align: left;

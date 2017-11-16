@@ -28,6 +28,12 @@
     display: flex;
     flex-direction: row-reverse;
     flex-wrap: wrap;
+
+    // Internet Explorer Hack
+    @media screen and (max-width: 1220px) and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+      display: block;
+    }
+
     > * {
       display: flex;
       max-width: 900px;
