@@ -102,7 +102,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    flex-basis: 100px;
+    max-height: 100px;
     padding: 2px calc(30% - 30px);
   }
   .class-info > div {
