@@ -12,8 +12,9 @@ export default new Vuex.Store({
   state: {
     loading: true,
     data: null,
-    enabledClasses: {
-      MIEIC: {
+    courses: null,
+    enabledUnits: {
+      'FEUP-MIEIC': {
         '4º Ano': {
           GEMP: true,
           AIAD: true,

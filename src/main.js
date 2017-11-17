@@ -27,7 +27,7 @@ global.$notify = Notification;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
   store,
+  router,
   render: h => h(App),
 });

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import Class from './Class';
+  import Class from './Lesson';
 
   export default {
     name: 'Column',

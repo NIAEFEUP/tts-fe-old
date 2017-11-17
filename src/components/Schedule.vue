@@ -6,7 +6,7 @@
  --><div class="schedule-days">
       <Column class="schedule-column" :slots="slotsPerColumn" :name="day" v-for="(day, i) in days" :key="i">
         <transition-group name="fade">
-          <Class v-for="c in classesByDay(i)"
+          <Lesson v-for="c in lessonsByDay(i)"
                  :key="`${c.name}-${c.class}-${c.type}`"
                  :name="c.name"
                  :className="c.cclass"
@@ -15,14 +15,14 @@
                  :type="c.type"
                  :height="`${c.duration * boxHeight}px`"
                  :top="`${(c.hour - start) * 2 * boxHeight + 0.5}px`"
-                 :time="c.time"></Class>
+                 :time="c.time"></Lesson>
         </transition-group>
       </Column>
     </div>
   </div>
   <div class="schedule schedule-sm" v-else>
     <Column class="schedule-column" horizontal :slots="slotsPerColumn" :name="day" v-for="(day, i) in days" :key="i">
-      <Class v-for="c in classesByDay(i)"
+      <Lesson v-for="c in lessonsByDay(i)"
              horizontal
              :key="`${c.name}-${c.class}-${c.type}`"
              :name="c.name"
@@ -30,7 +30,7 @@
              :room="c.room"
              :teacher="c.teacher"
              :type="c.type"
-             :time="c.time"></Class>
+             :time="c.time"></Lesson>
     </Column>
   </div>
 </template>
@@ -40,12 +40,12 @@
   // eslint-disable-next-line import/no-webpack-loader-syntax
   import styles from '!!sass-variable-loader!../styles/variables.scss';
   import Column from './Column';
-  import Class from './Class';
+  import Lesson from './Lesson';
 
   export default {
     components: {
       Column,
-      Class,
+      Lesson,
     },
     name: 'Schedule',
     data() {
@@ -62,20 +62,20 @@
     computed: {
       ...mapGetters({
         loading: 'loading',
-        selectedCourses: 'selectedCourses',
+        selectedUnits: 'selectedUnits',
       }),
-      enabledClasses() {
-        if (this.selectedCourses === null) return null;
-        const classes = [];
-        this.selectedCourses.forEach((course) => {
+      enabledLessons() {
+        if (this.selectedUnits === null) return null;
+        const lessons = [];
+        this.selectedUnits.forEach((course) => {
           if (course.lectures && course.lectureEnabled) {
-            classes.push(...course.lectures);
+            lessons.push(...course.lectures);
           }
           if (course.selectedPractical && course.practicalEnabled) {
-            classes.push(course.selectedPractical);
+            lessons.push(course.selectedPractical);
           }
         });
-        return classes;
+        return lessons;
       },
       small() {
         return this.$mq.resize && !this.$mq.above(768);
@@ -88,12 +88,12 @@
           .map((_, i) => this.start + i)
           .map(x => (x < 10 ? `0${x}:00` : `${x}:00`));
       },
-      classesByDay() {
-        const classesByDay = this.groupBy(this.enabledClasses, 'day');
-        Object.keys(classesByDay).forEach((key) => {
-          classesByDay[key].sort((a, b) => a.hour > b.hour);
+      lessonsByDay() {
+        const lessonsByDay = this.groupBy(this.enabledLessons, 'day');
+        Object.keys(lessonsByDay).forEach((key) => {
+          lessonsByDay[key].sort((a, b) => a.hour > b.hour);
         });
-        return day => classesByDay[day + 1] || [];
+        return day => lessonsByDay[day + 1] || [];
       },
     },
     methods: {

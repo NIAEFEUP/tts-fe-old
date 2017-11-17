@@ -1,12 +1,12 @@
 <template>
-  <div class="class" :style="classStyle" :class="{ [`class-${type}`]: true, 'class-horizontal': horizontal }">
-    <div class="class-info">
+  <div class="lesson" :style="lessonStyle" :class="{ [`lesson-${type}`]: true, 'lesson-horizontal': horizontal }">
+    <div class="lesson-info">
       <div class="line1">
         <div class="time" v-text="time"></div>
       </div>
       <div class="line2">
         <div class="name" v-text="name"></div>
-        <div class="class-class" v-text="className"></div>
+        <div class="lesson-class" v-text="className"></div>
       </div>
       <div class="line3">
         <div class="room" v-text="room"></div>
@@ -18,7 +18,7 @@
 
 <script>
   export default {
-    name: 'Class',
+    name: 'Lesson',
     props: {
       name: {
         type: String,
@@ -56,7 +56,7 @@
       },
     },
     computed: {
-      classStyle() {
+      lessonStyle() {
         if (!this.horizontal) {
           return {
             height: this.height,
@@ -70,7 +70,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .class {
+  .lesson {
     position: absolute;
     width: 100%;
     background: #a8a199;
@@ -83,7 +83,7 @@
     flex-direction: column;
     justify-content: center;
 
-    &.class-horizontal {
+    &.lesson-horizontal {
       width: 150px;
       height: 120px;
       position: relative;
@@ -92,20 +92,20 @@
       margin-left: 10px;
     }
   }
-  .class-TP {
+  .lesson-TP {
     background-color: #69656a;
   }
-  .class-PL {
+  .lesson-PL {
     background-color: #4f2e2e;
   }
-  .class-info {
+  .lesson-info {
     display: flex;
     flex-direction: column;
     height: 100%;
     max-height: 100px;
     padding: 2px calc(30% - 30px);
   }
-  .class-info > div {
+  .lesson-info > div {
     flex: 1;
     display: flex;
     align-items: center;
@@ -115,7 +115,7 @@
       align-items: center;
     }
   }
-  .time, .class-class, .room, .teacher {
+  .time, .lesson-class, .room, .teacher {
     font-size: 10px;
   }
   .line2 > * {

@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
-    <template v-for="course in selectedCourses">
-      <div class="class">
+    <template v-for="course in selectedUnits">
+      <div class="lesson">
         <div class="class-name">{{ course.name }}</div>
         <div class="select">
           <select :value="course.selectedPractical && course.selectedPractical.class" @change="updateSelectedPractical(course, $event)">
@@ -24,7 +24,7 @@
     name: 'Sidebar',
     computed: {
       ...mapGetters({
-        selectedCourses: 'selectedCourses',
+        selectedUnits: 'selectedUnits',
       }),
     },
     methods: {
@@ -83,7 +83,7 @@
     }
   }
 
-  .class {
+  .lesson {
     padding: 10px 10px;
     color: #010101;
     font-size: 15px;

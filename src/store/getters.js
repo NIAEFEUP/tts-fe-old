@@ -12,7 +12,7 @@ function formatTime(time) {
   return `${zeroPad(Math.floor(time))}:${zeroPad(time % 1 * 60)}`;
 }
 
-function fixedClass(c) {
+function fixedLesson(c) {
   if (!c) return c;
   return {
     day: c.dia,
@@ -28,23 +28,23 @@ function fixedClass(c) {
   };
 }
 
-export function selectedCourses(state) {
-  if (!state.data || !state.enabledClasses) return null;
-  const classes = [];
-  Object.entries(state.enabledClasses).forEach(([programme, years]) => {
-    Object.entries(years).forEach(([year, courses]) => {
-      Object.keys(courses).filter(c => courses[c]).forEach((courseCode) => {
+export function selectedUnits(state) {
+  if (!state.data || !state.enabledUnits) return null;
+  const units = [];
+  Object.entries(state.enabledUnits).forEach(([programme, years]) => {
+    Object.entries(years).forEach(([year, yearUnits]) => {
+      Object.keys(yearUnits).filter(c => yearUnits[c]).forEach((courseCode) => {
         const path = [programme, year, courseCode].join('.');
         const course = get(state.data, path);
         if (course) {
-          const practical = flatten(Object.values(omit(course, ['T', 'nome']))).map(fixedClass);
+          const practical = flatten(Object.values(omit(course, ['T', 'nome']))).map(fixedLesson);
           const selectedPractical = state.selectedPracticals[path]
             ? practical.find(p => p.class === state.selectedPracticals[path])
             : null;
-          classes.push({
+          units.push({
             path,
             name: course.nome,
-            lectures: uniqBy(course.T.map(fixedClass), c => `${c.day}-${c.time}-${c.cclass}`), // current API has duplicate classes
+            lectures: uniqBy(course.T.map(fixedLesson), c => `${c.day}-${c.time}-${c.cclass}`), // current API has duplicate lessons
             practical,
             lectureEnabled: !state.disabledLectures[path],
             practicalEnabled: !state.disabledPracticals[path],
@@ -54,7 +54,11 @@ export function selectedCourses(state) {
       });
     });
   });
-  return classes;
+  return units;
+}
+
+export function courses(state) {
+  return state.courses;
 }
 
 export function loading(state) {

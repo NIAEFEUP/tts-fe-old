@@ -6,26 +6,29 @@
         <schedule></schedule>
       </div>
     </div>
-    <ClassesDialog :visible.sync="dialogVisible"></ClassesDialog>
+    <SelectionDialog :visible.sync="dialogVisible"></SelectionDialog>
   </div>
 </template>
 
 <script>
   import Schedule from '@/components/Schedule';
   import Sidebar from '@/components/Sidebar';
-  import ClassesDialog from '@/components/ClassesDialog';
+  import SelectionDialog from '@/components/SelectionDialog';
 
   export default {
+    name: 'SchedulePage',
     components: {
       Sidebar,
       Schedule,
-      ClassesDialog,
+      SelectionDialog,
     },
-    name: 'SchedulePage',
     data() {
       return {
         dialogVisible: true,
       };
+    },
+    mounted() {
+      this.$store.dispatch('getCourses');
     },
   };
 </script>
