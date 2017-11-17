@@ -6,7 +6,6 @@ import Axios from 'axios';
 import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 import vMediaQuery from 'v-media-query';
-import 'element-ui/lib/theme-chalk/index.css';
 import { Button, Dialog, Checkbox, Notification } from 'element-ui';
 import './styles/global.scss';
 import App from './App';
