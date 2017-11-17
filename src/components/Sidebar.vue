@@ -21,7 +21,7 @@
   import * as mutationTypes from '../store/mutation-types';
 
   export default {
-    name: 'sidebar',
+    name: 'Sidebar',
     computed: {
       ...mapGetters({
         selectedCourses: 'selectedCourses',

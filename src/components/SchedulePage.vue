@@ -1,27 +1,37 @@
 <template>
   <div class="schedule-page">
-    <sidebar></sidebar>
     <div class="content">
-      <schedule></schedule>
+      <sidebar></sidebar>
+      <div class="main-content">
+        <schedule></schedule>
+      </div>
     </div>
+    <ClassesDialog :visible.sync="dialogVisible"></ClassesDialog>
   </div>
 </template>
 
 <script>
   import Schedule from '@/components/Schedule';
   import Sidebar from '@/components/Sidebar';
+  import ClassesDialog from '@/components/ClassesDialog';
 
   export default {
     components: {
       Sidebar,
       Schedule,
+      ClassesDialog,
     },
-    name: 'schedule-page',
+    name: 'SchedulePage',
+    data() {
+      return {
+        dialogVisible: true,
+      };
+    },
   };
 </script>
 
 <style lang="scss" scoped>
-  .schedule-page {
+  .content {
     width: 100%;
     max-width: 1200px;
     margin: auto;
@@ -46,7 +56,7 @@
     flex-basis: 280px;
     margin: 0 auto 20px;
   }
-  .content {
+  .main-content {
     margin: auto;
     width: 100%;
     display: inline-block;

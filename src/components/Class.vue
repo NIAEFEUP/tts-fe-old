@@ -18,7 +18,7 @@
 
 <script>
   export default {
-    name: 'Column',
+    name: 'Class',
     props: {
       name: {
         type: String,
