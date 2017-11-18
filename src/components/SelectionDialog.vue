@@ -2,7 +2,7 @@
   <el-dialog
       v-bind="$attrs"
       @update:visible="$emit('update:visible', $event)"
-      width="auto"
+      width="100%"
       top="0">
     <div>
       <div>
@@ -92,15 +92,20 @@
 <style lang="scss" scoped>
   /deep/ .el-dialog__wrapper {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-around;
     padding: 10px 0;
 
     > .el-dialog {
-      flex-basis: 900px;
+      max-width: 900px;
       margin: 0 !important;
       max-height: 100%;
       overflow-y: auto;
+    }
+
+    &:after {
+      content: '';
     }
   }
 
@@ -167,6 +172,7 @@
         outline: none;
         &::-ms-value {
           background: none;
+          color: #333;
         }
       }
       &::-ms-expand {

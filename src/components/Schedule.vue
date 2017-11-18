@@ -125,7 +125,7 @@
     width: 55px;
     display: inline-block;
     text-align: right;
-    margin-top: 33px;
+    margin-top: 35px;
   }
   .times > div {
     font-size: 15px;
