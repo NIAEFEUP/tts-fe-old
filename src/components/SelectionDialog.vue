@@ -1,6 +1,7 @@
 <template>
   <el-dialog
       v-bind="$attrs"
+      @update:visible="$emit('update:visible', $event)"
       width="auto"
       top="0">
     <div>
@@ -26,7 +27,6 @@
       </div>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="close">Cancel</el-button>
       <el-button type="primary" @click="close">Confirm</el-button>
     </span>
   </el-dialog>
