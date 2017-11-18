@@ -129,6 +129,7 @@
   }
   .times > div {
     font-size: 15px;
+    line-height: 15px;
     font-weight: bold;
     height: 2 * $schedule-box-height;
     margin-right: 10px;

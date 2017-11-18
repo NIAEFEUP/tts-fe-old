@@ -13,18 +13,20 @@
           </select>
         </span>
       </div>
-      <div class="years" v-show="programmeInfo">
-        <div class="year" v-for="(coursesChunk, year) in chunkedInfo">
-          <div class="year-name" v-text="year"></div>
-          <div class="courses">
-            <div v-for="courses in coursesChunk">
-              <div v-for="course in courses">
-                <el-checkbox :value="course.enabled" @input="updateCourseSelection(year, course.name, $event)">{{ course.name }}</el-checkbox>
+      <transition name="collapse" @enter="beforeAnimation" @leave="beforeAnimation" @after-enter="afterEnter">
+        <div class="years" v-if="chunkedInfo" :key="programme">
+          <div class="year" v-for="(coursesChunk, year) in chunkedInfo">
+            <div class="year-name" v-text="year"></div>
+            <div class="courses">
+              <div v-for="courses in coursesChunk">
+                <div v-for="course in courses">
+                  <el-checkbox :value="course.enabled" @input="updateCourseSelection(year, course.name, $event)">{{ course.name }}</el-checkbox>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </transition>
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button type="primary" @click="close">Confirm</el-button>
@@ -75,6 +77,14 @@
       programmeChanged() {
         this.getScheduleData(this.programme);
       },
+      beforeAnimation(el) {
+        // eslint-disable-next-line no-param-reassign
+        el.style.height = `${el.scrollHeight}px`;
+      },
+      afterEnter(el) {
+        // eslint-disable-next-line no-param-reassign
+        el.style.height = '';
+      },
     },
   };
 </script>
@@ -94,18 +104,33 @@
     }
   }
 
+  .collapse-enter-active, .collapse-leave-active {
+    transition: all 0.5s ease;
+  }
+  .collapse-enter, .collapse-leave-to {
+    height: 0!important;
+  }
+
   .years {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-around; // For browsers that don't support space-evenly
     justify-content: space-evenly;
-    padding-top: 20px;
+    overflow: hidden;
   }
 
   .year {
-    margin: 10px 25px;
+    margin: 0 25px;
     display: flex;
     flex-direction: column;
     flex: 0 1 auto;
+
+    &:before {
+      display: block;
+      content: '\00a0';
+      height: 20px;
+    }
   }
 
   .courses {
@@ -132,6 +157,7 @@
     > select {
       color: #333;
       padding: 5px 20px 1px 2px;
+      min-width: 120px;
       border: none;
       box-shadow: none;
       background: transparent none;

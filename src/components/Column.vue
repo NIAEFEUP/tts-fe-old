@@ -82,6 +82,7 @@
     .name {
       font-weight: bold;
       padding: 15px 10px 5px;
+      line-height: 20px;
     }
     .lessons {
       display: flex;

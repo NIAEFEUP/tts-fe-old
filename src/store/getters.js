@@ -44,7 +44,7 @@ export function selectedCourses(state) {
           courses.push({
             path,
             name: course.nome,
-            lectures: uniqBy(course.T.map(fixedLesson), c => `${c.day}-${c.time}-${c.cclass}`), // current API has duplicate lessons
+            lectures: uniqBy((course.T || []).map(fixedLesson), c => `${c.day}-${c.time}-${c.cclass}`), // current API has duplicate lessons
             practical,
             lectureEnabled: !state.disabledLectures[path],
             practicalEnabled: !state.disabledPracticals[path],
