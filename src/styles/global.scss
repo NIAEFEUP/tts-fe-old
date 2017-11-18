@@ -3,3 +3,6 @@ body, html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.el-checkbox__inner::after {
+  border-width: 2px;
+}

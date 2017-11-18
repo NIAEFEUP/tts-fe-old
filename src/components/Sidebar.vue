@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <template v-for="course in selectedUnits">
+    <template v-for="course in selectedCourses">
       <div class="lesson">
         <div class="class-name">{{ course.name }}</div>
         <div class="select">
@@ -24,7 +24,7 @@
     name: 'Sidebar',
     computed: {
       ...mapGetters({
-        selectedUnits: 'selectedUnits',
+        selectedCourses: 'selectedCourses',
       }),
     },
     methods: {
@@ -53,34 +53,6 @@
     display: inline-block;
     box-sizing: border-box;
     text-align: left;
-
-    /deep/ .el-checkbox__label {
-      color: #000000 !important;
-      font-size: 15px;
-    }
-
-    /deep/ .el-checkbox__input {
-      &:hover, &.is-checked, &.is-indeterminate, &.is-focus {
-        .el-checkbox__inner {
-          border-color: #313030 !important;
-        }
-      }
-      outline-color: #313030 !important;
-    }
-
-    /deep/ .el-checkbox__input.is-checked, .el-checkbox__input.is-indeterminate {
-      .el-checkbox__inner {
-        background-color: #313030 !important;
-      }
-    }
-
-    /deep/ .el-checkbox__inner::after {
-      border-width: 2px;
-    }
-
-    /deep/ .el-checkbox__label {
-      font-weight: 400;
-    }
   }
 
   .lesson {

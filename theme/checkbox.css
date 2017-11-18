@@ -341,7 +341,7 @@
 --------------------------*/
 .el-checkbox {
   color: #5a5e66;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 14px;
   position: relative;
   cursor: pointer;
@@ -434,20 +434,20 @@
       color: #b4bccc;
       cursor: not-allowed; }
     .el-checkbox__input.is-checked .el-checkbox__inner {
-      background-color: #C03331;
-      border-color: #C03331; }
+      background-color: #000;
+      border-color: #000; }
       .el-checkbox__input.is-checked .el-checkbox__inner::after {
         -webkit-transform: rotate(45deg) scaleY(1);
         transform: rotate(45deg) scaleY(1); }
     .el-checkbox__input.is-checked + .el-checkbox__label {
-      color: #C03331; }
+      color: #000; }
     .el-checkbox__input.is-focus {
       /*focus时 视觉上区分*/ }
       .el-checkbox__input.is-focus .el-checkbox__inner {
-        border-color: #C03331; }
+        border-color: #000; }
     .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-      background-color: #C03331;
-      border-color: #C03331; }
+      background-color: #000;
+      border-color: #000; }
       .el-checkbox__input.is-indeterminate .el-checkbox__inner::before {
         content: '';
         position: absolute;
@@ -475,7 +475,7 @@
     -webkit-transition: border-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46), background-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46);
     transition: border-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46), background-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46); }
     .el-checkbox__inner:hover {
-      border-color: #C03331; }
+      border-color: #000; }
     .el-checkbox__inner::after {
       -webkit-box-sizing: content-box;
       box-sizing: content-box;
@@ -508,7 +508,7 @@
     display: inline-block;
     padding-left: 10px;
     line-height: 19px;
-    font-size: 14px; }
+    font-size: 15px; }
   .el-checkbox + .el-checkbox {
     margin-left: 30px; }
 
@@ -518,7 +518,7 @@
   .el-checkbox-button__inner {
     display: inline-block;
     line-height: 1;
-    font-weight: 500;
+    font-weight: 400;
     white-space: nowrap;
     vertical-align: middle;
     cursor: pointer;

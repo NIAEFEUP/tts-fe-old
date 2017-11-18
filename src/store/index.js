@@ -11,19 +11,10 @@ const debug = process.env.NODE_ENV !== 'production';
 export default new Vuex.Store({
   state: {
     loading: true,
-    data: null,
-    courses: null,
-    enabledUnits: {
-      'FEUP-MIEIC': {
-        '4º Ano': {
-          GEMP: true,
-          AIAD: true,
-          SINF: true,
-          MFES: true,
-          LDSO: true,
-        },
-      },
-    },
+    data: {},
+    programmes: null,
+    selectedProgramme: null,
+    enabledCourses: {},
     disabledLectures: {},
     disabledPracticals: {},
     selectedPracticals: {},

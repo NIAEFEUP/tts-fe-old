@@ -1,7 +1,7 @@
 <template>
   <div class="column" v-if="!horizontal">
     <div class="name" v-text="name"></div>
-    <div class="classes">
+    <div class="lessons">
       <div>
         <div v-for="_ in slots" class="box" :class="{'box-light': _ % 2 === 0}"></div>
       </div>
@@ -10,7 +10,7 @@
   </div>
   <div class="row" v-else>
     <div v-text="name" class="name"></div>
-    <div class="classes">
+    <div class="lessons">
       <slot></slot>
     </div>
   </div>
@@ -44,7 +44,7 @@
 <style lang="scss" scoped>
   @import '../styles/variables';
 
-  .classes {
+  .lessons {
     position: relative;
   }
 
@@ -83,7 +83,7 @@
       font-weight: bold;
       padding: 15px 10px 5px;
     }
-    .classes {
+    .lessons {
       display: flex;
       flex-direction: row;
       overflow-y: hidden;

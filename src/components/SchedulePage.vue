@@ -28,7 +28,7 @@
       };
     },
     mounted() {
-      this.$store.dispatch('getCourses');
+      this.$store.dispatch('getProgrammes');
     },
   };
 </script>

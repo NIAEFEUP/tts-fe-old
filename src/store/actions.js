@@ -3,20 +3,21 @@ import * as types from './mutation-types';
 
 const testdata = require('../../testdata.json');
 
-export function getCourses({ commit }) {
+export function getProgrammes({ commit }) {
   commit(types.SET_LOADING, true);
   return new Promise((resolve) => {
     const data = [
       'FEUP-MIEIC',
     ];
     setTimeout(() => resolve(data), 20);
-  }).then(data => commit(types.ADD_COURSES, data));
+  }).then(data => commit(types.SET_PROGRAMMES, data));
 }
 
-export function getScheduleData({ commit }, course) {
+export function getScheduleData({ commit }, programme) {
+  commit(types.SET_SELECTED_PROGRAMME, programme);
+  if (!programme) return Promise.resolve();
   commit(types.SET_LOADING, true);
-  commit(types.CLEAR_SCHEDULE_DATA);
   return new Promise((resolve) => {
     setTimeout(() => resolve(testdata), 20);
-  }).then(data => commit(types.ADD_SCHEDULE_DATA, { [course]: data }));
+  }).then(data => commit(types.ADD_SCHEDULE_DATA, { [programme]: data }));
 }

@@ -62,12 +62,12 @@
     computed: {
       ...mapGetters({
         loading: 'loading',
-        selectedUnits: 'selectedUnits',
+        selectedCourses: 'selectedCourses',
       }),
       enabledLessons() {
-        if (this.selectedUnits === null) return null;
+        if (this.selectedCourses === null) return null;
         const lessons = [];
-        this.selectedUnits.forEach((course) => {
+        this.selectedCourses.forEach((course) => {
           if (course.lectures && course.lectureEnabled) {
             lessons.push(...course.lectures);
           }

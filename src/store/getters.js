@@ -28,12 +28,12 @@ function fixedLesson(c) {
   };
 }
 
-export function selectedUnits(state) {
-  if (!state.data || !state.enabledUnits) return null;
-  const units = [];
-  Object.entries(state.enabledUnits).forEach(([programme, years]) => {
-    Object.entries(years).forEach(([year, yearUnits]) => {
-      Object.keys(yearUnits).filter(c => yearUnits[c]).forEach((courseCode) => {
+export function selectedCourses(state) {
+  if (!state.data || !state.enabledCourses) return null;
+  const courses = [];
+  Object.entries(state.enabledCourses).forEach(([programme, years]) => {
+    Object.entries(years).forEach(([year, yearCourses]) => {
+      Object.keys(yearCourses).filter(c => yearCourses[c]).forEach((courseCode) => {
         const path = [programme, year, courseCode].join('.');
         const course = get(state.data, path);
         if (course) {
@@ -41,7 +41,7 @@ export function selectedUnits(state) {
           const selectedPractical = state.selectedPracticals[path]
             ? practical.find(p => p.class === state.selectedPracticals[path])
             : null;
-          units.push({
+          courses.push({
             path,
             name: course.nome,
             lectures: uniqBy(course.T.map(fixedLesson), c => `${c.day}-${c.time}-${c.cclass}`), // current API has duplicate lessons
@@ -54,11 +54,26 @@ export function selectedUnits(state) {
       });
     });
   });
-  return units;
+  return courses;
 }
 
-export function courses(state) {
-  return state.courses;
+export function programmes(state) {
+  return state.programmes;
+}
+
+export function programmeInfo(state) {
+  if (!state.selectedProgramme || !state.data[state.selectedProgramme]) return null;
+  return Object.entries(state.data[state.selectedProgramme])
+    .reduce((obj, [year, courses]) =>
+      ({
+        ...obj,
+        [year]: Object.keys(courses).map(course => (
+          {
+            name: course,
+            enabled: !!get(state.enabledCourses, [state.selectedProgramme, year, course]),
+          })),
+      }),
+    {});
 }
 
 export function loading(state) {
