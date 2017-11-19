@@ -1,6 +1,6 @@
 <template functional>
-  <svg class="spinner" :width="props.size" :height="props.size" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-    <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+  <svg :width="props.size" :height="props.size" class="spinner" viewBox="25 25 50 50">
+    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10"></circle>
   </svg>
 </template>
 <script>
@@ -19,36 +19,37 @@
 <style lang="scss">
   @import '../styles/variables';
 
-  $offset: 187;
-  $duration: 1.4s;
-
   .spinner {
-    animation: rotator $duration linear infinite;
-  }
-
-  @keyframes rotator {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(270deg); }
+    animation: rotate 2s linear infinite;
+    transform-origin: center center;
   }
 
   .path {
-    stroke-dasharray: $offset;
+    stroke-dasharray: 75, 200;
     stroke-dashoffset: 0;
-    transform-origin: center;
+    animation: dash 1.5s ease-in-out infinite;
+    stroke-linecap: round;
     stroke: $primary-color;
-    animation:
-      dash $duration ease-in-out infinite;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   @keyframes dash {
-    0% { stroke-dashoffset: $offset; }
+    0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+    }
     50% {
-      stroke-dashoffset: $offset/4;
-      transform:rotate(135deg);
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -35px;
     }
     100% {
-      stroke-dashoffset: $offset;
-      transform:rotate(450deg);
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -124px;
     }
   }
 </style>

@@ -159,15 +159,15 @@
 
   .spinner-wrapper {
     position: relative;
-    height: 20px;
+    height: 18px;
     width: 20px;
-    vertical-align: middle;
+    vertical-align: text-top;
     display: inline-block;
 
     .spinner {
       position: absolute;
       left: 10px;
-      top: -2px;
+      top: -1px;
     }
   }
 
