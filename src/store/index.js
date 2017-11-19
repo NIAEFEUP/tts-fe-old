@@ -10,9 +10,14 @@ const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
   state: {
-    loading: true,
-    data: {},
-    programmes: null,
+    schedule: {
+      data: {},
+      loading: false,
+    },
+    programmes: {
+      loading: false,
+      list: null,
+    },
     selectedProgramme: null,
     enabledCourses: {},
     disabledLectures: {},

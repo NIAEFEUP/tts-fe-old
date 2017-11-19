@@ -29,13 +29,13 @@ function fixedLesson(c) {
 }
 
 export function selectedCourses(state) {
-  if (!state.data || !state.enabledCourses) return null;
+  if (!state.schedule.data || !state.enabledCourses) return null;
   const courses = [];
   Object.entries(state.enabledCourses).forEach(([programme, years]) => {
     Object.entries(years).forEach(([year, yearCourses]) => {
       Object.keys(yearCourses).filter(c => yearCourses[c]).forEach((courseCode) => {
         const path = [programme, year, courseCode].join('.');
-        const course = get(state.data, path);
+        const course = get(state.schedule.data, path);
         if (course) {
           const practical = flatten(Object.values(omit(course, ['T', 'nome']))).map(fixedLesson);
           const selectedPractical = state.selectedPracticals[path]
@@ -62,8 +62,8 @@ export function programmes(state) {
 }
 
 export function programmeInfo(state) {
-  if (!state.selectedProgramme || !state.data[state.selectedProgramme]) return null;
-  return Object.entries(state.data[state.selectedProgramme])
+  if (!state.selectedProgramme || !state.schedule.data[state.selectedProgramme]) return null;
+  return Object.entries(state.schedule.data[state.selectedProgramme])
     .reduce((obj, [year, courses]) =>
       ({
         ...obj,
@@ -76,6 +76,6 @@ export function programmeInfo(state) {
     {});
 }
 
-export function loading(state) {
-  return state.loading;
+export function scheduleLoading(state) {
+  return state.schedule.loading;
 }

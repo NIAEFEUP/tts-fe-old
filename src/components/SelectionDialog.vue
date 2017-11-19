@@ -3,14 +3,20 @@
       v-bind="$attrs"
       @update:visible="$emit('update:visible', $event)"
       width="100%"
+      :before-close="beforeClose"
       top="0">
     <div>
       <div>
         Programme:&nbsp;
-        <span class="select">
-          <select @change="programmeChanged" v-model="programme">
-            <option v-for="programme in programmes" v-text="programme" :value="programme"></option>
+        <span class="select" :class="{ disabled: programmes.loading }">
+          <select @change="programmeChanged" v-model="programme" :disabled="programmes.loading">
+            <option v-for="programme in programmes.list" v-text="programme" :value="programme"></option>
           </select>
+        </span><!--
+     --><span class="spinner-wrapper">
+          <span v-show="programmes.loading || scheduleLoading">
+            <Spinner size="20px"></Spinner>
+          </span>
         </span>
       </div>
       <transition name="collapse" @enter="beforeAnimation" @leave="beforeAnimation" @after-enter="afterEnter">
@@ -20,7 +26,8 @@
             <div class="courses">
               <div v-for="courses in coursesChunk">
                 <div v-for="course in courses">
-                  <el-checkbox :value="course.enabled" @input="updateCourseSelection(year, course.name, $event)">{{ course.name }}</el-checkbox>
+                  <el-checkbox @input="updateCourseSelection(year, course.name, $event)"
+                               :value="course.enabled">{{ course.name }}</el-checkbox>
                 </div>
               </div>
             </div>
@@ -29,7 +36,7 @@
       </transition>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="close">Confirm</el-button>
+      <el-button type="primary" @click="close" :disabled="!canClose">Confirm</el-button>
     </span>
   </el-dialog>
 </template>
@@ -38,9 +45,13 @@
   import { mapGetters, mapActions, mapMutations } from 'vuex';
   import chunk from 'lodash/chunk';
   import * as mutationTypes from '@/store/mutation-types';
+  import Spinner from './Spinner';
 
   export default {
     name: 'SelectionDialog',
+    components: {
+      Spinner,
+    },
     data() {
       return {
         programme: null,
@@ -49,7 +60,9 @@
     computed: {
       ...mapGetters({
         programmes: 'programmes',
+        selectedCourses: 'selectedCourses',
         programmeInfo: 'programmeInfo',
+        scheduleLoading: 'scheduleLoading',
       }),
       chunkedInfo() {
         if (!this.programmeInfo) return null;
@@ -58,6 +71,9 @@
             ...obj,
             [year]: chunk(courses, 8),
           }), {});
+      },
+      canClose() {
+        return this.selectedCourses && this.selectedCourses.length;
       },
     },
     methods: {
@@ -69,6 +85,9 @@
       }),
       close() {
         this.$emit('update:visible', false);
+      },
+      beforeClose(done) {
+        if (this.canClose) done();
       },
       updateCourseSelection(year, course, enabled) {
         const path = [this.programme, year, course];
@@ -138,6 +157,20 @@
     }
   }
 
+  .spinner-wrapper {
+    position: relative;
+    height: 20px;
+    width: 20px;
+    vertical-align: middle;
+    display: inline-block;
+
+    .spinner {
+      position: absolute;
+      left: 10px;
+      top: -2px;
+    }
+  }
+
   .courses {
     display: flex;
     flex-wrap: wrap;
@@ -159,6 +192,10 @@
     overflow: hidden;
     background: #fafafa url("../../static/img/carret.svg") no-repeat 97% 50%;
 
+    &.disabled {
+      background-color: #ddd;
+    }
+
     > select {
       color: #333;
       padding: 5px 20px 1px 2px;
@@ -178,7 +215,6 @@
       &::-ms-expand {
         display: none;
       }
-
       &:focus {
         outline: none;
       }

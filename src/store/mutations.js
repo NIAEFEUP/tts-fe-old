@@ -3,16 +3,19 @@ import Vue from 'vue';
 import * as types from './mutation-types';
 
 export default {
-  [types.SET_LOADING](state, isLoading) {
-    state.loading = isLoading;
+  [types.SET_SCHEDULE_LOADING](state, isLoading) {
+    state.schedule.loading = isLoading;
+  },
+  [types.SET_PROGRAMMES_LOADING](state, isLoading) {
+    state.programmes.loading = isLoading;
   },
   [types.ADD_SCHEDULE_DATA](state, data) {
-    state.data = { ...state.data, ...data };
-    state.loading = false;
+    state.schedule.data = { ...state.schedule.data, ...data };
+    state.schedule.loading = false;
   },
   [types.SET_PROGRAMMES](state, data) {
-    state.programmes = data;
-    state.loading = false;
+    state.programmes.loading = false;
+    state.programmes.list = data;
   },
   [types.CHANGE_LECTURE_STATUS](state, { path, enabled }) {
     Vue.set(state.disabledLectures, path, !enabled);
