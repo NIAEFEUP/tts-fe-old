@@ -49,6 +49,7 @@
   }
 
   .column {
+    transform: translateZ(0);
     border-left: 0.95px solid #eaeaea;
     &:last-of-type {
       border-right: 1px solid #eaeaea;
@@ -89,7 +90,7 @@
       flex-direction: row;
       overflow-y: hidden;
       flex-wrap: nowrap;
-      -webkit-overflow-scrolling: touch;
+      overflow-scrolling: touch;
 
       &:after {
         display: block;

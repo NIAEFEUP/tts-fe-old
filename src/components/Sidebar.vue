@@ -53,6 +53,7 @@
     display: inline-block;
     box-sizing: border-box;
     text-align: left;
+    transform: translateZ(0);
   }
 
   .lesson {

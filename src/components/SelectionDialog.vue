@@ -121,6 +121,11 @@
       margin: 0 !important;
       max-height: 100%;
       overflow-y: auto;
+      overflow-scrolling: touch;
+
+      & > div {
+        transform: translateZ(0);
+      }
     }
 
     &:after {
@@ -183,6 +188,10 @@
       align-items: flex-start;
       margin: 0 5px;
     }
+  }
+
+  /deep/ .el-checkbox {
+    transform: translateZ(0);
   }
 
   .select {
