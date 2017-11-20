@@ -1,6 +1,7 @@
 <template>
   <el-dialog
       v-bind="$attrs"
+      :lock-scroll="false"
       @update:visible="$emit('update:visible', $event)"
       width="100%"
       :before-close="beforeClose"
