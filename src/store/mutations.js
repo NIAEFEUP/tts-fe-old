@@ -38,11 +38,20 @@ export default {
         },
       });
     } else if (!state.enabledCourses[programme][year]) {
-      Vue.set(state.enabledCourses[programme], year, {
-        [course]: enabled,
-      });
+      Vue.set(state.enabledCourses[programme], year, { [course]: enabled });
     } else {
       Vue.set(state.enabledCourses[programme][year], course, enabled);
+    }
+  },
+  [types.CHANGE_YEAR_COURSES_ENABLED](state, { programme, year, courses, enabled }) {
+    if (!state.enabledCourses[programme]) {
+      Vue.set(state.enabledCourses, programme, {});
+    }
+    if (enabled) {
+      const obj = courses.reduce((o, course) => ({ ...o, [course]: true }), {});
+      Vue.set(state.enabledCourses[programme], year, obj);
+    } else {
+      state.enabledCourses[programme][year] = {};
     }
   },
 };

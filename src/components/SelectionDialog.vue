@@ -23,7 +23,11 @@
       <transition name="collapse" @enter="beforeAnimation" @leave="beforeAnimation" @after-enter="afterEnter">
         <div class="years" v-if="chunkedInfo" :key="programme">
           <div class="year" v-for="(coursesChunk, year) in chunkedInfo">
-            <div class="year-name" v-text="year"></div>
+            <div class="year-name">
+              <el-checkbox :value="checkedPerYear[year]"
+                           :indeterminate="checkedPerYear[year] == null"
+                           @change="handleCheckAllChange(year, $event)">{{year}}</el-checkbox>
+            </div>
             <div class="courses">
               <div v-for="courses in coursesChunk">
                 <div v-for="course in courses">
@@ -45,6 +49,7 @@
 <script>
   import { mapGetters, mapActions, mapMutations } from 'vuex';
   import chunk from 'lodash/chunk';
+  import mapValues from 'lodash/mapValues';
   import * as mutationTypes from '@/store/mutation-types';
   import Spinner from './Spinner';
 
@@ -73,6 +78,14 @@
             [year]: chunk(courses, 8),
           }), {});
       },
+      checkedPerYear() {
+        if (!this.programmeInfo) return null;
+        return mapValues(this.programmeInfo, (courses) => {
+          const enabled = courses.filter(c => c.enabled).length;
+          if (enabled > 0 && enabled < courses.length) return null;
+          return enabled === courses.length;
+        });
+      },
       canClose() {
         return this.selectedCourses && this.selectedCourses.length;
       },
@@ -83,6 +96,7 @@
       }),
       ...mapMutations({
         changeCourseEnabled: mutationTypes.CHANGE_COURSE_ENABLED,
+        changeYearCoursesEnabled: mutationTypes.CHANGE_YEAR_COURSES_ENABLED,
       }),
       close() {
         this.$emit('update:visible', false);
@@ -96,6 +110,11 @@
       },
       programmeChanged() {
         this.getScheduleData(this.programme);
+      },
+      handleCheckAllChange(year, enabled) {
+        const programme = this.programme;
+        const courses = this.programmeInfo[year].map(c => c.name);
+        this.changeYearCoursesEnabled({ programme, year, courses, enabled });
       },
       beforeAnimation(el) {
         // eslint-disable-next-line no-param-reassign
@@ -161,6 +180,10 @@
       content: '\00a0';
       height: 20px;
     }
+  }
+
+  .year-name {
+    padding-bottom: 2px;
   }
 
   .spinner-wrapper {
