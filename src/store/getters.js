@@ -1,6 +1,7 @@
 import get from 'lodash/get';
 import omit from 'lodash/omit';
 import flatten from 'lodash/flatten';
+import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 
 function zeroPad(num) {
@@ -38,17 +39,19 @@ export function selectedCourses(state) {
         const course = get(state.schedule.data, path);
         if (course) {
           const practical = flatten(Object.values(omit(course, ['T', 'nome']))).map(fixedLesson);
-          const selectedPractical = state.selectedPracticals[path]
-            ? practical.find(p => p.class === state.selectedPracticals[path])
+          const selectedPracticals = state.selectedPracticals[path]
+            ? practical.filter(p => p.class === state.selectedPracticals[path])
             : null;
           courses.push({
             path,
             name: course.nome,
             lectures: uniqBy((course.T || []).map(fixedLesson), c => `${c.day}-${c.time}-${c.cclass}`), // current API has duplicate lessons
             practical,
+            classes: uniq(practical.map(c => c.class)),
             lectureEnabled: !state.disabledLectures[path],
             practicalEnabled: !state.disabledPracticals[path],
-            selectedPractical,
+            selectedClass: state.selectedPracticals[path],
+            selectedPracticals,
           });
         }
       });

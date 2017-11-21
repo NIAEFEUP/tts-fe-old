@@ -71,8 +71,8 @@
           if (course.lectures && course.lectureEnabled) {
             lessons.push(...course.lectures);
           }
-          if (course.selectedPractical && course.practicalEnabled) {
-            lessons.push(course.selectedPractical);
+          if (course.selectedPracticals && course.practicalEnabled) {
+            lessons.push(...course.selectedPracticals);
           }
         });
         return lessons;

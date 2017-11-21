@@ -4,9 +4,9 @@
       <div class="lesson">
         <div class="class-name">{{ course.name }}</div>
         <div class="select">
-          <select :value="course.selectedPractical && course.selectedPractical.class" @change="updateSelectedPractical(course, $event)">
+          <select :value="course.selectedClass" @change="updateSelectedPractical(course, $event)">
             <option></option>
-            <option v-for="practical in course.practical" :value="practical.class" v-text="practical.class"></option>
+            <option v-for="className in course.classes" :value="className" v-text="className"></option>
           </select>
         </div>
         <el-checkbox :value="course.lectureEnabled" @input="updateLecture(course, $event)">Teóricas</el-checkbox><!--
