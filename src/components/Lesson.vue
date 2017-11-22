@@ -117,11 +117,10 @@
   }
   .time, .lesson-class, .room, .teacher {
     font-size: 10px;
-  }
-  .line2 > * {
-    line-height: 20px;
+    line-height: 10px;
   }
   .name {
+    line-height: 15px;
     font-size: 15px;
     font-weight: 500;
   }

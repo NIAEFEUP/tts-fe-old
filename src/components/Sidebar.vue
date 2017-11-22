@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
-    <template v-for="course in selectedCourses">
-      <div class="lesson">
+    <template v-for="(course, index) in selectedCourses">
+      <div class="lesson" :class="{'lesson-even': index % 2 === 0}">
         <div class="class-name">{{ course.name }}</div>
         <div class="select">
           <select :value="course.selectedClass" @change="updateSelectedPractical(course, $event)">
@@ -60,6 +60,7 @@
     padding: 10px 10px;
     color: #010101;
     font-size: 15px;
+    box-sizing: border-box;
 
     &:not(:last-child) {
       border-bottom: 1px solid #bdbdbd;

@@ -125,11 +125,11 @@
     width: 55px;
     display: inline-block;
     text-align: right;
-    margin-top: 35px;
+    margin-top: 28px;
   }
   .times > div {
-    font-size: 15px;
-    line-height: 15px;
+    font-size: 14px;
+    line-height: 14px;
     font-weight: bold;
     height: 2 * $schedule-box-height;
     margin-right: 10px;

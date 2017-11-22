@@ -36,27 +36,21 @@
 <style lang="scss" scoped>
   .content {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1150px;
     margin: auto;
     display: flex;
     flex-direction: row-reverse;
-    flex-wrap: wrap;
-
-    // Internet Explorer Fix
-    @media screen and (max-width: 1220px) and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-      display: block;
-    }
-
     > * {
       display: flex;
-      max-width: 900px;
+      max-width: 840px;
     }
   }
   .sidebar {
-    padding: 0 10px;
+    padding: 0 5px;
     order: 0;
     flex: 1;
-    flex-basis: 280px;
+    flex-basis: 250px;
+    flex-shrink: 0;
     margin: 0 auto 20px;
   }
   .main-content {
@@ -64,5 +58,26 @@
     width: 100%;
     display: inline-block;
     vertical-align: top;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .content {
+      display: block;
+    }
+    .sidebar {
+      padding: 0 10px;
+    }
+
+    @media (min-width: 600px) {
+      .sidebar /deep/ {
+        .lesson {
+          width: 50%;
+          display: inline-block;
+        }
+        .lesson:nth-last-child(2).lesson-even {
+          border-bottom: none;
+        }
+      }
+    }
   }
 </style>

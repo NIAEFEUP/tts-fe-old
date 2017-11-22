@@ -58,8 +58,9 @@
     .name {
       text-align: center;
       font-weight: bold;
-      padding: 10px 0;
-      height: 20px;
+      padding: 7px 0;
+      height: 35px;
+      box-sizing: border-box;
     }
     .box, .name {
       border: solid #eaeaea;
