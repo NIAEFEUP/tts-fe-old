@@ -1,5 +1,5 @@
 <template>
-  <div class="lesson" :style="lessonStyle" :class="{ [`lesson-${type}`]: true, 'lesson-horizontal': horizontal }">
+  <div class="lesson" :style="lessonStyle" :class="{ [`lesson-${type}`]: true, 'lesson-horizontal': horizontal, 'lesson-conflict': conflicts }">
     <div class="lesson-info">
       <div class="line1">
         <div class="time" v-text="time"></div>
@@ -54,6 +54,9 @@
         type: Boolean,
         default: false,
       },
+      conflicts: {
+        type: Boolean,
+      },
     },
     computed: {
       lessonStyle() {
@@ -70,6 +73,8 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '../styles/variables';
+
   .lesson {
     position: absolute;
     width: 100%;
@@ -91,12 +96,24 @@
       box-sizing: border-box;
       margin-left: 10px;
     }
+
+    &:not(lesson-horizontal) {
+      transition: opacity 0.1s ease-in-out;
+      opacity: 0.8;
+      &:hover {
+        z-index: 2;
+        opacity: 0.9;
+      }
+    }
   }
   .lesson-TP {
     background-color: #69656a;
   }
   .lesson-PL {
     background-color: #4f2e2e;
+  }
+  .lesson-conflict {
+    border: 2px solid $primary-color;
   }
   .lesson-info {
     display: flex;

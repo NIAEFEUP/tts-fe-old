@@ -11,6 +11,8 @@
         </div>
         <el-checkbox :value="course.lectureEnabled" @input="updateLecture(course, $event)">Teóricas</el-checkbox><!--
      --><el-checkbox :value="course.practicalEnabled" @input="updatePractical(course, $event)">Práticas</el-checkbox>
+        <div class="conflicts-info" v-if="course.lectureConflicts">Lecture conflicts: {{ course.lectureConflicts.join(',') }}</div>
+        <div class="conflicts-info" v-if="course.practicalConflicts">Practical conflicts: {{ course.practicalConflicts.join(',') }}</div>
       </div>
     </template>
   </div>
@@ -48,6 +50,8 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '../styles/variables';
+
   .sidebar {
     width: 100%;
     display: inline-block;
@@ -112,5 +116,11 @@
 
   .class-name {
     margin: 5px 0 10px;
+  }
+
+  .conflicts-info {
+    font-size: 12px;
+    margin-top: 4px;
+    color: $primary-color;
   }
 </style>

@@ -40,24 +40,23 @@
     margin: auto;
     display: flex;
     flex-direction: row-reverse;
+    align-items: flex-start;
     > * {
       display: flex;
       max-width: 840px;
     }
   }
   .sidebar {
-    padding: 0 5px;
+    padding: 0;
     order: 0;
     flex: 1;
-    flex-basis: 250px;
+    flex-basis: 260px;
     flex-shrink: 0;
     margin: 0 auto 20px;
   }
   .main-content {
-    margin: auto;
     width: 100%;
     display: inline-block;
-    vertical-align: top;
   }
 
   @media screen and (max-width: 1000px) {

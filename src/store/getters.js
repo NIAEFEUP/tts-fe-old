@@ -1,8 +1,12 @@
+/* eslint-disable no-underscore-dangle */
 import get from 'lodash/get';
 import omit from 'lodash/omit';
 import flatten from 'lodash/flatten';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
+import groupBy from 'lodash/groupBy';
+import mapValues from 'lodash/mapValues';
+import flow from 'lodash/flow';
 
 function zeroPad(num) {
   const zero = 2 - String(num).length + 1;
@@ -29,23 +33,26 @@ function fixedLesson(c) {
   };
 }
 
-export function selectedCourses(state) {
+export function _selectedCourses(state) {
   if (!state.schedule.data || !state.enabledCourses) return null;
   const courses = [];
+  let id = 1;
   Object.entries(state.enabledCourses).forEach(([programme, years]) => {
     Object.entries(years).forEach(([year, yearCourses]) => {
       Object.keys(yearCourses).filter(c => yearCourses[c]).forEach((courseCode) => {
         const path = [programme, year, courseCode].join('.');
         const course = get(state.schedule.data, path);
         if (course) {
-          const practical = flatten(Object.values(omit(course, ['T', 'nome']))).map(fixedLesson);
+          const practical = flatten(Object.values(omit(course, ['T', 'nome']))).map(fixedLesson).map(l => ({ ...l, id }));
+          const lectures = uniqBy((course.T || []).map(fixedLesson), c => `${c.day}-${c.time}-${c.cclass}`); // current API has duplicate lessons
           const selectedPracticals = state.selectedPracticals[path]
             ? practical.filter(p => p.class === state.selectedPracticals[path])
             : null;
           courses.push({
             path,
             name: course.nome,
-            lectures: uniqBy((course.T || []).map(fixedLesson), c => `${c.day}-${c.time}-${c.cclass}`), // current API has duplicate lessons
+            id,
+            lectures: lectures.map(l => ({ ...l, id })),
             practical,
             classes: uniq(practical.map(c => c.class)),
             lectureEnabled: !state.disabledLectures[path],
@@ -53,11 +60,58 @@ export function selectedCourses(state) {
             selectedClass: state.selectedPracticals[path],
             selectedPracticals,
           });
+          id += 1;
         }
       });
     });
   });
   return courses;
+}
+
+export function lessonsByDay(state, getters) {
+  if (getters._selectedCourses === null) return null;
+  const lessons = [];
+  getters._selectedCourses.forEach((course) => {
+    if (course.lectures && course.lectureEnabled) {
+      lessons.push(...course.lectures);
+    }
+    if (course.selectedPracticals && course.practicalEnabled) {
+      lessons.push(...course.selectedPracticals);
+    }
+  });
+  let lessonsByDayObj = groupBy(lessons, 'day');
+  lessonsByDayObj = mapValues(lessonsByDayObj, (dayLessons) => {
+    dayLessons.sort((a, b) => a.hour > b.hour).map(lesson => ({ ...lesson }));
+    for (let i = 0; i < dayLessons.length; i++) {
+      const curr = dayLessons[i];
+      for (let j = i + 1; j < dayLessons.length; j++) {
+        const next = dayLessons[j];
+        if (next.hour < curr.hour + curr.duration / 2) {
+          curr.conflicts = [...(curr.conflicts || []), next.name];
+          next.conflicts = [...(next.conflicts || []), curr.name];
+        } else {
+          break;
+        }
+      }
+    }
+    return dayLessons;
+  });
+  return lessonsByDayObj;
+}
+
+export function selectedCourses(state, getters) {
+  if (getters._selectedCourses === null) return null;
+  const lessons = flatten(Object.values(getters.lessonsByDay)).filter(lesson => lesson.conflicts);
+  const conflicts = flow([
+    _ => groupBy(_, l => `${l.id}-${l.type === 'T'}`),
+    _ => mapValues(_, flow(arr => arr.map(l => l.conflicts), flatten, uniq)),
+  ])(lessons);
+
+  return getters._selectedCourses.map(course => ({
+    ...course,
+    lectureConflicts: conflicts[`${course.id}-true`] || null,
+    practicalConflicts: conflicts[`${course.id}-false`] || null,
+  }));
 }
 
 export function programmes(state) {

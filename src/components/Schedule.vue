@@ -6,8 +6,8 @@
  --><div class="schedule-days">
       <Column class="schedule-column" :slots="slotsPerColumn" :name="day" v-for="(day, i) in days" :key="i">
         <transition-group name="fade">
-          <Lesson v-for="c in lessonsByDay(i)"
-                 :key="`${c.name}-${c.class}-${c.type}`"
+          <Lesson v-for="c in lessonsByDay[i + 1]"
+                 :key="`${c.name}-${c.cclass}-${c.type}-${c.day}-${c.hour}`"
                  :name="c.name"
                  :className="c.cclass"
                  :room="c.room"
@@ -15,22 +15,24 @@
                  :type="c.type"
                  :height="`${c.duration * boxHeight}px`"
                  :top="`${(c.hour - start) * 2 * boxHeight + 0.5}px`"
-                 :time="c.time"></Lesson>
+                 :time="c.time"
+                 :conflicts="!!c.conflicts"></Lesson>
         </transition-group>
       </Column>
     </div>
   </div>
   <div class="schedule schedule-sm" v-else>
     <Column class="schedule-column" horizontal :slots="slotsPerColumn" :name="day" v-for="(day, i) in days" :key="i">
-      <Lesson v-for="c in lessonsByDay(i)"
+      <Lesson v-for="c in lessonsByDay[i + 1]"
              horizontal
-             :key="`${c.name}-${c.class}-${c.type}`"
+             :key="`${c.name}-${c.cclass}-${c.type}-${c.day}-${c.hour}`"
              :name="c.name"
              :className="c.class"
              :room="c.room"
              :teacher="c.teacher"
              :type="c.type"
-             :time="c.time"></Lesson>
+             :time="c.time"
+             :conflicts="!!c.conflicts"></Lesson>
     </Column>
   </div>
 </template>
@@ -61,22 +63,8 @@
     },
     computed: {
       ...mapGetters({
-        loading: 'loading',
-        selectedCourses: 'selectedCourses',
+        lessonsByDay: 'lessonsByDay',
       }),
-      enabledLessons() {
-        if (this.selectedCourses === null) return null;
-        const lessons = [];
-        this.selectedCourses.forEach((course) => {
-          if (course.lectures && course.lectureEnabled) {
-            lessons.push(...course.lectures);
-          }
-          if (course.selectedPracticals && course.practicalEnabled) {
-            lessons.push(...course.selectedPracticals);
-          }
-        });
-        return lessons;
-      },
       small() {
         return this.$mq.resize && !this.$mq.above(768);
       },
@@ -88,31 +76,11 @@
           .map((_, i) => this.start + i)
           .map(x => (x < 10 ? `0${x}:00` : `${x}:00`));
       },
-      lessonsByDay() {
-        const lessonsByDay = this.groupBy(this.enabledLessons, 'day');
-        Object.keys(lessonsByDay).forEach((key) => {
-          lessonsByDay[key].sort((a, b) => a.hour > b.hour);
-        });
-        return day => lessonsByDay[day + 1] || [];
-      },
     },
     methods: {
       ...mapActions({
         getScheduleData: 'getScheduleData',
       }),
-      groupBy(array, field) {
-        const obj = {};
-        if (!(array instanceof Array)) {
-          return obj;
-        }
-        array.forEach((elem) => {
-          if (obj[elem[field]] === undefined) {
-            obj[elem[field]] = [];
-          }
-          obj[elem[field]].push(elem);
-        });
-        return obj;
-      },
     },
   };
 </script>
@@ -155,9 +123,9 @@
     box-sizing: border-box;
   }
   .fade-enter-active, .fade-leave-active {
-    transition: opacity .1s
+    transition: opacity 0.2s ease-in-out !important;
   }
   .fade-enter, .fade-leave-to {
-    opacity: 0
+    opacity: 0 !important;
   }
 </style>
