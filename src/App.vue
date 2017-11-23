@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <header>
-      <span>Vue.js PWA</span>
+      <img class="logo" src="/static/img/logo.png" srcset="/static/img/logo@2x.png 2x, /static/img/logo@3x.png 3x"><!--
+   --><span>Timetable Selector</span>
     </header>
     <main>
       <router-view></router-view>
@@ -15,7 +16,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 body {
   margin: 0;
 }
@@ -32,20 +33,23 @@ main {
 
 header {
   margin: 0;
-  height: 56px;
-  padding: 0 16px 0 24px;
-  background-color: #35495E;
-  color: #ffffff;
-}
-
-header span {
-  display: inline-block;
-  position: relative;
-  font-size: 20px;
-  line-height: 1;
-  letter-spacing: .02em;
-  font-weight: 400;
+  height: 54px;
+  padding: 2px 16px 0 24px;
   box-sizing: border-box;
-  padding-top: 16px;
+  background-color: #1b1c26;
+  color: #fff;
+  font-weight: 500;
+  font-size: 30px;
+
+  > .logo {
+    height: 50px;
+    object-fit: contain;
+    margin-right: 10px;
+  }
+
+  > span {
+    display: inline-block;
+    vertical-align: 13px;
+  }
 }
 </style>

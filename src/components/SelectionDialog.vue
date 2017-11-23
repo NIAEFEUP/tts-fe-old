@@ -133,14 +133,14 @@
 </script>
 
 <style lang="scss" scoped>
-  /deep/ .el-dialog__wrapper {
+  .el-dialog__wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
     padding: 10px 0;
 
-    > .el-dialog {
+    /deep/ > .el-dialog {
       max-width: 900px;
       margin: 0 !important;
       max-height: 100%;
@@ -227,7 +227,7 @@
     width: 120px;
     border-radius: 3px;
     overflow: hidden;
-    background: #fafafa url("../../static/img/carret.svg") no-repeat 97% 50%;
+    background: #fafafa url("../assets/carret.svg") no-repeat 97% 50%;
 
     &.disabled {
       background-color: #ddd;

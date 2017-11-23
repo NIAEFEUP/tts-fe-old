@@ -126,7 +126,7 @@
     height: 20px;
     border-radius: 3.5px;
     overflow: hidden;
-    background: #8c2d19 url("../../static/img/select-arrows.svg") no-repeat 98% 4px;
+    background: #8c2d19 url("../assets/select-arrows.svg") no-repeat 98% 4px;
 
     > select {
       color: #fff;
