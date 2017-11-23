@@ -1,9 +1,11 @@
 <template>
   <div class="schedule-page">
-    <div class="content">
-      <sidebar></sidebar>
-      <div class="main-content">
-        <schedule></schedule>
+    <div class="wrapper" :class="{'dialog-open': coursesDialogVisible}">
+      <div class="content">
+        <sidebar></sidebar>
+        <div class="main-content">
+          <schedule></schedule>
+        </div>
       </div>
     </div>
     <SelectionDialog></SelectionDialog>
@@ -14,7 +16,7 @@
   import Schedule from '@/components/Schedule';
   import Sidebar from '@/components/Sidebar';
   import SelectionDialog from '@/components/SelectionDialog';
-  import { mapMutations, mapActions } from 'vuex';
+  import { mapGetters, mapMutations, mapActions } from 'vuex';
   import * as mutationTypes from '@/store/mutation-types';
 
   export default {
@@ -28,6 +30,11 @@
       this.setCoursesDialogVisibility(true);
       this.getProgrammes();
     },
+    computed: {
+      ...mapGetters({
+        coursesDialogVisible: 'coursesDialogVisible',
+      }),
+    },
     methods: {
       ...mapMutations({
         setCoursesDialogVisibility: mutationTypes.SET_COURSES_DIALOG_VISIBILITY,
@@ -40,6 +47,12 @@
 </script>
 
 <style lang="scss" scoped>
+  .wrapper {
+    width: 100%;
+    &.dialog-open {
+      position: fixed;
+    }
+  }
   .content {
     width: 100%;
     max-width: 1150px;

@@ -42,6 +42,7 @@ header {
 
   > .logo {
     width: 42px;
+    height: 52px;
     object-fit: contain;
     margin-right: 10px;
   }

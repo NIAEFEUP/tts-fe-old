@@ -136,24 +136,23 @@
   .el-dialog__wrapper {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    padding: 10px 0;
+    overflow-y: auto;
+    height: 100%;
 
     /deep/ > .el-dialog {
       max-width: 900px;
-      margin: 0 !important;
-      max-height: 100%;
-      overflow-y: auto;
-      overflow-scrolling: touch;
-
-      & > div {
-        transform: translateZ(0);
-      }
+      margin: auto !important;
+      box-sizing: border-box;
     }
 
-    &:after {
+    &:after, &:before {
       content: '';
+    }
+    &:after {
+      flex: 7;
+    }
+    &:before {
+      flex: 3;
     }
   }
 
