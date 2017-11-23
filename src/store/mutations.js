@@ -2,7 +2,22 @@
 import Vue from 'vue';
 import * as types from './mutation-types';
 
+function getCoursePaths(state) {
+  const paths = [];
+  Object.entries(state.enabledCourses).forEach(([programme, years]) => {
+    Object.entries(years).forEach(([year, courses]) => {
+      Object.keys(courses).forEach((course) => {
+        paths.push([programme, year, course].join('.'));
+      });
+    });
+  });
+  return paths;
+}
+
 export default {
+  [types.SET_COURSES_DIALOG_VISIBILITY](state, visible) {
+    state.coursesDialogVisible = visible;
+  },
   [types.SET_SCHEDULE_LOADING](state, isLoading) {
     state.schedule.loading = isLoading;
   },
@@ -22,6 +37,22 @@ export default {
   },
   [types.CHANGE_PRACTICAL_STATUS](state, { path, enabled }) {
     Vue.set(state.disabledPracticals, path, !enabled);
+  },
+  [types.CHANGE_ALL_PRACTICAL_STATUS](state, enabled) {
+    if (enabled) {
+      Vue.set(state, 'disabledPracticals', {});
+    } else {
+      const obj = getCoursePaths(state).reduce((acc, path) => ({ ...acc, [path]: true }), {});
+      Vue.set(state, 'disabledPracticals', obj);
+    }
+  },
+  [types.CHANGE_ALL_LECTURE_STATUS](state, enabled) {
+    if (enabled) {
+      Vue.set(state, 'disabledLectures', {});
+    } else {
+      const obj = getCoursePaths(state).reduce((acc, path) => ({ ...acc, [path]: true }), {});
+      Vue.set(state, 'disabledLectures', obj);
+    }
   },
   [types.CHANGE_SELECTED_PRACTICAL](state, { path, selectedClass }) {
     Vue.set(state.selectedPracticals, path, selectedClass);

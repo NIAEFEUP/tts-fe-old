@@ -5146,6 +5146,24 @@
             "prof": "Rui Camacho"
           }
         ]
+      },
+      "TEST": {
+        "nome": "Teste",
+        "T": [
+          {
+            "dia": 1,
+            "hora": 8,
+            "nome": "Teste",
+            "sigla": "TEST",
+            "tipo": "T",
+            "turma": "1MIEIC01",
+            "turmac": "1MIEIC01",
+            "duracao": "4",
+            "sala": "B305",
+            "profsig": "RCS",
+            "prof": "Rui Camacho"
+          }
+        ]
       }
     }
   }

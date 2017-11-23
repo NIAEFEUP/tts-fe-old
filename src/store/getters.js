@@ -136,3 +136,7 @@ export function programmeInfo(state) {
 export function scheduleLoading(state) {
   return state.schedule.loading;
 }
+
+export function coursesDialogVisible(state) {
+  return state.coursesDialogVisible;
+}

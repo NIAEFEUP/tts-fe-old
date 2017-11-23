@@ -6,7 +6,7 @@ import Axios from 'axios';
 import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 import vMediaQuery from 'v-media-query';
-import { Button, Dialog, Checkbox, Notification } from 'element-ui';
+import { Button, ButtonGroup, Dialog, Checkbox, Notification } from 'element-ui';
 import './styles/global.scss';
 import App from './App';
 import store from './store/index';
@@ -20,6 +20,7 @@ Vue.use(vMediaQuery);
 
 Vue.use(Dialog);
 Vue.use(Button);
+Vue.use(ButtonGroup);
 Vue.use(Checkbox);
 Vue.prototype.$notify = Notification;
 global.$notify = Notification;

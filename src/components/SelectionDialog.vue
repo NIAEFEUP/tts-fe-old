@@ -1,8 +1,7 @@
 <template>
   <el-dialog
-      v-bind="$attrs"
+      :visible="coursesDialogVisible"
       :lock-scroll="false"
-      @update:visible="$emit('update:visible', $event)"
       width="100%"
       :before-close="beforeClose"
       top="0">
@@ -69,6 +68,7 @@
         selectedCourses: 'selectedCourses',
         programmeInfo: 'programmeInfo',
         scheduleLoading: 'scheduleLoading',
+        coursesDialogVisible: 'coursesDialogVisible',
       }),
       chunkedInfo() {
         if (!this.programmeInfo) return null;
@@ -97,12 +97,16 @@
       ...mapMutations({
         changeCourseEnabled: mutationTypes.CHANGE_COURSE_ENABLED,
         changeYearCoursesEnabled: mutationTypes.CHANGE_YEAR_COURSES_ENABLED,
+        setCoursesDialogVisibility: mutationTypes.SET_COURSES_DIALOG_VISIBILITY,
       }),
       close() {
-        this.$emit('update:visible', false);
+        this.setCoursesDialogVisibility(false);
       },
       beforeClose(done) {
-        if (this.canClose) done();
+        if (this.canClose) {
+          done();
+          this.close();
+        }
       },
       updateCourseSelection(year, course, enabled) {
         const path = [this.programme, year, course];

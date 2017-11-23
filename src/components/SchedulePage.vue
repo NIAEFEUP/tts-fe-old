@@ -6,7 +6,7 @@
         <schedule></schedule>
       </div>
     </div>
-    <SelectionDialog :visible.sync="dialogVisible"></SelectionDialog>
+    <SelectionDialog></SelectionDialog>
   </div>
 </template>
 
@@ -14,6 +14,8 @@
   import Schedule from '@/components/Schedule';
   import Sidebar from '@/components/Sidebar';
   import SelectionDialog from '@/components/SelectionDialog';
+  import { mapMutations, mapActions } from 'vuex';
+  import * as mutationTypes from '@/store/mutation-types';
 
   export default {
     name: 'SchedulePage',
@@ -22,13 +24,17 @@
       Schedule,
       SelectionDialog,
     },
-    data() {
-      return {
-        dialogVisible: true,
-      };
-    },
     mounted() {
-      this.$store.dispatch('getProgrammes');
+      this.setCoursesDialogVisibility(true);
+      this.getProgrammes();
+    },
+    methods: {
+      ...mapMutations({
+        setCoursesDialogVisibility: mutationTypes.SET_COURSES_DIALOG_VISIBILITY,
+      }),
+      ...mapActions({
+        getProgrammes: 'getProgrammes',
+      }),
     },
   };
 </script>
@@ -50,7 +56,7 @@
     padding: 0;
     order: 0;
     flex: 1;
-    flex-basis: 260px;
+    flex-basis: 300px;
     flex-shrink: 0;
     margin: 0 auto 20px;
   }
@@ -59,7 +65,7 @@
     display: inline-block;
   }
 
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 1050px) {
     .content {
       display: block;
     }

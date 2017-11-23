@@ -1,5 +1,16 @@
 <template>
   <div class="sidebar">
+    <div class="buttons">
+      <el-button size="mini" icon="el-icon-edit" @click="setCoursesDialogVisibility(true)">Edit Courses</el-button>
+    </div>
+    <div class="global-checkboxes">
+      <el-checkbox :value="lectureGlobalState"
+                   :indeterminate="lectureGlobalState === null"
+                   @input="changeAllLectureStatus($event)">Teóricas</el-checkbox><!--
+     --><el-checkbox :value="practicalGlobalState"
+                     :indeterminate="practicalGlobalState === null"
+                     @input="changeAllPracticalStatus($event)">Práticas</el-checkbox>
+    </div>
     <template v-for="(course, index) in selectedCourses">
       <div class="lesson" :class="{'lesson-even': index % 2 === 0}">
         <div class="class-name">{{ course.name }}</div>
@@ -9,10 +20,14 @@
             <option v-for="className in course.classes" :value="className" v-text="className"></option>
           </select>
         </div>
-        <el-checkbox :value="course.lectureEnabled" @input="updateLecture(course, $event)">Teóricas</el-checkbox><!--
-     --><el-checkbox :value="course.practicalEnabled" @input="updatePractical(course, $event)">Práticas</el-checkbox>
-        <div class="conflicts-info" v-if="course.lectureConflicts">Lecture conflicts: {{ course.lectureConflicts.join(',') }}</div>
-        <div class="conflicts-info" v-if="course.practicalConflicts">Practical conflicts: {{ course.practicalConflicts.join(',') }}</div>
+        <el-checkbox v-if="course.lectures.length"
+                     :value="course.lectureEnabled"
+                     @input="updateLecture(course, $event)">Teóricas</el-checkbox><!--
+     --><el-checkbox v-if="course.practical.length"
+                     :value="course.practicalEnabled"
+                     @input="updatePractical(course, $event)">Práticas</el-checkbox>
+        <div class="conflicts-info" v-if="course.lectureConflicts">Lecture conflicts: {{ course.lectureConflicts.join(', ') }}</div>
+        <div class="conflicts-info" v-if="course.practicalConflicts">Practical conflicts: {{ course.practicalConflicts.join(', ') }}</div>
       </div>
     </template>
   </div>
@@ -28,12 +43,27 @@
       ...mapGetters({
         selectedCourses: 'selectedCourses',
       }),
+      lectureGlobalState() {
+        const lessons = this.selectedCourses.filter(c => c.lectures.length);
+        const enabled = lessons.filter(c => c.lectureEnabled).length;
+        const total = lessons.length;
+        return enabled > 0 && enabled < total ? null : enabled === total;
+      },
+      practicalGlobalState() {
+        const lessons = this.selectedCourses.filter(c => c.practical.length);
+        const enabled = lessons.filter(c => c.practicalEnabled).length;
+        const total = lessons.length;
+        return enabled > 0 && enabled < total ? null : enabled === total;
+      },
     },
     methods: {
       ...mapMutations({
         changeLectureStatus: mutationTypes.CHANGE_LECTURE_STATUS,
         changePracticalStatus: mutationTypes.CHANGE_PRACTICAL_STATUS,
         changeSelectedPractical: mutationTypes.CHANGE_SELECTED_PRACTICAL,
+        setCoursesDialogVisibility: mutationTypes.SET_COURSES_DIALOG_VISIBILITY,
+        changeAllPracticalStatus: mutationTypes.CHANGE_ALL_PRACTICAL_STATUS,
+        changeAllLectureStatus: mutationTypes.CHANGE_ALL_LECTURE_STATUS,
       }),
       updateLecture(course, enabled) {
         this.changeLectureStatus({ path: course.path, enabled });
@@ -61,7 +91,7 @@
   }
 
   .lesson {
-    padding: 10px 10px;
+    padding: 10px;
     color: #010101;
     font-size: 15px;
     box-sizing: border-box;
@@ -77,6 +107,14 @@
     .el-checkbox:not(:last-child) {
       margin-right: 30px;
     }
+  }
+
+  .buttons, .global-checkboxes {
+    padding: 0 10px;
+  }
+  .global-checkboxes {
+    padding-top: 6px;
+    padding-bottom: 8px;
   }
 
   .select {
