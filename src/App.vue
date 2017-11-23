@@ -48,15 +48,16 @@ header {
   }
 
   > span {
-    display: inline-flex;
+    display: inline-block;
     position: relative;
     height: 100%;
-    vertical-align: top;
-    align-items: center;
+    line-height: 100%;
     > span {
       position: absolute;
       white-space: nowrap;
       font-size: 20px;
+      height: 54px;
+      line-height: 54px;
     }
   }
 }
