@@ -2,7 +2,7 @@
   <div id="app">
     <header>
       <img class="logo" src="/static/img/logo.png" srcset="/static/img/logo@2x.png 2x, /static/img/logo@3x.png 3x"><!--
-   --><span>Timetable Selector</span>
+   --><span><span>Timetable Selector</span></span>
     </header>
     <main>
       <router-view></router-view>
@@ -39,17 +39,24 @@ header {
   background-color: #1b1c26;
   color: #fff;
   font-weight: 500;
-  font-size: 30px;
 
   > .logo {
-    height: 50px;
+    width: 42px;
     object-fit: contain;
     margin-right: 10px;
   }
 
   > span {
-    display: inline-block;
-    vertical-align: 13px;
+    display: inline-flex;
+    position: relative;
+    height: 100%;
+    vertical-align: top;
+    align-items: center;
+    > span {
+      position: absolute;
+      white-space: nowrap;
+      font-size: 20px;
+    }
   }
 }
 </style>
