@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+      ref="dialog"
       :visible="coursesDialogVisible"
       :lock-scroll="false"
       width="100%"
@@ -127,6 +128,11 @@
       afterEnter(el) {
         // eslint-disable-next-line no-param-reassign
         el.style.height = '';
+      },
+    },
+    watch: {
+      coursesDialogVisible() {
+        this.$refs.dialog.$el.scrollTop = 0;
       },
     },
   };
