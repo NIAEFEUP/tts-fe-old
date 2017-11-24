@@ -81,7 +81,8 @@ export function lessonsByDay(state, getters) {
   });
   let lessonsByDayObj = groupBy(lessons, 'day');
   lessonsByDayObj = mapValues(lessonsByDayObj, (dayLessons) => {
-    dayLessons.sort((a, b) => a.hour > b.hour).map(lesson => ({ ...lesson }));
+    dayLessons.sort((a, b) => (a.hour > b.hour ? 1 : -1)).map(lesson => ({ ...lesson }));
+    console.log(dayLessons);
     for (let i = 0; i < dayLessons.length; i++) {
       const curr = dayLessons[i];
       for (let j = i + 1; j < dayLessons.length; j++) {
