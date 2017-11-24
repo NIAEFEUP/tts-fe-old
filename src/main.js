@@ -6,11 +6,10 @@ import Axios from 'axios';
 import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 import vMediaQuery from 'v-media-query';
-import { Button, ButtonGroup, Dialog, Checkbox, Notification } from 'element-ui';
+import { Button, ButtonGroup, Dialog, Checkbox, Notification, Loading } from 'element-ui';
 import './styles/global.scss';
 import App from './App';
 import store from './store/index';
-import router from './router';
 
 Vue.config.productionTip = false;
 
@@ -22,6 +21,7 @@ Vue.use(Dialog);
 Vue.use(Button);
 Vue.use(ButtonGroup);
 Vue.use(Checkbox);
+Vue.use(Loading.directive);
 Vue.prototype.$notify = Notification;
 global.$notify = Notification;
 
@@ -29,6 +29,11 @@ global.$notify = Notification;
 new Vue({
   el: '#app',
   store,
-  router,
   render: h => h(App),
 });
+
+window.onhashchange = () => {
+  if (window.location.hash) {
+    store.dispatch('parseUrl', window.location.hash.slice(1));
+  }
+};

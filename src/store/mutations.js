@@ -26,7 +26,6 @@ export default {
   },
   [types.ADD_SCHEDULE_DATA](state, data) {
     state.schedule.data = { ...state.schedule.data, ...data };
-    state.schedule.loading = false;
   },
   [types.SET_PROGRAMMES](state, data) {
     state.programmes.loading = false;
@@ -55,7 +54,8 @@ export default {
     }
   },
   [types.CHANGE_SELECTED_PRACTICAL](state, { path, selectedClass }) {
-    Vue.set(state.selectedPracticals, path, selectedClass);
+    const pathArray = path instanceof Array ? path.join('.') : path;
+    Vue.set(state.selectedPracticals, pathArray, selectedClass);
   },
   [types.SET_SELECTED_PROGRAMME](state, programme) {
     state.selectedProgramme = programme;

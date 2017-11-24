@@ -118,6 +118,10 @@ export function programmes(state) {
   return state.programmes;
 }
 
+export function selectedProgramme(state) {
+  return state.selectedProgramme;
+}
+
 export function programmeInfo(state) {
   if (!state.selectedProgramme || !state.schedule.data[state.selectedProgramme]) return null;
   return Object.entries(state.schedule.data[state.selectedProgramme])
@@ -139,4 +143,20 @@ export function scheduleLoading(state) {
 
 export function coursesDialogVisible(state) {
   return state.coursesDialogVisible;
+}
+
+export function locationHash(state, getters) {
+  let string = '#2017|1'; // TODO
+  const programmesCourses = {};
+  getters.selectedCourses.forEach((course) => {
+    // eslint-disable-next-line no-unused-vars
+    const [programme, _, courseCode] = course.path.split('.');
+    if (!programmesCourses[programme]) programmesCourses[programme] = [];
+    const selectedClass = course.selectedClass || '';
+    programmesCourses[programme].push(`~${courseCode}.${selectedClass}`);
+  });
+  Object.entries(programmesCourses).forEach(([programme, courses]) => {
+    string += `|${programme}${courses.join('')}`;
+  });
+  return string;
 }

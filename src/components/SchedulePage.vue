@@ -1,5 +1,5 @@
 <template>
-  <div class="schedule-page">
+  <div class="schedule-page" v-loading.lock="!coursesDialogVisible && scheduleLoading">
     <div class="wrapper" :class="{'dialog-open': coursesDialogVisible}">
       <div class="content">
         <sidebar></sidebar>
@@ -27,12 +27,27 @@
       SelectionDialog,
     },
     mounted() {
-      this.setCoursesDialogVisibility(true);
+      if (window.location.hash) {
+        this.parseUrl(window.location.hash.slice(1));
+      } else {
+        this.setCoursesDialogVisibility(true);
+      }
       this.getProgrammes();
+    },
+    watch: {
+      locationHash(value) {
+        if (window.history && history.replaceState) {
+          history.replaceState(null, null, value);
+        } else {
+          window.location.hash = value;
+        }
+      },
     },
     computed: {
       ...mapGetters({
         coursesDialogVisible: 'coursesDialogVisible',
+        scheduleLoading: 'scheduleLoading',
+        locationHash: 'locationHash',
       }),
     },
     methods: {
@@ -41,12 +56,16 @@
       }),
       ...mapActions({
         getProgrammes: 'getProgrammes',
+        parseUrl: 'parseUrl',
       }),
     },
   };
 </script>
 
 <style lang="scss" scoped>
+  .schedule-page /deep/ .el-loading-mask {
+    position: fixed;
+  }
   .wrapper {
     width: 100%;
     &.dialog-open {
@@ -95,6 +114,9 @@
         .lesson:nth-last-child(2).lesson-even {
           border-bottom: none;
         }
+      }
+      .content /deep/ .schedule-md {
+        margin-top: 20px;
       }
     }
   }

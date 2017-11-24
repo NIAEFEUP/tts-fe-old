@@ -70,6 +70,7 @@
         programmeInfo: 'programmeInfo',
         scheduleLoading: 'scheduleLoading',
         coursesDialogVisible: 'coursesDialogVisible',
+        selectedProgramme: 'selectedProgramme',
       }),
       chunkedInfo() {
         if (!this.programmeInfo) return null;
@@ -131,8 +132,11 @@
       },
     },
     watch: {
-      coursesDialogVisible() {
+      coursesDialogVisible(visible) {
         this.$refs.dialog.$el.scrollTop = 0;
+        if (visible) {
+          this.programme = this.selectedProgramme;
+        }
       },
     },
   };

@@ -5,13 +5,18 @@
    --><span><span>Timetable Selector</span></span>
     </header>
     <main>
-      <router-view></router-view>
+      <SchedulePage></SchedulePage>
     </main>
   </div>
 </template>
 
 <script>
+import SchedulePage from './components/SchedulePage';
+
 export default {
+  components: {
+    SchedulePage,
+  },
   name: 'app',
 };
 </script>
