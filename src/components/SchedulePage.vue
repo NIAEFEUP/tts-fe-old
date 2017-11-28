@@ -95,6 +95,8 @@
   .main-content {
     width: 100%;
     display: inline-block;
+    position: sticky;
+    top: 20px;
   }
 
   @media screen and (max-width: 1050px) {
