@@ -91,20 +91,32 @@
     flex-basis: 300px;
     flex-shrink: 0;
     margin: 0 auto 20px;
+
+    /deep/ .sidebar__scrollbar__wrap {
+      box-sizing: border-box;
+      overflow: auto;
+      max-height: 678px;
+    }
   }
   .main-content {
     width: 100%;
     display: inline-block;
-    position: sticky;
-    top: 20px;
   }
 
   @media screen and (max-width: 1050px) {
     .content {
       display: block;
+      position: relative;
     }
     .sidebar {
       padding: 0 10px;
+      max-height: 500px;
+
+      /deep/ .sidebar__scrollbar__wrap {
+        box-sizing: border-box;
+        overflow: initial;
+        max-height: initial;
+      }
     }
 
     @media (min-width: 600px) {

@@ -7,7 +7,9 @@ import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 import vMediaQuery from 'v-media-query';
 import { Button, ButtonGroup, Dialog, Checkbox, Notification, Loading } from 'element-ui';
+import Scrollbar from 'element-ui/lib/scrollbar';
 import './styles/global.scss';
+import '../theme/scrollbar.css';
 import App from './App';
 import store from './store/index';
 
@@ -21,6 +23,7 @@ Vue.use(Dialog);
 Vue.use(Button);
 Vue.use(ButtonGroup);
 Vue.use(Checkbox);
+Vue.use(Scrollbar);
 Vue.use(Loading.directive);
 Vue.prototype.$notify = Notification;
 global.$notify = Notification;

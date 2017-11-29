@@ -11,25 +11,31 @@
                      :indeterminate="practicalGlobalState === null"
                      @input="changeAllPracticalStatus($event)">Práticas</el-checkbox>
     </div>
-    <template v-for="(course, index) in selectedCourses">
-      <div class="lesson" :class="{'lesson-even': index % 2 === 0}">
-        <div class="class-name">{{ course.name }}</div>
-        <div class="select">
-          <select :value="course.selectedClass" @change="updateSelectedPractical(course, $event)">
-            <option></option>
-            <option v-for="className in course.classes" :value="className" v-text="className"></option>
-          </select>
-        </div>
-        <el-checkbox v-if="course.lectures.length"
-                     :value="course.lectureEnabled"
-                     @input="updateLecture(course, $event)">Teóricas</el-checkbox><!--
-     --><el-checkbox v-if="course.practical.length"
-                     :value="course.practicalEnabled"
-                     @input="updatePractical(course, $event)">Práticas</el-checkbox>
-        <div class="conflicts-info" v-if="course.lectureConflicts">Lecture conflicts: {{ course.lectureConflicts.join(', ') }}</div>
-        <div class="conflicts-info" v-if="course.practicalConflicts">Practical conflicts: {{ course.practicalConflicts.join(', ') }}</div>
+    <ElScrollbar class="lessons-container"
+                 wrap-class="sidebar__scrollbar__wrap"
+                 view-class="sidebar__scrollbar__list">
+      <div>
+        <template v-for="(course, index) in selectedCourses">
+          <div class="lesson" :class="{'lesson-even': index % 2 === 0}">
+            <div class="class-name">{{ course.name }}</div>
+            <div class="select">
+              <select :value="course.selectedClass" @change="updateSelectedPractical(course, $event)">
+                <option></option>
+                <option v-for="className in course.classes" :value="className" v-text="className"></option>
+              </select>
+            </div>
+            <el-checkbox v-if="course.lectures.length"
+                         :value="course.lectureEnabled"
+                         @input="updateLecture(course, $event)">Teóricas</el-checkbox><!--
+       --><el-checkbox v-if="course.practical.length"
+                       :value="course.practicalEnabled"
+                       @input="updatePractical(course, $event)">Práticas</el-checkbox>
+            <div class="conflicts-info" v-if="course.lectureConflicts">Lecture conflicts: {{ course.lectureConflicts.join(', ') }}</div>
+            <div class="conflicts-info" v-if="course.practicalConflicts">Practical conflicts: {{ course.practicalConflicts.join(', ') }}</div>
+          </div>
+        </template>
       </div>
-    </template>
+    </ElScrollbar>
   </div>
 </template>
 
@@ -88,6 +94,12 @@
     box-sizing: border-box;
     text-align: left;
     transform: translateZ(0);
+    border: 1px solid $border-color;
+    padding-top: 8px;
+  }
+
+  .lessons-container {
+    border-top: 1px solid $border-color;
   }
 
   .lesson {

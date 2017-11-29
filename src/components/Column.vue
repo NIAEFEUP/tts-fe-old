@@ -50,20 +50,20 @@
 
   .column {
     transform: translateZ(0);
-    border-left: 0.95px solid #eaeaea;
+    border-left: 0.95px solid $border-color;
     &:last-of-type {
-      border-right: 1px solid #eaeaea;
+      border-right: 1px solid $border-color;
     }
 
     .name {
       text-align: center;
       font-weight: bold;
       padding: 7px 0;
-      height: 35px;
+      height: $schedule-header-height;
       box-sizing: border-box;
     }
     .box, .name {
-      border: solid #eaeaea;
+      border: solid $border-color;
       border-width: 1px 0;
     }
     .box {

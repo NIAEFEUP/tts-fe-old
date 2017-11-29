@@ -1,3 +1,5 @@
+@import 'variables.scss';
+
 body, html {
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -5,4 +7,8 @@ body, html {
 }
 .el-checkbox__inner::after {
   border-width: 2px;
+}
+
+.sidebar__scrollbar__list {
+  padding-bottom: 10px;
 }
