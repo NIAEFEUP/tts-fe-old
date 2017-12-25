@@ -7,6 +7,11 @@ import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
 import mapValues from 'lodash/mapValues';
 import flow from 'lodash/flow';
+import translations from '../translations';
+
+export function lang(state) {
+  return translations[state.language];
+}
 
 function zeroPad(num) {
   const zero = 2 - String(num).length + 1;

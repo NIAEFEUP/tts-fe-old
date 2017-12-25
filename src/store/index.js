@@ -21,6 +21,7 @@ export const getInitialSchedulingState = () => ({
 
 export default new Vuex.Store({
   state: {
+    language: 'pt',
     coursesDialogVisible: false,
     selectedYear: null,
     selectedSemester: null,

@@ -28,6 +28,8 @@ Vue.use(Loading.directive);
 Vue.prototype.$notify = Notification;
 global.$notify = Notification;
 
+Vue.prototype.$lang = store.getters.lang;
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

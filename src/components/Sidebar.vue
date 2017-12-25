@@ -1,15 +1,15 @@
 <template>
   <div class="sidebar">
     <div class="buttons">
-      <el-button size="mini" icon="el-icon-edit" @click="setCoursesDialogVisibility(true)">Edit Courses</el-button>
+      <el-button size="mini" icon="el-icon-edit" @click="setCoursesDialogVisibility(true)">{{ $lang.EDIT_COURSES }}</el-button>
     </div>
     <div class="global-checkboxes">
       <el-checkbox :value="lectureGlobalState"
                    :indeterminate="lectureGlobalState === null"
-                   @input="changeAllLectureStatus($event)">Teóricas</el-checkbox><!--
+                   @input="changeAllLectureStatus($event)">{{ $lang.LECTURES }}</el-checkbox><!--
      --><el-checkbox :value="practicalGlobalState"
                      :indeterminate="practicalGlobalState === null"
-                     @input="changeAllPracticalStatus($event)">Práticas</el-checkbox>
+                     @input="changeAllPracticalStatus($event)">{{ $lang.PRACTICALS }}</el-checkbox>
     </div>
     <ElScrollbar class="lessons-container"
                  wrap-class="sidebar__scrollbar__wrap"
@@ -23,17 +23,17 @@
                 <option></option>
                 <option v-for="c in course.practical"
                         :value="c.class"
-                        v-text="[c.class, c.teacher, `${c.day + 1}ª ${c.timeStart}`].join(' - ')"/>
+                        v-text="[c.class, c.teacher, `${$lang[`DAY_SHORT${c.day + 1}`]} ${c.timeStart}`].join(' - ')"/>
               </select>
             </div>
             <el-checkbox v-if="course.lectures.length"
                          :value="course.lectureEnabled"
-                         @input="updateLecture(course, $event)">Teóricas</el-checkbox><!--
+                         @input="updateLecture(course, $event)">{{ $lang.LECTURES }}</el-checkbox><!--
        --><el-checkbox v-if="course.practical.length"
                        :value="course.practicalEnabled"
-                       @input="updatePractical(course, $event)">Práticas</el-checkbox>
-            <div class="conflicts-info" v-if="course.lectureConflicts">Lecture conflicts: {{ course.lectureConflicts.join(', ') }}</div>
-            <div class="conflicts-info" v-if="course.practicalConflicts">Practical conflicts: {{ course.practicalConflicts.join(', ') }}</div>
+                       @input="updatePractical(course, $event)">{{ $lang.PRACTICALS }}</el-checkbox>
+            <div class="conflicts-info" v-if="course.lectureConflicts">{{ $lang.LECTURE_CONFLICTS }}: {{ course.lectureConflicts.join(', ') }}</div>
+            <div class="conflicts-info" v-if="course.practicalConflicts">{{ $lang.PRACTICAL_CONFLICTS }}: {{ course.practicalConflicts.join(', ') }}</div>
           </div>
         </template>
       </div>

@@ -1,7 +1,7 @@
 <template>
   <el-dialog
       ref="dialog"
-      title="Pick your courses"
+      :title="$lang.PICK_YOUR_COURSES"
       :visible="coursesDialogVisible"
       :lock-scroll="false"
       width="100%"
@@ -9,7 +9,7 @@
       top="0">
     <div>
       <div class="year-semester">
-        Year:&nbsp;
+        {{ $lang.YEAR }}:&nbsp;
         <span class="select" :class="{ disabled: years.loading }">
           <select v-model="year" @input="yearChanged($event.target.value)" :disabled="years.loading">
             <option v-for="year in years.list" v-text="year" :value="year"></option>
@@ -19,8 +19,8 @@
           <span v-show="years.loading">
             <Spinner size="20px"></Spinner>
           </span>
-        </span>
-        Semester:&nbsp;
+        </span><!--
+     -->{{ $lang.SEMESTER }}:&nbsp;
         <span class="select" :class="{ disabled: years.loading }">
           <select :value="semester" @input="semesterChanged($event.target.value)" :disabled="years.loading">
             <option v-text="1" :value="1"></option>
@@ -29,7 +29,7 @@
         </span>
       </div>
       <div>
-        Programme:&nbsp;
+        {{ $lang.PROGRAMME }}:&nbsp;
         <span class="select" :class="{ disabled: programmes.loading }">
           <select @change="programmeChanged" v-model="programme" :disabled="programmes.loading">
             <option v-for="programme in programmes.list" v-text="programme" :value="programme"></option>
@@ -62,7 +62,7 @@
       </transition>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="close" :disabled="!canClose">Confirm</el-button>
+      <el-button type="primary" @click="close" :disabled="!canClose">{{ $lang.CONFIRM }}</el-button>
     </span>
   </el-dialog>
 </template>
