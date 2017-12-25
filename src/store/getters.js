@@ -23,6 +23,7 @@ function fixedLesson(c) {
     day: c.dia,
     hour: c.hora,
     time: `${formatTime(c.hora)} - ${formatTime(c.hora + c.duracao / 2)}`,
+    timeStart: formatTime(c.hora),
     duration: c.duracao,
     class: c.turma,
     cclass: c.turmac,
