@@ -30,9 +30,20 @@
       if (window.location.hash) {
         this.parseUrl(window.location.hash.slice(1));
       } else {
+        const today = new Date();
+        const month = today.getMonth() + 1;
+        let year = today.getFullYear();
+        let semester = 1;
+        if (month < 8) {
+          year -= 1;
+          semester = 2;
+        }
+        this.setSelectedYear(String(year));
+        this.setSelectedSemester(semester);
         this.setCoursesDialogVisibility(true);
       }
-      this.getProgrammes();
+      this.fetchYears();
+      this.fetchProgrammes();
     },
     watch: {
       locationHash(value) {
@@ -53,9 +64,12 @@
     methods: {
       ...mapMutations({
         setCoursesDialogVisibility: mutationTypes.SET_COURSES_DIALOG_VISIBILITY,
+        setSelectedYear: mutationTypes.SET_SELECTED_YEAR,
+        setSelectedSemester: mutationTypes.SET_SELECTED_SEMESTER,
       }),
       ...mapActions({
-        getProgrammes: 'getProgrammes',
+        fetchYears: 'fetchYears',
+        fetchProgrammes: 'fetchProgrammes',
         parseUrl: 'parseUrl',
       }),
     },

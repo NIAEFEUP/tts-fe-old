@@ -37,8 +37,8 @@ export function _selectedCourses(state) {
   if (!state.schedule.data || !state.enabledCourses) return null;
   const courses = [];
   let id = 1;
-  Object.entries(state.enabledCourses).forEach(([programme, years]) => {
-    Object.entries(years).forEach(([year, yearCourses]) => {
+  Object.entries(state.enabledCourses).forEach(([programme, lYears]) => {
+    Object.entries(lYears).forEach(([year, yearCourses]) => {
       Object.keys(yearCourses).filter(c => yearCourses[c]).forEach((courseCode) => {
         const path = [programme, year, courseCode].join('.');
         const course = get(state.schedule.data, path);
@@ -51,6 +51,7 @@ export function _selectedCourses(state) {
           courses.push({
             path,
             name: course.nome,
+            code: courseCode,
             id,
             lectures: lectures.map(l => ({ ...l, id })),
             practical,
@@ -118,6 +119,18 @@ export function programmes(state) {
   return state.programmes;
 }
 
+export function years(state) {
+  return state.years;
+}
+
+export function selectedYear(state) {
+  return state.selectedYear;
+}
+
+export function selectedSemester(state) {
+  return state.selectedSemester;
+}
+
 export function selectedProgramme(state) {
   return state.selectedProgramme;
 }
@@ -146,8 +159,9 @@ export function coursesDialogVisible(state) {
 }
 
 export function locationHash(state, getters) {
-  let string = '#2017|1'; // TODO
+  let string = `#${state.selectedYear}|${state.selectedSemester}`;
   const programmesCourses = {};
+  if (!getters.selectedCourses || getters.selectedCourses.length === 0) return '#';
   getters.selectedCourses.forEach((course) => {
     // eslint-disable-next-line no-unused-vars
     const [programme, _, courseCode] = course.path.split('.');

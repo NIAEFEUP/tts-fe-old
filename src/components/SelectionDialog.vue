@@ -1,12 +1,33 @@
 <template>
   <el-dialog
       ref="dialog"
+      title="Pick your courses"
       :visible="coursesDialogVisible"
       :lock-scroll="false"
       width="100%"
       :before-close="beforeClose"
       top="0">
     <div>
+      <div class="year-semester">
+        Year:&nbsp;
+        <span class="select" :class="{ disabled: years.loading }">
+          <select v-model="year" @input="yearChanged($event.target.value)" :disabled="years.loading">
+            <option v-for="year in years.list" v-text="year" :value="year"></option>
+          </select>
+        </span><!--
+     --><span class="spinner-wrapper">
+          <span v-show="years.loading">
+            <Spinner size="20px"></Spinner>
+          </span>
+        </span>
+        Semester:&nbsp;
+        <span class="select" :class="{ disabled: years.loading }">
+          <select :value="semester" @input="semesterChanged($event.target.value)" :disabled="years.loading">
+            <option v-text="1" :value="1"></option>
+            <option v-text="2" :value="2"></option>
+          </select>
+        </span>
+      </div>
       <div>
         Programme:&nbsp;
         <span class="select" :class="{ disabled: programmes.loading }">
@@ -65,6 +86,9 @@
     },
     computed: {
       ...mapGetters({
+        years: 'years',
+        year: 'selectedYear',
+        semester: 'selectedSemester',
         programmes: 'programmes',
         selectedCourses: 'selectedCourses',
         programmeInfo: 'programmeInfo',
@@ -99,7 +123,10 @@
       ...mapMutations({
         changeCourseEnabled: mutationTypes.CHANGE_COURSE_ENABLED,
         changeYearCoursesEnabled: mutationTypes.CHANGE_YEAR_COURSES_ENABLED,
+        setSelectedYear: mutationTypes.SET_SELECTED_YEAR,
+        setSelectedSemester: mutationTypes.SET_SELECTED_SEMESTER,
         setCoursesDialogVisibility: mutationTypes.SET_COURSES_DIALOG_VISIBILITY,
+        resetScheduleState: mutationTypes.RESET,
       }),
       close() {
         this.setCoursesDialogVisibility(false);
@@ -116,6 +143,18 @@
       },
       programmeChanged() {
         this.getScheduleData(this.programme);
+      },
+      applyYearSemesterChange() {
+        this.resetScheduleState();
+        this.getScheduleData(this.programme);
+      },
+      yearChanged(year) {
+        this.setSelectedYear(year);
+        this.applyYearSemesterChange();
+      },
+      semesterChanged(semester) {
+        this.setSelectedSemester(semester);
+        this.applyYearSemesterChange();
       },
       handleCheckAllChange(year, enabled) {
         const programme = this.programme;
@@ -263,6 +302,21 @@
       }
       &:focus {
         outline: none;
+      }
+    }
+  }
+
+  .year-semester  {
+    .select, .select select {
+      width: 65px;
+      min-width: 65px;
+    }
+
+
+    .spinner-wrapper {
+      margin-right: 8px;
+      .spinner {
+        left: 6px;
       }
     }
   }

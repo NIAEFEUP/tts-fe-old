@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import Vue from 'vue';
+import { getInitialSchedulingState } from '@/store/index';
 import * as types from './mutation-types';
 
 function getCoursePaths(state) {
@@ -31,6 +32,13 @@ export default {
     state.programmes.loading = false;
     state.programmes.list = data;
   },
+  [types.SET_YEARS_LOADING](state, isLoading) {
+    state.years.loading = isLoading;
+  },
+  [types.SET_YEARS](state, list) {
+    state.years.loading = false;
+    state.years.list = list;
+  },
   [types.CHANGE_LECTURE_STATUS](state, { path, enabled }) {
     Vue.set(state.disabledLectures, path, !enabled);
   },
@@ -60,6 +68,12 @@ export default {
   [types.SET_SELECTED_PROGRAMME](state, programme) {
     state.selectedProgramme = programme;
   },
+  [types.SET_SELECTED_YEAR](state, programme) {
+    state.selectedYear = programme;
+  },
+  [types.SET_SELECTED_SEMESTER](state, programme) {
+    state.selectedSemester = programme;
+  },
   [types.CHANGE_COURSE_ENABLED](state, { path, enabled }) {
     const [programme, year, course] = path;
     if (!state.enabledCourses[programme]) {
@@ -84,5 +98,11 @@ export default {
     } else {
       state.enabledCourses[programme][year] = {};
     }
+  },
+  [types.RESET](state) {
+    const initialState = getInitialSchedulingState();
+    Object.keys(initialState).forEach((key) => {
+      Vue.set(state, key, initialState[key]);
+    });
   },
 };

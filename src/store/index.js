@@ -8,22 +8,32 @@ Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
 
+export const getInitialSchedulingState = () => ({
+  schedule: {
+    data: {},
+    loading: false,
+  },
+  enabledCourses: {},
+  disabledLectures: {},
+  disabledPracticals: {},
+  selectedPracticals: {},
+});
+
 export default new Vuex.Store({
   state: {
     coursesDialogVisible: false,
-    schedule: {
-      data: {},
+    selectedYear: null,
+    selectedSemester: null,
+    selectedProgramme: null,
+    years: {
       loading: false,
+      list: null,
     },
     programmes: {
       loading: false,
       list: null,
     },
-    selectedProgramme: null,
-    enabledCourses: {},
-    disabledLectures: {},
-    disabledPracticals: {},
-    selectedPracticals: {},
+    ...getInitialSchedulingState(),
   },
   mutations,
   actions,

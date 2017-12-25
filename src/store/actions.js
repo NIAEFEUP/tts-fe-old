@@ -3,7 +3,15 @@ import * as mutationTypes from './mutation-types';
 
 const testdata = require('../../testdata.json');
 
-export function getProgrammes({ commit }) {
+export function fetchYears({ commit }) {
+  commit(mutationTypes.SET_YEARS_LOADING, true);
+  return new Promise((resolve) => {
+    const data = ['2015', '2016', '2017'];
+    setTimeout(() => resolve(data), 600);
+  }).then(data => commit(mutationTypes.SET_YEARS, data));
+}
+
+export function fetchProgrammes({ commit }) {
   commit(mutationTypes.SET_PROGRAMMES_LOADING, true);
   return new Promise((resolve) => {
     const data = ['FEUP-MIEIC', 'FEUP-MIEEC'];
@@ -17,9 +25,13 @@ function fetchProgrammeData(programme) {
   });
 }
 
+
 export function getScheduleData({ commit, state }, programme) {
   commit(mutationTypes.SET_SELECTED_PROGRAMME, programme);
-  if (!programme || state.schedule.data[programme]) return Promise.resolve();
+  if (!programme || state.schedule.data[programme]
+      || !state.selectedYear || !state.selectedSemester) {
+    return Promise.resolve();
+  }
   commit(mutationTypes.SET_SCHEDULE_LOADING, true);
   return fetchProgrammeData(programme)
     .then(data => commit(mutationTypes.ADD_SCHEDULE_DATA, { [programme]: data }))
@@ -41,6 +53,10 @@ export function getMultipleScheduleData({ commit }, programmes) {
 export async function parseUrl({ state, commit, dispatch }, url) {
   // eslint-disable-next-line no-unused-vars
   const [year, semester, ...programmesCourses] = url.split('|');
+
+  commit(mutationTypes.SET_SELECTED_YEAR, year);
+  commit(mutationTypes.SET_SELECTED_SEMESTER, Number(semester));
+
   const programmes = programmesCourses.map(programmeCourses => programmeCourses.split('~', 1)[0]);
   await dispatch('getMultipleScheduleData', programmes);
 

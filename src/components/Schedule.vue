@@ -38,7 +38,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
+  import { mapGetters } from 'vuex';
   // eslint-disable-next-line import/no-webpack-loader-syntax
   import styles from '!!sass-variable-loader!../styles/variables.scss';
   import Column from './Column';
@@ -58,9 +58,6 @@
         days: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
       };
     },
-    mounted() {
-      this.getScheduleData();
-    },
     computed: {
       ...mapGetters({
         lessonsByDay: 'lessonsByDay',
@@ -76,11 +73,6 @@
           .map((_, i) => this.start + i)
           .map(x => (x < 10 ? `0${x}:00` : `${x}:00`));
       },
-    },
-    methods: {
-      ...mapActions({
-        getScheduleData: 'getScheduleData',
-      }),
     },
   };
 </script>
