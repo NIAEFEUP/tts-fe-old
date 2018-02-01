@@ -15,7 +15,11 @@ import store from './store/index';
 
 Vue.config.productionTip = false;
 
-Vue.use(VueAxios, Axios);
+const axiosInstance = Axios.create({
+  baseURL: '/api/',
+});
+
+Vue.use(VueAxios, axiosInstance);
 Vue.use(Vuex);
 Vue.use(vMediaQuery);
 

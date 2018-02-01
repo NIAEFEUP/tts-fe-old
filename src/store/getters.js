@@ -122,11 +122,19 @@ export function selectedCourses(state, getters) {
 }
 
 export function programmes(state) {
-  return state.programmes;
+  return {
+    ...state.programmes,
+    list: state.programmes.list && state.programmes.list
+      .filter(course => String(course.faculty_id) === state.selectedSchool),
+  };
 }
 
 export function years(state) {
   return state.years;
+}
+
+export function schools(state) {
+  return state.schools;
 }
 
 export function selectedYear(state) {

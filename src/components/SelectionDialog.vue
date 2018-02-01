@@ -10,7 +10,7 @@
     <div>
       <div class="year-semester">
         {{ $lang.YEAR }}:&nbsp;
-        <span class="select" :class="{ disabled: years.loading }">
+        <span class="select select-year" :class="{ disabled: years.loading }">
           <select v-model="year" @input="yearChanged($event.target.value)" :disabled="years.loading">
             <option v-for="year in years.list" v-text="year" :value="year"></option>
           </select>
@@ -23,16 +23,29 @@
      -->{{ $lang.SEMESTER }}:&nbsp;
         <span class="select" :class="{ disabled: years.loading }">
           <select :value="semester" @input="semesterChanged($event.target.value)" :disabled="years.loading">
-            <option v-text="1" :value="1"></option>
+            <!--<option v-text="1" :value="1"></option>-->
             <option v-text="2" :value="2"></option>
           </select>
+        </span>
+      </div>
+      <div>
+        Faculdade:&nbsp;
+        <span class="select" :class="{ disabled: schools.loading }">
+          <select @change="setSchool($event.target.value)" v-model="school" :disabled="schools.loading">
+            <option v-for="school in schools.list" v-text="school.name" :value="school.id"></option>
+          </select>
+        </span><!--
+     --><span class="spinner-wrapper">
+          <span v-show="schools.loading">
+            <Spinner size="20px"></Spinner>
+          </span>
         </span>
       </div>
       <div>
         {{ $lang.PROGRAMME }}:&nbsp;
         <span class="select" :class="{ disabled: programmes.loading }">
           <select @change="programmeChanged" v-model="programme" :disabled="programmes.loading">
-            <option v-for="programme in programmes.list" v-text="programme" :value="programme"></option>
+            <option v-for="programme in programmes.list" :value="programme">{{ programme.name }}</option>
           </select>
         </span><!--
      --><span class="spinner-wrapper">
@@ -42,7 +55,7 @@
         </span>
       </div>
       <transition name="collapse" @enter="beforeAnimation" @leave="beforeAnimation" @after-enter="afterEnter">
-        <div class="years" v-if="chunkedInfo" :key="programme">
+        <div class="years" v-if="chunkedInfo" :key="programme.id">
           <div class="year" v-for="(coursesChunk, year) in chunkedInfo">
             <div class="year-name">
               <el-checkbox :value="checkedPerYear[year]"
@@ -82,6 +95,7 @@
     data() {
       return {
         programme: null,
+        school: null,
       };
     },
     computed: {
@@ -90,6 +104,7 @@
         year: 'selectedYear',
         semester: 'selectedSemester',
         programmes: 'programmes',
+        schools: 'schools',
         selectedCourses: 'selectedCourses',
         programmeInfo: 'programmeInfo',
         scheduleLoading: 'scheduleLoading',
@@ -119,6 +134,7 @@
     methods: {
       ...mapActions({
         getScheduleData: 'getScheduleData',
+        setSchool: 'setSchool',
       }),
       ...mapMutations({
         changeCourseEnabled: mutationTypes.CHANGE_COURSE_ENABLED,
@@ -312,6 +328,10 @@
       min-width: 65px;
     }
 
+    .select-year, .select-year select {
+      width: 100px;
+      min-width: 100px;
+    }
 
     .spinner-wrapper {
       margin-right: 8px;

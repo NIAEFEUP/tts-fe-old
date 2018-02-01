@@ -1,30 +1,41 @@
 import mapValues from 'lodash/mapValues';
+import Vue from 'vue';
 import * as mutationTypes from './mutation-types';
 
 const testdata = require('../../testdata.json');
 
 export function fetchYears({ commit }) {
   commit(mutationTypes.SET_YEARS_LOADING, true);
-  return new Promise((resolve) => {
-    const data = ['2015', '2016', '2017'];
-    setTimeout(() => resolve(data), 600);
-  }).then(data => commit(mutationTypes.SET_YEARS, data));
+  return Promise.resolve(['2017/2018'])
+    .then(data => commit(mutationTypes.SET_YEARS, data));
 }
 
-export function fetchProgrammes({ commit }) {
+export function fetchSchools({ commit }) {
+  commit(mutationTypes.SET_SCHOOLS_LOADING, true);
+  return Vue.axios.get('faculties')
+    .then(({ data }) => commit(mutationTypes.SET_SCHOOLS, data));
+}
+
+// eslint-disable-next-line no-unused-vars
+export function fetchProgrammes({ commit }, schoolId) { // TODO
   commit(mutationTypes.SET_PROGRAMMES_LOADING, true);
-  return new Promise((resolve) => {
-    const data = ['FEUP-MIEIC', 'FEUP-MIEEC'];
-    setTimeout(() => resolve(data), 1000);
-  }).then(data => commit(mutationTypes.SET_PROGRAMMES, data));
+  return Vue.axios.get('/courses')
+    .then(({ data }) => commit(mutationTypes.SET_PROGRAMMES,
+      data.sort((a, b) => a.name.localeCompare(b.name)))); // TODO
 }
 
+export function setSchool({ commit, dispatch }, schoolId) {
+  commit(mutationTypes.SET_SELECTED_SCHOOL, schoolId);
+  return dispatch('fetchProgrammes', schoolId);
+}
+
+
+// eslint-disable-next-line no-unused-vars
 function fetchProgrammeData(programme) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(testdata[programme] || null), 2000);
+    setTimeout(() => resolve(testdata['FEUP-MIEIC'] || null), 2000);
   });
 }
-
 
 export function getScheduleData({ commit, state }, programme) {
   commit(mutationTypes.SET_SELECTED_PROGRAMME, programme);

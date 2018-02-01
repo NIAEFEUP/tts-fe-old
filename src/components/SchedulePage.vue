@@ -30,7 +30,7 @@
       if (window.location.hash) {
         this.parseUrl(window.location.hash.slice(1));
       } else {
-        const today = new Date();
+        /* const today = new Date();
         const month = today.getMonth() + 1;
         let year = today.getFullYear();
         let semester = 1;
@@ -39,11 +39,13 @@
           semester = 2;
         }
         this.setSelectedYear(String(year));
-        this.setSelectedSemester(semester);
+        this.setSelectedSemester(semester);  */
+        this.setSelectedYear(String('2017/2018')); // TODO
+        this.setSelectedSemester(2); // TODO
         this.setCoursesDialogVisibility(true);
       }
       this.fetchYears();
-      this.fetchProgrammes();
+      this.fetchSchools();
     },
     watch: {
       locationHash(value) {
@@ -69,6 +71,7 @@
       }),
       ...mapActions({
         fetchYears: 'fetchYears',
+        fetchSchools: 'fetchSchools',
         fetchProgrammes: 'fetchProgrammes',
         parseUrl: 'parseUrl',
       }),

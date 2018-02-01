@@ -24,8 +24,13 @@ export default new Vuex.Store({
     language: 'pt',
     coursesDialogVisible: false,
     selectedYear: null,
+    selectedSchool: null,
     selectedSemester: null,
     selectedProgramme: null,
+    schools: {
+      loading: false,
+      list: null,
+    },
     years: {
       loading: false,
       list: null,

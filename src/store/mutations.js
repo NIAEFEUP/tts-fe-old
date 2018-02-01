@@ -32,6 +32,13 @@ export default {
     state.programmes.loading = false;
     state.programmes.list = data;
   },
+  [types.SET_SCHOOLS_LOADING](state, isLoading) {
+    state.schools.loading = isLoading;
+  },
+  [types.SET_SCHOOLS](state, list) {
+    state.schools.loading = false;
+    state.schools.list = list;
+  },
   [types.SET_YEARS_LOADING](state, isLoading) {
     state.years.loading = isLoading;
   },
@@ -67,6 +74,9 @@ export default {
   },
   [types.SET_SELECTED_PROGRAMME](state, programme) {
     state.selectedProgramme = programme;
+  },
+  [types.SET_SELECTED_SCHOOL](state, schoolId) {
+    state.selectedSchool = schoolId;
   },
   [types.SET_SELECTED_YEAR](state, programme) {
     state.selectedYear = programme;
