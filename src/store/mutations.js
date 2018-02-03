@@ -99,14 +99,14 @@ export default {
     }
   },
   [types.CHANGE_YEAR_COURSES_ENABLED](state, { programme, year, courses, enabled }) {
-    if (!state.enabledCourses[programme]) {
-      Vue.set(state.enabledCourses, programme, {});
+    if (!state.enabledCourses[programme.acronym]) {
+      Vue.set(state.enabledCourses, programme.acronym, {});
     }
     if (enabled) {
       const obj = courses.reduce((o, course) => ({ ...o, [course]: true }), {});
-      Vue.set(state.enabledCourses[programme], year, obj);
+      Vue.set(state.enabledCourses[programme.acronym], year, obj);
     } else {
-      state.enabledCourses[programme][year] = {};
+      state.enabledCourses[programme.acronym][year] = {};
     }
   },
   [types.RESET](state) {

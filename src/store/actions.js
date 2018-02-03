@@ -1,4 +1,5 @@
 import mapValues from 'lodash/mapValues';
+import keyBy from 'lodash/keyBy';
 import groupBy from 'lodash/groupBy';
 import Vue from 'vue';
 import * as mutationTypes from './mutation-types';
@@ -15,12 +16,11 @@ export function fetchSchools({ commit }) {
     .then(({ data }) => commit(mutationTypes.SET_SCHOOLS, data));
 }
 
-// eslint-disable-next-line no-unused-vars
-export function fetchProgrammes({ commit }, schoolId) { // TODO
+export function fetchProgrammes({ commit }, schoolId) {
   commit(mutationTypes.SET_PROGRAMMES_LOADING, true);
-  return Vue.axios.get('courses')
+  return Vue.axios.get(`faculties/${schoolId}/courses`)
     .then(({ data }) => commit(mutationTypes.SET_PROGRAMMES,
-      data.sort((a, b) => a.name.localeCompare(b.name)))); // TODO
+      data.sort((a, b) => a.name.localeCompare(b.name)))); // TODO - sort on the server
 }
 
 export function setSchool({ commit, dispatch }, schoolId) {
@@ -28,39 +28,52 @@ export function setSchool({ commit, dispatch }, schoolId) {
   return dispatch('fetchProgrammes', schoolId);
 }
 
+function zeroPad(num) {
+  const zero = 2 - String(num).length + 1;
+  return Array(+(zero > 0 && zero)).join('0') + num;
+}
 
-// eslint-disable-next-line no-unused-vars
+function formatTime(time) {
+  return `${zeroPad(Math.floor(time))}:${zeroPad(time % 1 * 60)}`;
+}
+
+function fixedLesson(course, lesson) {
+  if (!lesson) return lesson;
+  return {
+    ...lesson,
+    course: course.acronym,
+    courseId: course.id,
+    day: lesson.day || 1, // FIXME
+    start_time: Number(lesson.start_time),
+    time: `${formatTime(lesson.start_time)} - ${formatTime(Number(lesson.start_time) + lesson.duration / 2)}`,
+    timeStart: formatTime(lesson.start_time),
+  };
+}
+
 async function fetchProgrammeData(programme) {
-  const [coursesAll, schedulesAll] = await Promise.all([
-    Vue.axios.get('course-units'),
-    Vue.axios.get('schedules'),
-  ]).then(responses => responses.map(response => response.data));
+  const { data: courses } = await Vue.axios.get(`/courses/${programme.id}/schedules`);
 
-  const courses = coursesAll.filter(course => course.course_id === programme.id);
-  const coursesObj = courses.reduce((obj, c) => ({ ...obj, [c.id]: true }), {});
-  const schedules = schedulesAll.filter(({ course_unit_id }) => coursesObj[course_unit_id]);
-  const schedulesGrouped = groupBy(schedules, 'course_unit_id');
-  const result = courses.map((course) => {
-    const courseLessons = schedulesGrouped[course.id] || [];
-    return ({
-      ...course,
-      lectures: courseLessons.filter(l => l.lesson_type === 'T'),
-      praticals: courseLessons.filter(l => l.lesson_type !== 'T'),
-    });
+  courses.forEach((course) => {
+    /* eslint-disable no-param-reassign */
+    course.lectures = course.schedules.filter(l => l.lesson_type === 'T').map(fixedLesson.bind(0, course));
+    course.practicals = course.schedules.filter(l => l.lesson_type !== 'T').map(fixedLesson.bind(0, course));
+    delete course.schedules;
+    /* eslint-enable no-param-reassign */
   });
-  console.log(result);
-  return result;
+
+  const coursesPerYear = groupBy(courses, 'course_year');
+  return mapValues(coursesPerYear, coursesYear => keyBy(coursesYear, 'acronym'));
 }
 
 export function getScheduleData({ commit, state }, programme) {
   commit(mutationTypes.SET_SELECTED_PROGRAMME, programme);
-  if (!programme || state.schedule.data[programme]
+  if (!programme || state.schedule.data[programme.acronym]
       || !state.selectedYear || !state.selectedSemester) {
     return Promise.resolve();
   }
   commit(mutationTypes.SET_SCHEDULE_LOADING, true);
   return fetchProgrammeData(programme)
-    .then(data => commit(mutationTypes.ADD_SCHEDULE_DATA, { [programme]: data }))
+    .then(data => commit(mutationTypes.ADD_SCHEDULE_DATA, { [programme.acronym]: data }))
     .finally(() => commit(mutationTypes.SET_SCHEDULE_LOADING, false));
 }
 
@@ -77,7 +90,6 @@ export function getMultipleScheduleData({ commit }, programmes) {
 }
 
 export async function parseUrl({ state, commit, dispatch }, url) {
-  // eslint-disable-next-line no-unused-vars
   const [year, semester, ...programmesCourses] = url.split('|');
 
   commit(mutationTypes.SET_SELECTED_YEAR, year);

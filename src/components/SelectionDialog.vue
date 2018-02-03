@@ -60,12 +60,12 @@
             <div class="year-name">
               <el-checkbox :value="checkedPerYear[year]"
                            :indeterminate="checkedPerYear[year] == null"
-                           @change="handleCheckAllChange(year, $event)">{{year}}</el-checkbox>
+                           @change="handleCheckAllChange(year, $event)">{{year}}º ano</el-checkbox>
             </div>
             <div class="courses">
               <div v-for="courses in coursesChunk">
                 <div v-for="course in courses">
-                  <el-checkbox @input="updateCourseSelection(year, course.name, $event)"
+                  <el-checkbox @input="updateCourseSelection(year, course, $event)"
                                :value="course.enabled">{{ course.name }}</el-checkbox>
                 </div>
               </div>
@@ -154,7 +154,7 @@
         }
       },
       updateCourseSelection(year, course, enabled) {
-        const path = [this.programme, year, course];
+        const path = [this.programme.acronym, year, course.name];
         this.changeCourseEnabled({ path, enabled });
       },
       programmeChanged() {

@@ -17,19 +17,19 @@
       <div>
         <template v-for="(course, index) in selectedCourses">
           <div class="lesson" :class="{'lesson-even': index % 2 === 0}">
-            <div class="class-name">{{ course.name }} ({{ course.code }})</div>
+            <div class="class-name">{{ course.name }} ({{ course.acronym }})</div>
             <div class="select">
               <select :value="course.selectedClass" @change="updateSelectedPractical(course, $event)">
                 <option></option>
-                <option v-for="c in course.practical"
-                        :value="c.class"
-                        v-text="[c.class, c.teacher, `${$lang[`DAY_SHORT${c.day + 1}`]} ${c.timeStart}`].join(' - ')"/>
+                <option v-for="c in course.practicals"
+                        :value="c.class_name"
+                        v-text="[c.class_name, c.teacher_acronym, `${$lang[`DAY_SHORT${c.day + 1}`]} ${c.timeStart}`].join(' - ')"/>
               </select>
             </div>
             <el-checkbox v-if="course.lectures.length"
                          :value="course.lectureEnabled"
                          @input="updateLecture(course, $event)">{{ $lang.LECTURES }}</el-checkbox><!--
-       --><el-checkbox v-if="course.practical.length"
+       --><el-checkbox v-if="course.practicals.length"
                        :value="course.practicalEnabled"
                        @input="updatePractical(course, $event)">{{ $lang.PRACTICALS }}</el-checkbox>
             <div class="conflicts-info" v-if="course.lectureConflicts">{{ $lang.LECTURE_CONFLICTS }}: {{ course.lectureConflicts.join(', ') }}</div>
@@ -58,7 +58,7 @@
         return enabled > 0 && enabled < total ? null : enabled === total;
       },
       practicalGlobalState() {
-        const lessons = this.selectedCourses.filter(c => c.practical.length);
+        const lessons = this.selectedCourses.filter(c => c.practicals.length);
         const enabled = lessons.filter(c => c.practicalEnabled).length;
         const total = lessons.length;
         return enabled > 0 && enabled < total ? null : enabled === total;
