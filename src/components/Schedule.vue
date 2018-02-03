@@ -6,7 +6,7 @@
  --><div class="schedule-days">
       <Column class="schedule-column" :slots="slotsPerColumn" :name="day" v-for="(day, i) in days" :key="i">
         <transition-group name="fade">
-          <Lesson v-for="c in lessonsByDay[i + 1]"
+          <Lesson v-for="c in lessonsByDay[i]"
                  :key="c.id"
                  :name="c.course"
                  :className="c.composed_class_name || c.class_name"

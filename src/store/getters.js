@@ -29,7 +29,6 @@ export function _selectedCourses(state) {
           courses.push({
             path,
             ...course,
-            classes: uniq(course.practicals.map(c => c.class_name)),
             lectureEnabled: !state.disabledLectures[path],
             practicalEnabled: !state.disabledPracticals[path],
             selectedClass: state.selectedPracticals[path],
@@ -79,16 +78,23 @@ export function lessonsByDay(state, getters) {
 
 export function selectedCourses(state, getters) {
   if (getters._selectedCourses === null) return null;
-  const lessons = flatten(Object.values(getters.lessonsByDay)).filter(lesson => lesson.conflicts);
+  const lessons = flatten(Object.values(getters.lessonsByDay));
+  const lessonsWithConflits = lessons.filter(lesson => lesson.conflicts);
   const conflicts = flow([
-    _ => groupBy(_, l => `${l.courseId}-${l.type === 'T'}`),
+    _ => groupBy(_, l => `${l.courseId}-${l.lesson_type === 'T'}`),
     _ => mapValues(_, flow(arr => arr.map(l => l.conflicts), flatten, uniq)),
-  ])(lessons);
+  ])(lessonsWithConflits);
 
   return getters._selectedCourses.map(course => ({
     ...course,
     lectureConflicts: conflicts[`${course.id}-true`] || null,
     practicalConflicts: conflicts[`${course.id}-false`] || null,
+    classes: course.classes.map(c => ({
+      className: c.className,
+      description: c.teacherAcronym
+        ? [c.className, c.teacherAcronym, `${getters.lang[`DAY_SHORT${c.day + 2}`]} ${c.timeStart}`].join(' - ')
+        : c.className,
+    })),
   }));
 }
 

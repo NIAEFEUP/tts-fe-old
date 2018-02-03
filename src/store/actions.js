@@ -1,6 +1,7 @@
 import mapValues from 'lodash/mapValues';
 import keyBy from 'lodash/keyBy';
 import groupBy from 'lodash/groupBy';
+import uniq from 'lodash/uniq';
 import Vue from 'vue';
 import * as mutationTypes from './mutation-types';
 
@@ -43,9 +44,10 @@ function fixedLesson(course, lesson) {
     ...lesson,
     course: course.acronym,
     courseId: course.id,
-    day: lesson.day || 1, // FIXME
+    day: lesson.day,
+    duration: Number(lesson.duration),
     start_time: Number(lesson.start_time),
-    time: `${formatTime(lesson.start_time)} - ${formatTime(Number(lesson.start_time) + lesson.duration / 2)}`,
+    time: `${formatTime(lesson.start_time)} - ${formatTime(Number(lesson.start_time) + Number(lesson.duration))}`,
     timeStart: formatTime(lesson.start_time),
   };
 }
@@ -57,6 +59,20 @@ async function fetchProgrammeData(programme) {
     /* eslint-disable no-param-reassign */
     course.lectures = course.schedules.filter(l => l.lesson_type === 'T').map(fixedLesson.bind(0, course));
     course.practicals = course.schedules.filter(l => l.lesson_type !== 'T').map(fixedLesson.bind(0, course));
+    course.classes = uniq(course.practicals.map(c => c.class_name))
+      .map((className) => {
+        const practicalClass = course.practicals
+          .find(l => l.courseId === course.id && l.class_name === className);
+
+        if (!practicalClass) return { className };
+
+        return {
+          className,
+          day: practicalClass.day,
+          timeStart: practicalClass.timeStart,
+          teacherAcronym: practicalClass.teacher_acronym,
+        };
+      });
     delete course.schedules;
     /* eslint-enable no-param-reassign */
   });

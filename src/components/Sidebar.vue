@@ -21,9 +21,9 @@
             <div class="select">
               <select :value="course.selectedClass" @change="updateSelectedPractical(course, $event)">
                 <option></option>
-                <option v-for="c in course.practicals"
-                        :value="c.class_name"
-                        v-text="[c.class_name, c.teacher_acronym, `${$lang[`DAY_SHORT${c.day + 1}`]} ${c.timeStart}`].join(' - ')"/>
+                <option v-for="c in course.classes"
+                        :value="c.className"
+                        v-text="c.description"/>
               </select>
             </div>
             <el-checkbox v-if="course.lectures.length"
