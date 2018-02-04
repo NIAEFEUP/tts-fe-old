@@ -7,11 +7,11 @@
       width="100%"
       :before-close="beforeClose"
       top="0">
-    <div>
+    <div class="selections-container">
       <div class="year-semester">
         {{ $lang.YEAR }}:&nbsp;
         <span class="select select-year" :class="{ disabled: years.loading }">
-          <select v-model="year" @input="yearChanged($event.target.value)" :disabled="years.loading">
+          <select :value="year" @input="yearChanged($event.target.value)" :disabled="years.loading">
             <option v-for="year in years.list" v-text="`${year}/${+year + 1}`" :value="year"></option>
           </select>
         </span><!--
@@ -20,12 +20,14 @@
             <Spinner size="20px"></Spinner>
           </span>
         </span><!--
-     -->{{ $lang.SEMESTER }}:&nbsp;
-        <span class="select" :class="{ disabled: years.loading }">
-          <select :value="semester" @input="semesterChanged($event.target.value)" :disabled="years.loading">
-            <option v-text="1" :value="1"></option>
-            <option v-text="2" :value="2"></option>
-          </select>
+     --><span class="semester-container">
+          {{ $lang.SEMESTER }}:&nbsp;
+          <span class="select" :class="{ disabled: years.loading }">
+            <select :value="semester" @input="semesterChanged($event.target.value)" :disabled="years.loading">
+              <option v-text="1" :value="1"></option>
+              <option v-text="2" :value="2"></option>
+            </select>
+          </span>
         </span>
       </div>
       <div>
@@ -265,8 +267,9 @@
     position: relative;
     height: 18px;
     width: 20px;
-    vertical-align: text-top;
+    vertical-align: middle;
     display: inline-block;
+    margin: 8px 0;
 
     .spinner {
       position: absolute;
@@ -299,6 +302,9 @@
     border-radius: 3px;
     overflow: hidden;
     background: #fafafa url("../assets/carret.svg") no-repeat 97% 50%;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: middle;
 
     &.disabled {
       background-color: #ddd;
@@ -351,7 +357,14 @@
   .select-large {
     &, select {
       width: 500px;
-      max-width: 100%;
+      max-width: calc(100% - 22px);
     }
+  }
+
+  .semester-container {
+    white-space: nowrap;
+    display: inline-block;
+    margin-top: 8px;
+    margin-right: 30px;
   }
 </style>
