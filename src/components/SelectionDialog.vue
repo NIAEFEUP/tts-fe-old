@@ -32,27 +32,31 @@
       </div>
       <div>
         Faculdade:&nbsp;
-        <span class="select select-large" :class="{ disabled: schools.loading }">
-          <select @change="schoolChanged" v-model="school" :disabled="schools.loading">
-            <option v-for="school in schools.list" v-text="school.name" :value="school"></option>
-          </select>
-        </span><!--
-     --><span class="spinner-wrapper">
-          <span v-show="schools.loading">
-            <Spinner size="20px"></Spinner>
+        <span style="white-space: nowrap">
+          <span class="select select-large" :class="{ disabled: schools.loading }">
+            <select @change="schoolChanged" v-model="school" :disabled="schools.loading">
+              <option v-for="school in schools.list" v-text="school.name" :value="school"></option>
+            </select>
+          </span><!--
+       --><span class="spinner-wrapper">
+            <span v-show="schools.loading">
+              <Spinner size="20px"></Spinner>
+            </span>
           </span>
         </span>
       </div>
       <div>
         {{ $lang.PROGRAMME }}:&nbsp;
-        <span class="select select-large" :class="{ disabled: programmes.loading || !school }">
-          <select @change="programmeChanged" v-model="programme" :disabled="programmes.loading || !school">
-            <option v-for="programme in programmes.list" :value="programme">{{ programme.name }}</option>
-          </select>
-        </span><!--
-     --><span class="spinner-wrapper">
-          <span v-show="programmes.loading || scheduleLoading">
-            <Spinner size="20px"></Spinner>
+        <span style="white-space: nowrap">
+          <span class="select select-large" :class="{ disabled: programmes.loading || !school }">
+            <select @change="programmeChanged" v-model="programme" :disabled="programmes.loading || !school">
+              <option v-for="programme in programmes.list" :value="programme">{{ programme.name }}</option>
+            </select>
+          </span><!--
+       --><span class="spinner-wrapper">
+            <span v-show="programmes.loading || scheduleLoading">
+              <Spinner size="20px"></Spinner>
+            </span>
           </span>
         </span>
       </div>
@@ -305,6 +309,7 @@
     max-width: 100%;
     display: inline-block;
     vertical-align: middle;
+    text-align: left;
 
     &.disabled {
       background-color: #ddd;
@@ -312,7 +317,7 @@
 
     > select {
       color: #333;
-      padding: 5px 20px 1px 2px;
+      padding: 0 10px 0 2px;
       min-width: 120px;
       border: none;
       box-shadow: none;
@@ -336,6 +341,8 @@
   }
 
   .year-semester  {
+    margin-bottom: 8px;
+
     .select, .select select {
       width: 65px;
       min-width: 65px;
