@@ -99,11 +99,7 @@ export function selectedCourses(state, getters) {
 }
 
 export function programmes(state) {
-  return {
-    ...state.programmes,
-    list: state.programmes.list && state.programmes.list
-      .filter(course => String(course.faculty_id) === state.selectedSchool),
-  };
+  return state.programmes;
 }
 
 export function years(state) {
@@ -122,12 +118,16 @@ export function selectedSemester(state) {
   return state.selectedSemester;
 }
 
+export function selectedSchool(state) {
+  return state.selectedSchool;
+}
+
 export function selectedProgramme(state) {
   return state.selectedProgramme;
 }
 
 export function programmeInfo(state) {
-  const programme = state.selectedProgramme && state.selectedProgramme.acronym;
+  const programme = state.selectedProgramme && state.selectedProgramme.fullAcronym;
   if (!programme || !state.schedule.data[programme]) return null;
   return Object.entries(state.schedule.data[programme])
     .reduce((obj, [year, courses]) =>

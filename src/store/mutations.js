@@ -30,7 +30,7 @@ export default {
   },
   [types.SET_PROGRAMMES](state, data) {
     state.programmes.loading = false;
-    state.programmes.list = data;
+    Vue.set(state.programmes, 'list', data);
   },
   [types.SET_SCHOOLS_LOADING](state, isLoading) {
     state.schools.loading = isLoading;
@@ -75,8 +75,8 @@ export default {
   [types.SET_SELECTED_PROGRAMME](state, programme) {
     state.selectedProgramme = programme;
   },
-  [types.SET_SELECTED_SCHOOL](state, schoolId) {
-    state.selectedSchool = schoolId;
+  [types.SET_SELECTED_SCHOOL](state, school) {
+    state.selectedSchool = school;
   },
   [types.SET_SELECTED_YEAR](state, programme) {
     state.selectedYear = programme;
@@ -99,14 +99,14 @@ export default {
     }
   },
   [types.CHANGE_YEAR_COURSES_ENABLED](state, { programme, year, courses, enabled }) {
-    if (!state.enabledCourses[programme.acronym]) {
-      Vue.set(state.enabledCourses, programme.acronym, {});
+    if (!state.enabledCourses[programme.fullAcronym]) {
+      Vue.set(state.enabledCourses, programme.fullAcronym, {});
     }
     if (enabled) {
       const obj = courses.reduce((o, course) => ({ ...o, [course]: true }), {});
-      Vue.set(state.enabledCourses[programme.acronym], year, obj);
+      Vue.set(state.enabledCourses[programme.fullAcronym], year, obj);
     } else {
-      state.enabledCourses[programme.acronym][year] = {};
+      state.enabledCourses[programme.fullAcronym][year] = {};
     }
   },
   [types.RESET](state) {

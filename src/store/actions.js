@@ -7,7 +7,7 @@ import * as mutationTypes from './mutation-types';
 
 export function fetchYears({ commit }) {
   commit(mutationTypes.SET_YEARS_LOADING, true);
-  return Promise.resolve(['2017/2018'])
+  return Promise.resolve([2017])
     .then(data => commit(mutationTypes.SET_YEARS, data));
 }
 
@@ -17,16 +17,25 @@ export function fetchSchools({ commit }) {
     .then(({ data }) => commit(mutationTypes.SET_SCHOOLS, data));
 }
 
-export function fetchProgrammes({ commit }, schoolId) {
+export function fetchProgrammes({ commit }, school) {
   commit(mutationTypes.SET_PROGRAMMES_LOADING, true);
-  return Vue.axios.get(`faculties/${schoolId}/courses`)
-    .then(({ data }) => commit(mutationTypes.SET_PROGRAMMES,
-      data.sort((a, b) => a.name.localeCompare(b.name)))); // TODO - sort on the server
+  return Vue.axios.get(`faculties/${school.id}/courses`)
+    .then(({ data }) => {
+      const programmes = data
+        .sort((a, b) => a.name.localeCompare(b.name)) // TODO - sort on the server
+        .map(programme => ({
+          ...programme,
+          schoolAcronym: school.acronym.toUpperCase(),
+          fullAcronym: `${school.acronym.toUpperCase()}-${programme.acronym}`,
+        }));
+      commit(mutationTypes.SET_PROGRAMMES, programmes);
+      return programmes;
+    });
 }
 
-export function setSchool({ commit, dispatch }, schoolId) {
-  commit(mutationTypes.SET_SELECTED_SCHOOL, schoolId);
-  return dispatch('fetchProgrammes', schoolId);
+export function setSchool({ commit, dispatch }, school) {
+  commit(mutationTypes.SET_SELECTED_SCHOOL, school);
+  return dispatch('fetchProgrammes', school);
 }
 
 function zeroPad(num) {
@@ -52,14 +61,15 @@ function fixedLesson(course, lesson) {
   };
 }
 
-async function fetchProgrammeData(programme) {
-  const { data: courses } = await Vue.axios.get(`/courses/${programme.id}/schedules`);
+async function fetchProgrammeData(programme, year, semester) {
+  const { data: courses } = await Vue.axios.get(`/courses/${programme.id}/${year}/${semester}/schedules`);
 
   courses.forEach((course) => {
     /* eslint-disable no-param-reassign */
     course.lectures = course.schedules.filter(l => l.lesson_type === 'T').map(fixedLesson.bind(0, course));
     course.practicals = course.schedules.filter(l => l.lesson_type !== 'T').map(fixedLesson.bind(0, course));
     course.classes = uniq(course.practicals.map(c => c.class_name))
+      .sort((a, b) => a.localeCompare(b))
       .map((className) => {
         const practicalClass = course.practicals
           .find(l => l.courseId === course.id && l.class_name === className);
@@ -81,26 +91,36 @@ async function fetchProgrammeData(programme) {
   return mapValues(coursesPerYear, coursesYear => keyBy(coursesYear, 'acronym'));
 }
 
-export function getScheduleData({ commit, state }, programme) {
+export function getScheduleData({ commit, state, getters }, programme) {
   commit(mutationTypes.SET_SELECTED_PROGRAMME, programme);
-  if (!programme || state.schedule.data[programme.acronym]
+  if (!programme || state.schedule.data[programme.fullAcronym]
       || !state.selectedYear || !state.selectedSemester) {
     return Promise.resolve();
   }
   commit(mutationTypes.SET_SCHEDULE_LOADING, true);
-  return fetchProgrammeData(programme)
-    .then(data => commit(mutationTypes.ADD_SCHEDULE_DATA, { [programme.acronym]: data }))
+  return fetchProgrammeData(programme, getters.selectedYear, getters.selectedSemester)
+    .then(data => commit(mutationTypes.ADD_SCHEDULE_DATA, { [programme.fullAcronym]: data }))
     .finally(() => commit(mutationTypes.SET_SCHEDULE_LOADING, false));
 }
 
-export function getMultipleScheduleData({ commit }, programmes) {
-  if (programmes.length === 1) {
-    commit(mutationTypes.SET_SELECTED_PROGRAMME, programmes[0]);
-  }
+// eslint-disable-next-line max-len
+export async function getMultipleScheduleData({ commit, dispatch, getters }, { programmes, year, semester }) {
+  await dispatch('fetchSchools');
   commit(mutationTypes.SET_SCHEDULE_LOADING, true);
   const promises = programmes
-    .map(p => fetchProgrammeData(p)
-      .then(data => commit(mutationTypes.ADD_SCHEDULE_DATA, { [p]: data })));
+    .map(async (fullAcronym) => {
+      const [schoolAcronym, programmeAcronym] = fullAcronym.toUpperCase().split('-');
+      const school = getters.schools.list.find(s => s.acronym.toUpperCase() === schoolAcronym);
+      const schoolProgrammes = await dispatch('fetchProgrammes', school);
+      const programme = schoolProgrammes.find(p => p.acronym.toUpperCase() === programmeAcronym);
+      const programmeData = await fetchProgrammeData(programme, year, semester);
+      commit(mutationTypes.ADD_SCHEDULE_DATA, { [fullAcronym]: programmeData });
+
+      commit(mutationTypes.SET_SELECTED_SCHOOL, school);
+      if (programmes.length === 1) {
+        commit(mutationTypes.SET_SELECTED_PROGRAMME, programme);
+      }
+    });
   return Promise.all(promises)
     .finally(() => commit(mutationTypes.SET_SCHEDULE_LOADING, false));
 }
@@ -108,11 +128,11 @@ export function getMultipleScheduleData({ commit }, programmes) {
 export async function parseUrl({ state, commit, dispatch }, url) {
   const [year, semester, ...programmesCourses] = url.split('|');
 
-  commit(mutationTypes.SET_SELECTED_YEAR, year);
+  commit(mutationTypes.SET_SELECTED_YEAR, Number(year));
   commit(mutationTypes.SET_SELECTED_SEMESTER, Number(semester));
 
   const programmes = programmesCourses.map(programmeCourses => programmeCourses.split('~', 1)[0]);
-  await dispatch('getMultipleScheduleData', programmes);
+  await dispatch('getMultipleScheduleData', { programmes, year, semester });
 
   programmesCourses.forEach((programmeCourses) => {
     const [programme, ...coursesClasses] = programmeCourses.split('~');

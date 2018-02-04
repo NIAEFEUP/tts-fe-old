@@ -144,8 +144,10 @@
 
     > select {
       color: #fff;
-      padding: 0 6px;
+      padding: 0 16px 0 6px;
       width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
       border: none;
       box-shadow: none;
       background: transparent none;

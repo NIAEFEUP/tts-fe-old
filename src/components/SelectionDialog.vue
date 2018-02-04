@@ -12,7 +12,7 @@
         {{ $lang.YEAR }}:&nbsp;
         <span class="select select-year" :class="{ disabled: years.loading }">
           <select v-model="year" @input="yearChanged($event.target.value)" :disabled="years.loading">
-            <option v-for="year in years.list" v-text="year" :value="year"></option>
+            <option v-for="year in years.list" v-text="`${year}/${+year + 1}`" :value="year"></option>
           </select>
         </span><!--
      --><span class="spinner-wrapper">
@@ -23,16 +23,16 @@
      -->{{ $lang.SEMESTER }}:&nbsp;
         <span class="select" :class="{ disabled: years.loading }">
           <select :value="semester" @input="semesterChanged($event.target.value)" :disabled="years.loading">
-            <!--<option v-text="1" :value="1"></option>-->
+            <option v-text="1" :value="1"></option>
             <option v-text="2" :value="2"></option>
           </select>
         </span>
       </div>
       <div>
         Faculdade:&nbsp;
-        <span class="select" :class="{ disabled: schools.loading }">
-          <select @change="setSchool($event.target.value)" v-model="school" :disabled="schools.loading">
-            <option v-for="school in schools.list" v-text="school.name" :value="school.id"></option>
+        <span class="select select-large" :class="{ disabled: schools.loading }">
+          <select @change="schoolChanged" v-model="school" :disabled="schools.loading">
+            <option v-for="school in schools.list" v-text="school.name" :value="school"></option>
           </select>
         </span><!--
      --><span class="spinner-wrapper">
@@ -43,8 +43,8 @@
       </div>
       <div>
         {{ $lang.PROGRAMME }}:&nbsp;
-        <span class="select" :class="{ disabled: programmes.loading }">
-          <select @change="programmeChanged" v-model="programme" :disabled="programmes.loading">
+        <span class="select select-large" :class="{ disabled: programmes.loading || !school }">
+          <select @change="programmeChanged" v-model="programme" :disabled="programmes.loading || !school">
             <option v-for="programme in programmes.list" :value="programme">{{ programme.name }}</option>
           </select>
         </span><!--
@@ -55,7 +55,7 @@
         </span>
       </div>
       <transition name="collapse" @enter="beforeAnimation" @leave="beforeAnimation" @after-enter="afterEnter">
-        <div class="years" v-if="chunkedInfo" :key="programme.id">
+        <div class="years" v-if="chunkedInfo" :key="programme && programme.id">
           <div class="year" v-for="(coursesChunk, year) in chunkedInfo">
             <div class="year-name">
               <el-checkbox :value="checkedPerYear[year]"
@@ -110,6 +110,7 @@
         scheduleLoading: 'scheduleLoading',
         coursesDialogVisible: 'coursesDialogVisible',
         selectedProgramme: 'selectedProgramme',
+        selectedSchool: 'selectedSchool',
       }),
       chunkedInfo() {
         if (!this.programmeInfo) return null;
@@ -157,6 +158,11 @@
         const path = [this.programme.acronym, year, course.name];
         this.changeCourseEnabled({ path, enabled });
       },
+      schoolChanged() {
+        this.setSchool(this.school);
+        this.programme = null;
+        this.programmeChanged();
+      },
       programmeChanged() {
         this.getScheduleData(this.programme);
       },
@@ -191,6 +197,7 @@
         this.$refs.dialog.$el.scrollTop = 0;
         if (visible) {
           this.programme = this.selectedProgramme;
+          this.school = this.selectedSchool;
         }
       },
     },
@@ -338,6 +345,13 @@
       .spinner {
         left: 6px;
       }
+    }
+  }
+
+  .select-large {
+    &, select {
+      width: 500px;
+      max-width: 100%;
     }
   }
 </style>
