@@ -43,7 +43,7 @@
         this.setCoursesDialogVisibility(true);
       }
       this.fetchYears();
-      this.fetchProgrammes();
+      this.fetchSchools();
     },
     watch: {
       locationHash(value) {
@@ -69,6 +69,7 @@
       }),
       ...mapActions({
         fetchYears: 'fetchYears',
+        fetchSchools: 'fetchSchools',
         fetchProgrammes: 'fetchProgrammes',
         parseUrl: 'parseUrl',
       }),

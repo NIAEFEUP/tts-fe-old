@@ -87,6 +87,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    overflow: hidden;
 
     &.lesson-horizontal {
       width: 150px;
@@ -135,6 +136,9 @@
   .time, .lesson-class, .room, .teacher {
     font-size: 10px;
     line-height: 10px;
+  }
+  .room {
+    margin-right: 4px;
   }
   .name {
     line-height: 15px;

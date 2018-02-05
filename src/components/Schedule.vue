@@ -6,15 +6,15 @@
  --><div class="schedule-days">
       <Column class="schedule-column" :slots="slotsPerColumn" :name="day" v-for="(day, i) in days" :key="i">
         <transition-group name="fade">
-          <Lesson v-for="c in lessonsByDay[i + 1]"
-                 :key="`${c.name}-${c.cclass}-${c.type}-${c.day}-${c.hour}`"
-                 :name="c.name"
-                 :className="c.cclass"
-                 :room="c.room"
-                 :teacher="c.teacher"
-                 :type="c.type"
-                 :height="`${c.duration * boxHeight}px`"
-                 :top="`${(c.hour - start) * 2 * boxHeight + 0.5}px`"
+          <Lesson v-for="c in lessonsByDay[i]"
+                 :key="c.id"
+                 :name="c.course"
+                 :className="c.composed_class_name || c.class_name"
+                 :room="c.location"
+                 :teacher="c.teacher_acronym"
+                 :type="c.lesson_type"
+                 :height="`${2 * c.duration * boxHeight}px`"
+                 :top="`${(c.start_time - start) * 2 * boxHeight + 0.5}px`"
                  :time="c.time"
                  :conflicts="!!c.conflicts"></Lesson>
         </transition-group>
@@ -23,16 +23,18 @@
   </div>
   <div class="schedule schedule-sm" v-else>
     <Column class="schedule-column" horizontal :slots="slotsPerColumn" :name="day" v-for="(day, i) in days" :key="i">
-      <Lesson v-for="c in lessonsByDay[i + 1]"
+      <Lesson v-for="c in lessonsByDay[i]"
              horizontal
-             :key="`${c.name}-${c.cclass}-${c.type}-${c.day}-${c.hour}`"
-             :name="c.name"
-             :className="c.class"
-             :room="c.room"
-             :teacher="c.teacher"
-             :type="c.type"
-             :time="c.time"
-             :conflicts="!!c.conflicts"></Lesson>
+              :key="c.id"
+              :name="c.course"
+              :className="c.composed_class_name || c.class_name"
+              :room="c.location"
+              :teacher="c.teacher_acronym"
+              :type="c.lesson_type"
+              :height="`${2 * c.duration * boxHeight}px`"
+              :top="`${(c.start_time - start) * 2 * boxHeight + 0.5}px`"
+              :time="c.time"
+              :conflicts="!!c.conflicts"></Lesson>
     </Column>
   </div>
 </template>

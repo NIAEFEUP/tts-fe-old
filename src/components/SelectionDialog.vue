@@ -7,12 +7,12 @@
       width="100%"
       :before-close="beforeClose"
       top="0">
-    <div>
+    <div class="selections-container">
       <div class="year-semester">
         {{ $lang.YEAR }}:&nbsp;
-        <span class="select" :class="{ disabled: years.loading }">
-          <select v-model="year" @input="yearChanged($event.target.value)" :disabled="years.loading">
-            <option v-for="year in years.list" v-text="year" :value="year"></option>
+        <span class="select select-year" :class="{ disabled: years.loading }">
+          <select :value="year" @input="yearChanged($event.target.value)" :disabled="years.loading">
+            <option v-for="year in years.list" v-text="`${year}/${+year + 1}`" :value="year"></option>
           </select>
         </span><!--
      --><span class="spinner-wrapper">
@@ -20,39 +20,58 @@
             <Spinner size="20px"></Spinner>
           </span>
         </span><!--
-     -->{{ $lang.SEMESTER }}:&nbsp;
-        <span class="select" :class="{ disabled: years.loading }">
-          <select :value="semester" @input="semesterChanged($event.target.value)" :disabled="years.loading">
-            <option v-text="1" :value="1"></option>
-            <option v-text="2" :value="2"></option>
-          </select>
+     --><span class="semester-container">
+          {{ $lang.SEMESTER }}:&nbsp;
+          <span class="select" :class="{ disabled: years.loading }">
+            <select :value="semester" @input="semesterChanged($event.target.value)" :disabled="years.loading">
+              <option v-text="1" :value="1"></option>
+              <option v-text="2" :value="2"></option>
+            </select>
+          </span>
+        </span>
+      </div>
+      <div>
+        Faculdade:&nbsp;
+        <span style="white-space: nowrap">
+          <span class="select select-large" :class="{ disabled: schools.loading }">
+            <select @change="schoolChanged" v-model="school" :disabled="schools.loading">
+              <option v-for="school in schools.list" v-text="school.name" :value="school"></option>
+            </select>
+          </span><!--
+       --><span class="spinner-wrapper">
+            <span v-show="schools.loading">
+              <Spinner size="20px"></Spinner>
+            </span>
+          </span>
         </span>
       </div>
       <div>
         {{ $lang.PROGRAMME }}:&nbsp;
-        <span class="select" :class="{ disabled: programmes.loading }">
-          <select @change="programmeChanged" v-model="programme" :disabled="programmes.loading">
-            <option v-for="programme in programmes.list" v-text="programme" :value="programme"></option>
-          </select>
-        </span><!--
-     --><span class="spinner-wrapper">
-          <span v-show="programmes.loading || scheduleLoading">
-            <Spinner size="20px"></Spinner>
+        <span style="white-space: nowrap">
+          <span class="select select-large" :class="{ disabled: programmes.loading || !school }">
+            <select @change="programmeChanged" v-model="programme" :disabled="programmes.loading || !school">
+              <option v-for="programme in programmes.list" :value="programme">{{ programme.name }}</option>
+            </select>
+          </span><!--
+       --><span class="spinner-wrapper">
+            <span v-show="programmes.loading || scheduleLoading">
+              <Spinner size="20px"></Spinner>
+            </span>
           </span>
         </span>
       </div>
       <transition name="collapse" @enter="beforeAnimation" @leave="beforeAnimation" @after-enter="afterEnter">
-        <div class="years" v-if="chunkedInfo" :key="programme">
+        <div class="years" v-if="chunkedInfo" :key="programme && programme.id">
           <div class="year" v-for="(coursesChunk, year) in chunkedInfo">
             <div class="year-name">
               <el-checkbox :value="checkedPerYear[year]"
                            :indeterminate="checkedPerYear[year] == null"
-                           @change="handleCheckAllChange(year, $event)">{{year}}</el-checkbox>
+                           @change="handleCheckAllChange(year, $event)">{{year}}º ano</el-checkbox>
             </div>
             <div class="courses">
               <div v-for="courses in coursesChunk">
                 <div v-for="course in courses">
-                  <el-checkbox @input="updateCourseSelection(year, course.name, $event)"
+                  <el-checkbox @input="updateCourseSelection(year, course, $event)"
                                :value="course.enabled">{{ course.name }}</el-checkbox>
                 </div>
               </div>
@@ -82,6 +101,7 @@
     data() {
       return {
         programme: null,
+        school: null,
       };
     },
     computed: {
@@ -90,11 +110,13 @@
         year: 'selectedYear',
         semester: 'selectedSemester',
         programmes: 'programmes',
+        schools: 'schools',
         selectedCourses: 'selectedCourses',
         programmeInfo: 'programmeInfo',
         scheduleLoading: 'scheduleLoading',
         coursesDialogVisible: 'coursesDialogVisible',
         selectedProgramme: 'selectedProgramme',
+        selectedSchool: 'selectedSchool',
       }),
       chunkedInfo() {
         if (!this.programmeInfo) return null;
@@ -119,6 +141,7 @@
     methods: {
       ...mapActions({
         getScheduleData: 'getScheduleData',
+        setSchool: 'setSchool',
       }),
       ...mapMutations({
         changeCourseEnabled: mutationTypes.CHANGE_COURSE_ENABLED,
@@ -138,8 +161,13 @@
         }
       },
       updateCourseSelection(year, course, enabled) {
-        const path = [this.programme, year, course];
+        const path = [this.programme.acronym, year, course.name];
         this.changeCourseEnabled({ path, enabled });
+      },
+      schoolChanged() {
+        this.setSchool(this.school);
+        this.programme = null;
+        this.programmeChanged();
       },
       programmeChanged() {
         this.getScheduleData(this.programme);
@@ -175,6 +203,7 @@
         this.$refs.dialog.$el.scrollTop = 0;
         if (visible) {
           this.programme = this.selectedProgramme;
+          this.school = this.selectedSchool;
         }
       },
     },
@@ -242,8 +271,9 @@
     position: relative;
     height: 18px;
     width: 20px;
-    vertical-align: text-top;
+    vertical-align: middle;
     display: inline-block;
+    margin: 8px 0;
 
     .spinner {
       position: absolute;
@@ -276,6 +306,10 @@
     border-radius: 3px;
     overflow: hidden;
     background: #fafafa url("../assets/carret.svg") no-repeat 97% 50%;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
 
     &.disabled {
       background-color: #ddd;
@@ -283,7 +317,7 @@
 
     > select {
       color: #333;
-      padding: 5px 20px 1px 2px;
+      padding: 0 10px 0 2px;
       min-width: 120px;
       border: none;
       box-shadow: none;
@@ -307,11 +341,17 @@
   }
 
   .year-semester  {
+    margin-bottom: 8px;
+
     .select, .select select {
       width: 65px;
       min-width: 65px;
     }
 
+    .select-year, .select-year select {
+      width: 100px;
+      min-width: 100px;
+    }
 
     .spinner-wrapper {
       margin-right: 8px;
@@ -319,5 +359,19 @@
         left: 6px;
       }
     }
+  }
+
+  .select-large {
+    &, select {
+      width: 500px;
+      max-width: calc(100% - 22px);
+    }
+  }
+
+  .semester-container {
+    white-space: nowrap;
+    display: inline-block;
+    margin-top: 8px;
+    margin-right: 30px;
   }
 </style>
