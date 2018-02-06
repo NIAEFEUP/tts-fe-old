@@ -16,7 +16,7 @@ import store from './store/index';
 Vue.config.productionTip = false;
 
 const axiosInstance = Axios.create({
-  baseURL: String(process.env.API_BASE_URL),
+  baseURL: process.env.API_BASE_URL,
 });
 
 Vue.use(VueAxios, axiosInstance);

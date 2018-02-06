@@ -161,7 +161,7 @@
         }
       },
       updateCourseSelection(year, course, enabled) {
-        const path = [this.programme.acronym, year, course.name];
+        const path = [this.programme.fullAcronym, year, course.name];
         this.changeCourseEnabled({ path, enabled });
       },
       schoolChanged() {
