@@ -126,7 +126,7 @@ export async function getMultipleScheduleData({ commit, dispatch, getters }, { p
 }
 
 export async function parseUrl({ state, commit, dispatch }, url) {
-  const [year, semester, ...programmesCourses] = url.split('|');
+  const [year, semester, ...programmesCourses] = url.split('!');
 
   commit(mutationTypes.SET_SELECTED_YEAR, Number(year));
   commit(mutationTypes.SET_SELECTED_SEMESTER, Number(semester));

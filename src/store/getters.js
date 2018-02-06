@@ -152,7 +152,7 @@ export function coursesDialogVisible(state) {
 
 // eslint-disable-next-line no-unused-vars
 export function locationHash(state, getters) {
-  let string = `#${state.selectedYear}|${state.selectedSemester}`;
+  let string = `#${state.selectedYear}!${state.selectedSemester}`;
   const programmesCourses = {};
   if (!getters.selectedCourses || getters.selectedCourses.length === 0) return '#';
   getters.selectedCourses.forEach((course) => {
@@ -163,7 +163,7 @@ export function locationHash(state, getters) {
     programmesCourses[programme].push(`~${courseCode}.${selectedClass}`);
   });
   Object.entries(programmesCourses).forEach(([programme, courses]) => {
-    string += `|${programme}${courses.join('')}`;
+    string += `!${programme}${courses.join('')}`;
   });
   return string;
 }
