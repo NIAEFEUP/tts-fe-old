@@ -107,10 +107,10 @@
       }
     }
   }
-  .lesson-TP {
+  .lesson-TP, .lesson-P {
     background-color: #69656a;
   }
-  .lesson-PL {
+  .lesson-PL, .lesson-E, .lesson-OT, .lesson-S, .lesson-TC {
     background-color: #4f2e2e;
   }
   .lesson-conflict {
