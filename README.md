@@ -1,6 +1,11 @@
-# TimeTable-Selector-Web
+# tts-fe
 
-> A Vue.js project
+TimeTableSelector's Front-End, developed in Vue.js.
+
+## What is TimeTableSelector (tts)?
+
+TimeTableSelector is a tool for schedule planning for UPorto's students.
+Check it out at https://ni.fe.up.pt!
 
 ## Build Setup
 
