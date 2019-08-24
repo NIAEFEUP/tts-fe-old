@@ -7,7 +7,17 @@ import * as mutationTypes from './mutation-types';
 
 export function fetchYears({ commit }) {
   commit(mutationTypes.SET_YEARS_LOADING, true);
-  return Promise.resolve([2017])
+  const years = [];
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  // If we are in the second semester, use the base year instead of the actual current year
+  // For example, January of 2020 is 2020 but it is the second semester of 2019/2020
+  // Thus, the actual year should be 2019
+  const currentSchoolYear = today.getMonth() < 7 ? currentYear - 1 : currentYear;
+  for (let year = 2017; year <= currentSchoolYear; ++year) {
+    years.push(year);
+  }
+  return Promise.resolve(years)
     .then(data => commit(mutationTypes.SET_YEARS, data));
 }
 
