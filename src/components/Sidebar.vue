@@ -6,8 +6,8 @@
     <div class="global-checkboxes">
       <el-checkbox :value="lectureGlobalState"
                    :indeterminate="lectureGlobalState === null"
-                   @input="changeAllLectureStatus($event)">{{ $lang.LECTURES }}</el-checkbox><!--
-     --><el-checkbox :value="practicalGlobalState"
+                   @input="changeAllLectureStatus($event)">{{ $lang.LECTURES }}</el-checkbox>
+      <el-checkbox :value="practicalGlobalState"
                      :indeterminate="practicalGlobalState === null"
                      @input="changeAllPracticalStatus($event)">{{ $lang.PRACTICALS }}</el-checkbox>
     </div>
@@ -86,95 +86,3 @@
     },
   };
 </script>
-
-<style lang="scss" scoped>
-  @import '../styles/variables';
-
-  .sidebar {
-    width: 100%;
-    display: inline-block;
-    box-sizing: border-box;
-    text-align: left;
-    transform: translateZ(0);
-    border: 1px solid $border-color;
-    padding-top: 8px;
-  }
-
-  .lessons-container {
-    border-top: 1px solid $border-color;
-  }
-
-  .lesson {
-    padding: 10px;
-    color: #010101;
-    font-size: 15px;
-    box-sizing: border-box;
-
-    &:not(:last-child) {
-      border-bottom: 1px solid #bdbdbd;
-    }
-
-    .el-checkbox + .el-checkbox {
-      margin-left: 0;
-    }
-
-    .el-checkbox:not(:last-child) {
-      margin-right: 30px;
-    }
-  }
-
-  .buttons, .global-checkboxes {
-    padding: 0 10px;
-  }
-  .global-checkboxes {
-    padding-top: 6px;
-    padding-bottom: 8px;
-  }
-
-  .select {
-    display: block;
-    margin-bottom: 10px;
-    width: 100%;
-    max-width: 260px;
-    border: 1px solid #ccc;
-    height: 20px;
-    border-radius: 3.5px;
-    overflow: hidden;
-    background: #8c2d19 url("../assets/select-arrows.svg") no-repeat 98% 4px;
-
-    > select {
-      color: #fff;
-      padding: 0 16px 0 6px;
-      width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      border: none;
-      box-shadow: none;
-      background: transparent none;
-      appearance: none;
-      outline: none;
-      &:focus {
-        outline: none;
-        &::-ms-value {
-          background: none;
-        }
-      }
-      &::-ms-expand {
-        display: none;
-      }
-      option {
-        color: #000;
-      }
-    }
-  }
-
-  .class-name {
-    margin: 5px 0 10px;
-  }
-
-  .conflicts-info {
-    font-size: 12px;
-    margin-top: 4px;
-    color: $primary-color;
-  }
-</style>
