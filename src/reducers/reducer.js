@@ -1,5 +1,5 @@
 import * as actionTypes from "../actions/types";
-import { getCoursePaths } from "./simpleReducerHelper";
+import { getCoursePaths } from "./reducerHelper";
 
 const initialSchedulingState = Object.freeze({
     schedule: {

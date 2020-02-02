@@ -1,38 +1,29 @@
 import React from "react";
-import logo from "./logo.svg";
+import logo from "./logo-niaefeup.png";
 import { Provider } from "react-redux";
 
 import configureStore from "./configureStore";
 
-import "./App.css";
+import "./App.scss";
+import "element-theme-chalk";
+import SchedulePage from "./components/SchedulePage";
 
 const store = configureStore();
 
 const App = () => (
     <Provider store={store}>
-        <div className="App">
-            <header className="App-header">
+        <div id="app">
+            <header>
                 <img
                     src={logo}
-                    className="App-logo"
+                    className="logo"
                     alt="logo"
                 />
-                <p>
-                    Edit
-                    {" "}
-                    <code>src/App.js</code>
-                    {" "}
-                    and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                  Learn React
-                </a>
+                <span>Timetable Selector</span>
             </header>
+            <main>
+                <SchedulePage />
+            </main>
         </div>
     </Provider>
 );

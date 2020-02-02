@@ -130,13 +130,9 @@
         "react/jsx-equals-spacing": "error",
         "react/jsx-indent": ["error", 4],
         "react/jsx-indent-props": ["error", 4],
-        "react/jsx-one-expression-per-line": ["error", {
-            "allow": "literal"
-        }],
-        "react/jsx-max-props-per-line": ["error", {
-            "maximum": 1,
-            "when": "always" 
-        }],
+        // "react/jsx-one-expression-per-line": ["error", {
+        //     "allow": "literal"
+        // }],
         "react/jsx-first-prop-new-line": ["error", "multiline"],
         "react/jsx-no-comment-textnodes": "error",
         "react/jsx-no-duplicate-props": "error",

@@ -140,10 +140,10 @@ export const getMultipleScheduleData = (programmes, year, semester) => async (di
     dispatch(setScheduleLoading(false));
 };
 
-const setSelectedYear = createAction(types.SET_SELECTED_YEAR);
-const setSelectedSemester = createAction(types.SET_SELECTED_SEMESTER);
+export const setSelectedYear = createAction(types.SET_SELECTED_YEAR);
+export const setSelectedSemester = createAction(types.SET_SELECTED_SEMESTER);
 const changeCourseEnabled = createAction(types.CHANGE_COURSE_ENABLED);
-const changeSelectedPractical = createAction(types.CHANGE_SELECTED_PRACTICAL);
+export const changeSelectedPractical = createAction(types.CHANGE_SELECTED_PRACTICAL);
 
 export const parseUrl = (url) => async (dispatch, getState) => {
     const [year, semester, ...programmesCourses] = url.split("!");
