@@ -1,8 +1,8 @@
 import { createAction } from "redux-actions";
 
 import * as types from "./types";
-import config from "../config";
-import { fixedLesson, unique, groupBy, mapValues, keyBy } from "../lib/utils";
+import { fixedLesson } from "../lib/utils";
+import { uniq, groupBy, mapValues, keyBy } from "lodash";
 
 
 // Action creators (functions that return(/dispatch?) actions)
@@ -11,7 +11,7 @@ const setYearsLoading = createAction(types.SET_YEARS_LOADING);
 const setYears = createAction(types.SET_YEARS);
 
 export const fetchYears = () => async (dispatch) => {
-    dispatch(setYearsLoading());
+    dispatch(setYearsLoading(true));
 
     const years = [];
     const today = new Date();
@@ -25,27 +25,29 @@ export const fetchYears = () => async (dispatch) => {
     }
 
     const data = await Promise.resolve(years);
-    return dispatch(setYears(data));
+    dispatch(setYears(data));
+    dispatch(setYearsLoading(false));
 };
 
 const setSchoolsLoading = createAction(types.SET_SCHOOLS_LOADING);
 const setSchools = createAction(types.SET_SCHOOLS);
 
 export const fetchSchools = () => async (dispatch) => {
-    dispatch(setSchoolsLoading());
+    dispatch(setSchoolsLoading(true));
 
-    const res = await fetch(`${config.apiUri}/faculties`);
+    const res = await fetch("/api/faculties");
     const data = await res.json();
-    return dispatch(setSchools(data));
+    dispatch(setSchools(data));
+    dispatch(setSchoolsLoading(false));
 };
 
 const setProgrammesLoading = createAction(types.SET_PROGRAMMES_LOADING);
 const setProgrammes = createAction(types.SET_PROGRAMMES);
 
-export const fetchProgrammes = (school) => async (dispatch) => {
-    dispatch(setProgrammesLoading());
+const fetchProgrammes = (school) => async (dispatch) => {
+    dispatch(setProgrammesLoading(true));
 
-    const res = await fetch(`${config.apiUri}/faculties/${school.id}/courses`);
+    const res = await fetch(`/api/faculties/${school.id}/courses`);
     const data = await res.json();
     const programmes = data
         .sort((a, b) => a.name.localeCompare(b.name)) // TODO - sort on the server
@@ -56,6 +58,7 @@ export const fetchProgrammes = (school) => async (dispatch) => {
         }));
 
     dispatch(setProgrammes(programmes));
+    dispatch(setProgrammesLoading(false));
 };
 
 const setSelectedSchool = createAction(types.SET_SELECTED_SCHOOL);
@@ -66,13 +69,14 @@ export const setSchool = (school) => (dispatch) => {
 };
 
 const fetchProgrammeData = async (programme, year, semester) => {
-    const res = await fetch(`${config.apiUri}/courses/${programme.id}/${year}/${semester}/schedules`);
+    const res = await fetch(`/api/courses/${programme.id}/${year}/${semester}/schedules`);
     const data = await res.json();
+
     // TODO: What even is this?..
     const courses = data.map((course) => {
         const lectures = course.schedules.filter((l) => l.lesson_type === "T").map(fixedLesson.bind(0, course));
         const practicals = course.schedules.filter((l) => l.lesson_type !== "T").map(fixedLesson.bind(0, course));
-        const classes = unique(practicals.map((c) => c.class_name))
+        const classes = uniq(practicals.map((c) => c.class_name))
             .sort((a, b) => a.localeCompare(b))
             .map((className) => {
                 const practicalClass = practicals.find((l) => l.courseId === course.id && l.class_name === className);
@@ -92,6 +96,7 @@ const fetchProgrammeData = async (programme, year, semester) => {
             lectures,
             practicals,
             classes,
+            schedules: undefined,
         };
     });
 
@@ -108,17 +113,18 @@ export const getScheduleData = (programme) => async (dispatch, getState) => {
 
     const state = getState();
     if (!programme || state.schedule.data[programme.fullAcronym] || !state.selectedYear || !state.selectedSemester) {
-        await Promise.resolve();
+        return;
     }
 
-    dispatch(setScheduleLoading());
+    dispatch(setScheduleLoading(true));
     const data = await fetchProgrammeData(programme, state.selectedYear, state.selectedSemester);
     dispatch(addScheduleData({ [programme.fullAcronym]: data }));
+    dispatch(setScheduleLoading(false));
 };
 
 export const getMultipleScheduleData = (programmes, year, semester) => async (dispatch, getState) => {
     await dispatch(fetchSchools());
-    dispatch(setScheduleLoading());
+    dispatch(setScheduleLoading(true));
 
     const promises = programmes.map(async (fullAcronym) => {
         const [schoolAcronym, programmeAcronym] = fullAcronym.toUpperCase().split("-");
@@ -142,7 +148,7 @@ export const getMultipleScheduleData = (programmes, year, semester) => async (di
 
 export const setSelectedYear = createAction(types.SET_SELECTED_YEAR);
 export const setSelectedSemester = createAction(types.SET_SELECTED_SEMESTER);
-const changeCourseEnabled = createAction(types.CHANGE_COURSE_ENABLED);
+export const changeCourseEnabled = createAction(types.CHANGE_COURSE_ENABLED);
 export const changeSelectedPractical = createAction(types.CHANGE_SELECTED_PRACTICAL);
 
 export const parseUrl = (url) => async (dispatch, getState) => {

@@ -24,6 +24,7 @@ const Lesson = (props) => {
         className,
         room,
         teacher,
+        name,
     } = props;
     return (
         <div

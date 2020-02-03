@@ -21,15 +21,15 @@ const initialState = Object.freeze({
     selectedProgramme: null,
     schools: {
         loading: false,
-        list: null,
+        list: [],
     },
     years: {
         loading: false,
-        list: null,
+        list: [],
     },
     programmes: {
         loading: false,
-        list: null,
+        list: [],
     },
     ...initialSchedulingState,
 });
@@ -39,9 +39,9 @@ export default (state = initialState, action) => {
         case actionTypes.SET_COURSES_DIALOG_VISIBILITY:
             return { ...state, coursesDialogVisible: action.payload };
         case actionTypes.SET_SCHEDULE_LOADING:
-            return { ...state, schedule: { ...state.schedule, loading: true } };
+            return { ...state, schedule: { ...state.schedule, loading: action.payload } };
         case actionTypes.SET_PROGRAMMES_LOADING:
-            return { ...state, programmes: { ...state.programmes, loading: true } };
+            return { ...state, programmes: { ...state.programmes, loading: action.payload } };
         case actionTypes.ADD_SCHEDULE_DATA:
             return  {
                 ...state,
@@ -56,11 +56,11 @@ export default (state = initialState, action) => {
         case actionTypes.SET_PROGRAMMES:
             return { ...state, programmes: { ...state.programmes, loading: false, list: action.payload } };
         case actionTypes.SET_SCHOOLS_LOADING:
-            return { ...state, schools: { ...state.schools, loading: true } };
+            return { ...state, schools: { ...state.schools, loading: action.payload } };
         case actionTypes.SET_SCHOOLS:
             return { ...state, schools: { ...state.schools, loading: false, list: action.payload } };
         case actionTypes.SET_YEARS_LOADING:
-            return { ...state, years: { ...state.years, loading: true } };
+            return { ...state, years: { ...state.years, loading: action.payload } };
         case actionTypes.SET_YEARS:
             return { ...state, years: { ...state.years, loading: false, list: action.payload } };
         case actionTypes.CHANGE_LECTURE_STATUS:

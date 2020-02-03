@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import "./spinner.css";
+import "./Spinner.css";
 
 const Spinner = ({ size }) => (
     <svg

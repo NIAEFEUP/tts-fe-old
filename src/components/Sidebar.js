@@ -102,8 +102,8 @@ const Sidebar = () => {
                                 {course.lectures.length &&
                                 <Checkbox
                                     value={course.lectureEnabled}
-                                    onChange={(e) => changeLectureStatus({
-                                        path: course.path, enabled: e,
+                                    onChange={(enabled) => changeLectureStatus({
+                                        path: course.path, enabled,
                                     })}
                                 >
                                     {translations[language].LECTURES}
@@ -111,8 +111,8 @@ const Sidebar = () => {
                                 {course.practicals.length &&
                                 <Checkbox
                                     value={course.praticalEnabled}
-                                    onChange={(e) => changePracticalStatus({
-                                        path: course.path, enabled: e,
+                                    onChange={(enabled) => changePracticalStatus({
+                                        path: course.path, enabled,
                                     })}
                                 >
                                     {translations[language].PRACTICALS}
