@@ -4,7 +4,7 @@ import cx from "classnames";
 
 import "./Lesson.scss";
 
-const getLessonStyle = ({ horizontal, height, top }) => {
+const getLessonStyle = (horizontal, height, top) => {
     if (!horizontal) {
         return {
             height,
@@ -14,18 +14,20 @@ const getLessonStyle = ({ horizontal, height, top }) => {
     return {};
 };
 
-const Lesson = (props) => {
-    const lessonStyle = getLessonStyle(props);
-    const {
-        horizontal,
-        conflicts,
-        type,
-        time,
-        className,
-        room,
-        teacher,
-        name,
-    } = props;
+const Lesson = ({
+    horizontal,
+    height,
+    top,
+    conflicts,
+    type,
+    time,
+    className,
+    room,
+    teacher,
+    name,
+}) => {
+    const lessonStyle = getLessonStyle(horizontal, height, top);
+
     return (
         <div
             className={cx("lesson", `lesson-${type}`, {

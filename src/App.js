@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import configureStore from "./configureStore";
 
 import "./App.scss";
+import "./styles/global.scss";
 import "element-theme-chalk";
 import SchedulePage from "./components/SchedulePage";
 

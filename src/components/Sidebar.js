@@ -62,14 +62,14 @@ const Sidebar = () => {
                     <Checkbox
                         checked={lectureGlobalState}
                         indeterminate={lectureGlobalState === null}
-                        onChange={() => dispatch(changeAllLectureStatus())}
+                        onChange={(enabled) => dispatch(changeAllLectureStatus(enabled))}
                     >
                         {translations[language].LECTURES}
                     </Checkbox>
                     <Checkbox
                         checked={practicalGlobalState}
                         indeterminate={practicalGlobalState === null}
-                        onChange={() => dispatch(changeAllPracticalStatus())}
+                        onChange={(enabled) => dispatch(changeAllPracticalStatus(enabled))}
                     >
                         {translations[language].PRACTICALS}
                     </Checkbox>
@@ -79,7 +79,7 @@ const Sidebar = () => {
                         {selectedCourses.map((course, index) => (
                             <div
                                 key={course.name + course.acronym}
-                                className={cx("lesson", { "lesson-even": index % 2 === 0 })}
+                                className={cx("sidebar-lesson", { "sidebar-lesson-even": index % 2 === 0 })}
                             >
                                 <div className="class-name">
                                     {`${course.name} (${course.acronym})`}
@@ -87,11 +87,12 @@ const Sidebar = () => {
                                 <div className="select">
                                     <select
                                         value={course.selectedClass}
-                                        onChange={(e) => changeSelectedPractical({
+                                        onChange={(e) => dispatch(changeSelectedPractical({
                                             path: course.path,
                                             selectedClass: e.target.value || null,
-                                        })}
+                                        }))}
                                     >
+                                        <option />
                                         {course.classes.map((c) => (
                                             <option key={c.className} value={c.className}>
                                                 {c.description}
@@ -102,18 +103,18 @@ const Sidebar = () => {
                                 {course.lectures.length &&
                                 <Checkbox
                                     value={course.lectureEnabled}
-                                    onChange={(enabled) => changeLectureStatus({
+                                    onChange={(enabled) => dispatch(changeLectureStatus({
                                         path: course.path, enabled,
-                                    })}
+                                    }))}
                                 >
                                     {translations[language].LECTURES}
                                 </Checkbox>}
                                 {course.practicals.length &&
                                 <Checkbox
                                     value={course.praticalEnabled}
-                                    onChange={(enabled) => changePracticalStatus({
+                                    onChange={(enabled) => dispatch(changePracticalStatus({
                                         path: course.path, enabled,
-                                    })}
+                                    }))}
                                 >
                                     {translations[language].PRACTICALS}
                                 </Checkbox>}

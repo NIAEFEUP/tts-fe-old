@@ -1,5 +1,5 @@
 
-@import '../styles/variables.css';
+@import '../styles/variables';
 
 .sidebar {
     width: 100%;
@@ -11,11 +11,11 @@
     padding-top: 8px;
 }
 
-.lessons-container {
+.sidebar-lessons-container {
     border-top: 1px solid var(--border-color);
 }
 
-.lesson {
+.sidebar-lesson {
     padding: 10px;
     color: #010101;
     font-size: 15px;

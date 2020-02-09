@@ -7,12 +7,12 @@ import "./Column.scss";
 const Column = ({ slots, name, horizontal, children }) => (
     <React.Fragment>
         {!horizontal ?
-            <div className="column">
+            <div className="column schedule-column">
                 <div className="name">{name}</div>
                 <div className="lessons">
                     <div>
-                        {slots.map((_, i) => (
-                            <div key={i} className={cx("box", { "box-light": _ % 2 === 0 })} />
+                        {[...Array(slots).keys()].map((val, i) => (
+                            <div key={i} className={cx("box", { "box-light": val % 2 !== 0 })} />
                         ))}
                     </div>
                     {children}
