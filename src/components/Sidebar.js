@@ -46,6 +46,8 @@ const Sidebar = () => {
         selectedCourses: fselectedCourses(state),
     }));
 
+    console.log(selectedCourses);
+
     return (
         <React.Fragment>
             <div className="sidebar">
@@ -76,58 +78,62 @@ const Sidebar = () => {
                 </div>
                 <div className="lessons-container sidebar__scrollbar__wrap sidebar__scrollbar__list">
                     <div>
-                        {selectedCourses.map((course, index) => (
-                            <div
-                                key={course.name + course.acronym}
-                                className={cx("sidebar-lesson", { "sidebar-lesson-even": index % 2 === 0 })}
-                            >
-                                <div className="class-name">
-                                    {`${course.name} (${course.acronym})`}
-                                </div>
-                                <div className="select">
-                                    <select
-                                        value={course.selectedClass}
-                                        onChange={(e) => dispatch(changeSelectedPractical({
-                                            path: course.path,
-                                            selectedClass: e.target.value || null,
+                        {selectedCourses.map((course, index) => {
+                            console.log("the thing", course, index);
+                            return (
+                                <div
+                                    key={course.name + course.acronym}
+                                    className={cx("sidebar-lesson", { "sidebar-lesson-even": index % 2 === 0 })}
+                                >
+                                    <div className="class-name">
+                                        {`${course.name} (${course.acronym})`}
+                                    </div>
+                                    <div className="select">
+                                        <select
+                                            value={course.selectedClass}
+                                            onChange={(e) => dispatch(changeSelectedPractical({
+                                                path: course.path,
+                                                selectedClass: e.target.value || null,
+                                            }))}
+                                        >
+                                            <option />
+                                            {course.classes.map((c) => (
+                                                <option key={c.className} value={c.className}>
+                                                    {c.description}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    {course.lectures.length &&
+                                    <Checkbox
+                                        checked={course.lectureEnabled}
+                                        onChange={(enabled) => dispatch(changeLectureStatus({
+                                            path: course.path, enabled,
                                         }))}
                                     >
-                                        <option />
-                                        {course.classes.map((c) => (
-                                            <option key={c.className} value={c.className}>
-                                                {c.description}
-                                            </option>
-                                        ))}
-                                    </select>
+                                        {translations[language].LECTURES}
+                                    </Checkbox>}
+                                    {course.practicals.length &&
+                                    <Checkbox
+                                        checked={course.practicalEnabled}
+                                        onChange={(enabled) => dispatch(changePracticalStatus({
+                                            path: course.path, enabled,
+                                        }))}
+                                    >
+                                        {translations[language].PRACTICALS}
+                                    </Checkbox>}
+                                    {course.lectureConflicts &&
+                                    <div className="conflicts-info">
+                                        {`${translations[language].LECTURE_CONFLICTS}: ${course.lectureConflicts.join(", ")}`}
+                                    </div>}
+                                    {course.practicalConflicts &&
+                                    <div className="conflicts-info">
+                                        {`${translations[language].PRACTICAL_CONFLICTS}: ${course.practicalConflicts.join(", ")}`}
+                                    </div>}
                                 </div>
-                                {course.lectures.length &&
-                                <Checkbox
-                                    value={course.lectureEnabled}
-                                    onChange={(enabled) => dispatch(changeLectureStatus({
-                                        path: course.path, enabled,
-                                    }))}
-                                >
-                                    {translations[language].LECTURES}
-                                </Checkbox>}
-                                {course.practicals.length &&
-                                <Checkbox
-                                    value={course.praticalEnabled}
-                                    onChange={(enabled) => dispatch(changePracticalStatus({
-                                        path: course.path, enabled,
-                                    }))}
-                                >
-                                    {translations[language].PRACTICALS}
-                                </Checkbox>}
-                                {course.lectureConflicts &&
-                                <div className="conflicts-info">
-                                    {`${translations[language].LECTURE_CONFLICTS}: ${course.lectureConflicts.join(", ")}`}
-                                </div>}
-                                {course.practicalConflicts &&
-                                <div className="conflicts-info">
-                                    {`${translations[language].PRACTICAL_CONFLICTS}: ${course.practicalConflicts.join(", ")}`}
-                                </div>}
-                            </div>
-                        ))}
+                            )
+                            ;
+                        })}
                     </div>
                 </div>
             </div>

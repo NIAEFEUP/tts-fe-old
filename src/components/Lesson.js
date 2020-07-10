@@ -41,7 +41,7 @@ const Lesson = ({
                     <div className="time">{time}</div>
                 </div>
                 <div className="line2">
-                    <div className="name">{name}</div>
+                    <div className="lesson-name">{name}</div>
                     <div className="lesson-class">{className}</div>
                 </div>
                 <div className="line3">
