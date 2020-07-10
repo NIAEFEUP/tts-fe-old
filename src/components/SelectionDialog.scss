@@ -1,0 +1,164 @@
+
+  .el-dialog__wrapper {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100%;
+
+    /deep/ > .el-dialog {
+      max-width: 900px;
+      margin: auto !important;
+      box-sizing: border-box;
+    }
+
+    &:after, &:before {
+      content: '';
+    }
+    &:after {
+      flex: 7;
+    }
+    &:before {
+      flex: 3;
+    }
+  }
+
+  .collapse-enter-active, .collapse-leave-active {
+    transition: all 0.5s ease;
+  }
+  .collapse-enter, .collapse-leave-to {
+    height: 0!important;
+  }
+
+  .years {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; // For browsers that don't support space-evenly
+    justify-content: space-evenly;
+    overflow: hidden;
+  }
+
+  .year {
+    margin: 0 25px;
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 auto;
+
+    &:before {
+      display: block;
+      content: '\00a0';
+      height: 20px;
+    }
+  }
+
+  .year-name {
+    padding-bottom: 2px;
+  }
+
+  .spinner-wrapper {
+    position: relative;
+    height: 18px;
+    width: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    margin: 8px 0;
+
+    .spinner {
+      position: absolute;
+      left: 10px;
+      top: -1px;
+    }
+  }
+
+  .courses {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 0 1 auto;
+    vertical-align: top;
+    justify-content: center;
+    & > div {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin: 0 5px;
+    }
+  }
+
+  /deep/ .el-checkbox {
+    transform: translateZ(0);
+  }
+
+  .select {
+    border: 1px solid #ccc;
+    width: 120px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fafafa url("../assets/carret.svg") no-repeat 97% 50%;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+
+    &.disabled {
+      background-color: #ddd;
+    }
+
+    > select {
+      color: #333;
+      padding: 0 10px 0 2px;
+      min-width: 120px;
+      border: none;
+      box-shadow: none;
+      background: transparent none;
+      appearance: none;
+      outline: none;
+      &:focus {
+        outline: none;
+        &::-ms-value {
+          background: none;
+          color: #333;
+        }
+      }
+      &::-ms-expand {
+        display: none;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .year-semester  {
+    margin-bottom: 8px;
+
+    .select, .select select {
+      width: 65px;
+      min-width: 65px;
+    }
+
+    .select-year, .select-year select {
+      width: 100px;
+      min-width: 100px;
+    }
+
+    .spinner-wrapper {
+      margin-right: 8px;
+      .spinner {
+        left: 6px;
+      }
+    }
+  }
+
+  .select-large {
+    &, select {
+      width: 500px;
+      max-width: calc(100% - 22px);
+    }
+  }
+
+  .semester-container {
+    white-space: nowrap;
+    display: inline-block;
+    margin-top: 8px;
+    margin-right: 30px;
+  }

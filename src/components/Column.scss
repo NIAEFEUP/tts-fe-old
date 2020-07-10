@@ -1,0 +1,62 @@
+  @import '../styles/variables';
+
+  .lessons {
+    position: relative;
+  }
+
+  .column {
+    transform: translateZ(0);
+    border-left: 0.95px solid $border-color;
+    &:last-of-type {
+      border-right: 1px solid $border-color;
+    }
+
+    .name {
+      text-align: center;
+      font-weight: bold;
+      padding: 7px 0;
+      height: $schedule-header-height;
+      box-sizing: border-box;
+    }
+    .box, .name {
+      border: solid $border-color;
+      border-width: 1px 0;
+    }
+    .box {
+      width: 100%;
+      height: $schedule-box-height;
+      box-sizing: border-box;
+      &:not(:last-of-type) {
+        border-bottom: none;
+      }
+    }
+    .box-light {
+      border-top-color: #f6f6f6;
+    }
+  }
+
+  .row {
+    width: 100%;
+    .name {
+      font-weight: bold;
+      padding: 15px 10px 5px;
+      line-height: 20px;
+    }
+    .lessons {
+      display: flex;
+      flex-direction: row;
+      overflow-y: hidden;
+      flex-wrap: nowrap;
+      overflow-scrolling: touch;
+
+      &:after {
+        display: block;
+        flex-shrink: 0;
+        content: '&nbsp;';
+        width: 10px;
+        overflow: hidden;
+        opacity: 0;
+        color: transparent;
+      }
+    }
+  }

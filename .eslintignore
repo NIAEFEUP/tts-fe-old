@@ -1,2 +1,2 @@
-build/*.js
-config/*.js
+# Came from CRA, don't want to touch it, really
+src/serviceWorker.js

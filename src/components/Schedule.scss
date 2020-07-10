@@ -1,0 +1,42 @@
+  @import '../styles/variables';
+
+  .times {
+    vertical-align: top;
+    width: 55px;
+    display: inline-block;
+    text-align: right;
+    margin-top: 28px;
+  }
+  .times > div {
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: bold;
+    height: 2 * $schedule-box-height;
+    margin-right: 10px;
+    position: relative;
+  }
+  .schedule {
+    text-align: left;
+  }
+  .schedule-md {
+    margin: auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: flex-start;
+  }
+  .schedule-days {
+    display: flex;
+    flex: 1;
+  }
+  .schedule-column {
+    display: inline-block;
+    position: relative;
+    flex: 1;
+    box-sizing: border-box;
+  }
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 0.2s ease-in-out !important;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0 !important;
+  }

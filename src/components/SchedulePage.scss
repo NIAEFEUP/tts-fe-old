@@ -1,0 +1,71 @@
+  .schedule-page /deep/ .el-loading-mask {
+    position: fixed;
+  }
+  .wrapper {
+    width: 100%;
+    &.dialog-open {
+      position: fixed;
+    }
+  }
+  .content {
+    width: 100%;
+    max-width: 1150px;
+    margin: auto;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    > * {
+      display: flex;
+      max-width: 840px;
+    }
+  }
+  .sidebar {
+    padding: 0;
+    order: 0;
+    flex: 1;
+    flex-basis: 300px;
+    flex-shrink: 0;
+    margin: 0 auto 20px;
+
+    /deep/ .sidebar__scrollbar__wrap {
+      box-sizing: border-box;
+      overflow: auto;
+      max-height: 678px;
+    }
+  }
+  .main-content {
+    width: 100%;
+    display: inline-block;
+  }
+
+  @media screen and (max-width: 1050px) {
+    .content {
+      display: block;
+      position: relative;
+    }
+    .sidebar {
+      padding: 0 10px;
+      max-height: 500px;
+
+      /deep/ .sidebar__scrollbar__wrap {
+        box-sizing: border-box;
+        overflow: initial;
+        max-height: initial;
+      }
+    }
+
+    @media (min-width: 600px) {
+      .sidebar /deep/ {
+        .lesson {
+          width: 50%;
+          display: inline-block;
+        }
+        .lesson:nth-last-child(2).lesson-even {
+          border-bottom: none;
+        }
+      }
+      .content /deep/ .schedule-md {
+        margin-top: 20px;
+      }
+    }
+  }
