@@ -16,7 +16,7 @@
     "core-js": "^2.5.1",
     "dotenv": "^8.2.0",
     "element-ui": "^2.0.3",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.21",
     "v-media-query": "^1.0.3",
     "vue": "^2.5.13",
     "vue-axios": "^2.0.2",
