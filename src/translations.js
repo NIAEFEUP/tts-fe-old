@@ -22,7 +22,7 @@ export default {
     DAY_SHORT6: 'Fri',
   },
   pt: {
-    PICK_YOUR_COURSES: 'Escolha de UCs',
+    PICK_YOUR_COURSES: 'Escola de UCs',
     CONFIRM: 'Confirmar',
     PROGRAMME: 'Curso',
     YEAR: 'Ano',
