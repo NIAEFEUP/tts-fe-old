@@ -8,9 +8,11 @@
       :before-close="beforeClose"
       top="0">
     <div class="shared-warning">
-      Aviso: Nos cursos e cadeiras partilhadas, como é o caso da licenciatura de
-      informática (FEUP e FCUP), o horário apenas funcionará corretamente numa das
-      faculdades/cursos (FCUP). Estamos de momento a resolver a situação, mas até lá por favor verifique em ambos os cursos/faculdades caso tenha algum problema.
+      Aviso: Horários de cursos e cadeiras partilhadas podem constar apenas de uma faculdade ou curso, respetivamente.
+      <br>
+      Por exemplo, terá de selecionar a FCUP para a Licenciatura em Engenharia Informática e Computação, da FEUP/FCUP.
+      <br>
+      Estamos a trabalhar para resolver o problema.
     </div>
     <div class="selections-container">
       <div class="year-semester">
@@ -346,8 +348,8 @@
   }
 
   .shared-warning {
-    margin: 0px 20px 10px 20px;
     color: red;
+    margin: -10px 5px 30px 5px; 
   }
 
   .year-semester  {
