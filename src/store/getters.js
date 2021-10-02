@@ -17,7 +17,7 @@ export function _selectedCourses(state) {
   Object.entries(state.enabledCourses).forEach(([programme, lYears]) => {
     Object.entries(lYears).forEach(([year, yearCourses]) => {
       Object.keys(yearCourses).filter(c => yearCourses[c]).forEach((courseCode) => {
-        const path = [programme, year, courseCode].join('.');
+        const path = [programme, year, courseCode];
         const course = get(state.schedule.data, path);
         if (course) {
           const selectedPracticals = state.selectedPracticals[path]
@@ -157,7 +157,7 @@ export function locationHash(state, getters) {
   if (!getters.selectedCourses || getters.selectedCourses.length === 0) return '#';
   getters.selectedCourses.forEach((course) => {
     // eslint-disable-next-line no-unused-vars
-    const [programme, _, courseCode] = course.path.split('.');
+    const [programme, _, courseCode] = course.path;
     if (!programmesCourses[programme]) programmesCourses[programme] = [];
     const selectedClass = course.selectedClass || '';
     programmesCourses[programme].push(`~${courseCode}.${selectedClass}`);

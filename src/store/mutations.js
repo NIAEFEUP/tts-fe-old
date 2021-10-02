@@ -69,8 +69,7 @@ export default {
     }
   },
   [types.CHANGE_SELECTED_PRACTICAL](state, { path, selectedClass }) {
-    const pathArray = path instanceof Array ? path.join('.') : path;
-    Vue.set(state.selectedPracticals, pathArray, selectedClass);
+    Vue.set(state.selectedPracticals, path, selectedClass);
   },
   [types.SET_SELECTED_PROGRAMME](state, programme) {
     state.selectedProgramme = programme;
