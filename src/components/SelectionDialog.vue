@@ -8,7 +8,8 @@
       :before-close="beforeClose"
       top="0">
     <div class="shared-warning">
-      Aviso: Horários de cursos e cadeiras partilhadas podem constar apenas de uma faculdade ou curso, respetivamente.
+      Aviso: Horários de cursos e cadeiras partilhadas apenas funcionam numa das faculdades ou cursos, respetivamente.
+      <!-- Aviso: Horários de cursos e cadeiras partilhadas podem constar apenas de uma faculdade ou curso, respetivamente. -->
       <br>
       Por exemplo, terá de selecionar a FCUP para a Licenciatura em Engenharia Informática e Computação, da FEUP/FCUP.
       <br>
