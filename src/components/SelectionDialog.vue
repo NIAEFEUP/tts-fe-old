@@ -7,6 +7,11 @@
       width="100%"
       :before-close="beforeClose"
       top="0">
+    <div class="shared-warning">
+      Aviso: Nos cursos e cadeiras partilhadas, como é o caso da licenciatura de
+      informática (FEUP e FCUP), o horário apenas funcionará corretamente numa das
+      faculdades/cursos (FCUP). Estamos de momento a resolver a situação, mas até lá por favor verifique em ambos os cursos/faculdades caso tenha algum problema.
+    </div>
     <div class="selections-container">
       <div class="year-semester">
         {{ $lang.YEAR }}:&nbsp;
@@ -338,6 +343,11 @@
         outline: none;
       }
     }
+  }
+
+  .shared-warning {
+    margin: 0px 20px 10px 20px;
+    color: red;
   }
 
   .year-semester  {
