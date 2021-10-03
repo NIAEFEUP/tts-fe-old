@@ -92,8 +92,8 @@
       </transition>
     </div>
     <span slot="footer" class="dialog-footer">  
-      <el-tooltip class="item" placement="top-start" effect="dark" content="ni@aefeup.pt"> 
-          <el-button><a href="mailto:ni@aefeup.pt" class="contact-us"> {{ $lang.CONTACT }}</a></el-button>  
+      <el-tooltip class="item" placement="top-start" effect="dark" content="projetos.niaefeup@gmail.com"> 
+          <el-button><a href="mailto:projetos.niaefeup@gmail.com" class="contact-us"> {{ $lang.CONTACT }}</a></el-button>  
       </el-tooltip> 
       <el-button type="primary" @click="close" :disabled="!canClose">{{ $lang.CONFIRM }}</el-button> 
     </span>
@@ -247,8 +247,7 @@
     &:before {
       flex: 3;
     }
-  }
-
+  } 
 
   .collapse-enter-active, .collapse-leave-active {
     transition: all 0.5s ease;
@@ -409,6 +408,12 @@
   .shared-warning {
     color: red;
     font-weight: 600;
+  } 
+
+
+  .el-tooltip__popper{
+    max-width: 50% !important; 
   }
+
 
 </style>
