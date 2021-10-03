@@ -1,19 +1,22 @@
 <template>
   <el-dialog
-      ref="dialog"
-      :title="$lang.PICK_YOUR_COURSES"
+      ref="dialog" 
       :visible="coursesDialogVisible"
       :lock-scroll="false"
       width="100%"
       :before-close="beforeClose"
-      top="0">
-    <div class="shared-warning"> 
-      Aviso: Horários de cursos e cadeiras partilhadas apenas funcionam numa das faculdades ou cursos, respetivamente.
-      <!-- Aviso: Horários de cursos e cadeiras partilhadas podem constar apenas de uma faculdade ou curso, respetivamente. -->
-      <br>
-      Por exemplo, terá de selecionar a FCUP para a Licenciatura em Engenharia Informática e Computação, da FEUP/FCUP.
-      <br>
-      Estamos a trabalhar para resolver o problema.
+      top="0"> 
+    <div slot="title"> 
+        {{$lang.PICK_YOUR_COURSES}} 
+        <el-tooltip class="item" placement="top-start" effect="light">  
+          <div slot="content"> <div class="shared-warning">Aviso:</div> Horários de cursos e cadeiras partilhadas apenas funcionam numa das faculdades ou cursos, respetivamente. <br> 
+        Por exemplo, terá de selecionar a FCUP para a Licenciatura em Engenharia Informática e Computação, da FEUP/FCUP. <br> 
+        Estamos a trabalhar para resolver o problema.</div> 
+          <img src="../assets/exclamation-triangle-solid.svg" width="20" class="error-icon"> 
+        </el-tooltip>  
+    </div> 
+    <div> 
+      
     </div>
     <div class="selections-container">
       <div class="year-semester">
@@ -236,7 +239,8 @@
 
     &:after, &:before {
       content: '';
-    }
+    } 
+    
     &:after {
       flex: 7;
     }
@@ -244,6 +248,7 @@
       flex: 3;
     }
   }
+
 
   .collapse-enter-active, .collapse-leave-active {
     transition: all 0.5s ease;
@@ -351,11 +356,6 @@
     }
   }
 
-  .shared-warning {
-    color: red;
-    margin: -10px 5px 30px 5px; 
-  }
-
   .year-semester  {
     margin-bottom: 8px;
 
@@ -399,6 +399,16 @@
   .contact-us { 
     text-decoration: none;
     color: black;
+  } 
+
+  img.error-icon {
+    filter: red;  
+    margin-left: 4px; 
+  } 
+
+  .shared-warning {
+    color: red;
+    font-weight: 600;
   }
 
 </style>
