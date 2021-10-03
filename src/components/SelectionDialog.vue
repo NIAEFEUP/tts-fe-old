@@ -7,7 +7,7 @@
       width="100%"
       :before-close="beforeClose"
       top="0">
-    <div class="shared-warning">
+    <div class="shared-warning"> 
       Aviso: Horários de cursos e cadeiras partilhadas apenas funcionam numa das faculdades ou cursos, respetivamente.
       <!-- Aviso: Horários de cursos e cadeiras partilhadas podem constar apenas de uma faculdade ou curso, respetivamente. -->
       <br>
@@ -88,8 +88,11 @@
         </div>
       </transition>
     </div>
-    <span slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="close" :disabled="!canClose">{{ $lang.CONFIRM }}</el-button>
+    <span slot="footer" class="dialog-footer">  
+      <el-tooltip class="item" placement="top-start" effect="dark" content="ni@aefeup.pt"> 
+          <el-button><a href="mailto:ni@aefeup.pt" class="contact-us"> {{ $lang.CONTACT }}</a></el-button>  
+      </el-tooltip> 
+      <el-button type="primary" @click="close" :disabled="!canClose">{{ $lang.CONFIRM }}</el-button> 
     </span>
   </el-dialog>
 </template>
@@ -386,5 +389,16 @@
     display: inline-block;
     margin-top: 8px;
     margin-right: 30px;
+  } 
+
+  .dialog-footer{
+    display: flex; 
+    justify-content: space-between;
+  } 
+
+  .contact-us { 
+    text-decoration: none;
+    color: black;
   }
+
 </style>

@@ -20,6 +20,8 @@ export default {
     DAY_SHORT4: 'Wed',
     DAY_SHORT5: 'Thu',
     DAY_SHORT6: 'Fri',
+    CONTACT: 'Contact us',
+    MAIL_COPIED: 'Mail copied!',
   },
   pt: {
     PICK_YOUR_COURSES: 'Escolha de UCs',
@@ -42,5 +44,7 @@ export default {
     DAY_SHORT4: '4ª',
     DAY_SHORT5: '5ª',
     DAY_SHORT6: '6ª',
+    CONTACT: 'Contacte-nos',
+    MAIL_COPIED: 'Email copiado!',
   },
 };
