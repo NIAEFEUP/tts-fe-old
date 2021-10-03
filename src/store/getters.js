@@ -63,6 +63,7 @@ export function lessonsByDay(state, getters) {
       const curr = dayLessons[i];
       for (let j = i + 1; j < dayLessons.length; j++) {
         const next = dayLessons[j];
+        if (next.courseId === curr.courseId && next.class_name === curr.class_name) continue; // duplicates, remove when shared courses are handled properly
         if (next.start_time < curr.start_time + curr.duration) {
           curr.conflicts = [...(curr.conflicts || []), next.course];
           next.conflicts = [...(next.conflicts || []), curr.course];
