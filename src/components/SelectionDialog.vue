@@ -1,12 +1,23 @@
 <template>
   <el-dialog
-      ref="dialog"
-      :title="$lang.PICK_YOUR_COURSES"
+      ref="dialog" 
       :visible="coursesDialogVisible"
       :lock-scroll="false"
       width="100%"
       :before-close="beforeClose"
-      top="0">
+      top="0"> 
+    <div slot="title"> 
+        {{$lang.PICK_YOUR_COURSES}} 
+        <el-tooltip class="item" placement="top-start" effect="light">  
+          <div slot="content"> <div class="shared-warning">Aviso:</div> Horários de cursos e cadeiras partilhadas apenas funcionam numa das faculdades ou cursos, respetivamente. <br> 
+        Por exemplo, terá de selecionar a FCUP para a Licenciatura em Engenharia Informática e Computação, da FEUP/FCUP. <br> 
+        Estamos a trabalhar para resolver o problema.</div> 
+          <img src="../assets/exclamation-triangle-solid.svg" width="20" class="error-icon"> 
+        </el-tooltip>  
+    </div> 
+    <div> 
+      
+    </div>
     <div class="selections-container">
       <div class="year-semester">
         {{ $lang.YEAR }}:&nbsp;
@@ -80,8 +91,11 @@
         </div>
       </transition>
     </div>
-    <span slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="close" :disabled="!canClose">{{ $lang.CONFIRM }}</el-button>
+    <span slot="footer" class="dialog-footer">  
+      <el-tooltip class="item" placement="top-start" effect="dark" content="ni@aefeup.pt"> 
+          <el-button><a href="mailto:ni@aefeup.pt" class="contact-us"> {{ $lang.CONTACT }}</a></el-button>  
+      </el-tooltip> 
+      <el-button type="primary" @click="close" :disabled="!canClose">{{ $lang.CONFIRM }}</el-button> 
     </span>
   </el-dialog>
 </template>
@@ -225,7 +239,8 @@
 
     &:after, &:before {
       content: '';
-    }
+    } 
+    
     &:after {
       flex: 7;
     }
@@ -233,6 +248,7 @@
       flex: 3;
     }
   }
+
 
   .collapse-enter-active, .collapse-leave-active {
     transition: all 0.5s ease;
@@ -373,5 +389,26 @@
     display: inline-block;
     margin-top: 8px;
     margin-right: 30px;
+  } 
+
+  .dialog-footer{
+    display: flex; 
+    justify-content: space-between;
+  } 
+
+  .contact-us { 
+    text-decoration: none;
+    color: black;
+  } 
+
+  img.error-icon {
+    filter: red;  
+    margin-left: 4px; 
+  } 
+
+  .shared-warning {
+    color: red;
+    font-weight: 600;
   }
+
 </style>
